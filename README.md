@@ -32,9 +32,9 @@ Every template:
 
 Our tools ensure you understand what you're implementing:
 
-\`\`\`bash
+```bash
 python setup_foundation_lite.py --project-name MyProject --author-name "Your Name"
-\`\`\`
+```
 
 The script will educate you about each component before generating templates.
 
