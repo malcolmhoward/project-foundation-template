@@ -1,4 +1,4 @@
-# foundation/utils.py
+# core/utils.py
 # Utility constants and helper functions
 
 """
@@ -14,7 +14,7 @@ from datetime import date
 from pathlib import Path
 
 # Version and expiration
-SCRIPT_VERSION = "2.6.0-lite"
+SCRIPT_VERSION = "2.7.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
