@@ -49,7 +49,7 @@ if sys.platform == 'win32':
         sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 # Version and expiration
-SCRIPT_VERSION = "2.2.0-lite"
+SCRIPT_VERSION = "2.3.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
@@ -126,6 +126,16 @@ def merge_config_with_args(args, config: Dict[str, Any]):
         "include_security": "include_security",
         "include-security": "include_security",
         "includeSecurity": "include_security",
+        # v2.3.0: Community governance templates
+        "include_github_templates": "include_github_templates",
+        "include-github-templates": "include_github_templates",
+        "includeGithubTemplates": "include_github_templates",
+        "include_changelog": "include_changelog",
+        "include-changelog": "include_changelog",
+        "includeChangelog": "include_changelog",
+        "include_all": "include_all",
+        "include-all": "include_all",
+        "includeAll": "include_all",
         # v2.2.0: Non-interactive mode
         "verbose": "verbose",
         "non_interactive": "non_interactive",
@@ -147,6 +157,10 @@ def merge_config_with_args(args, config: Dict[str, Any]):
                 "output_dir": ".",
                 "include_coc": False,
                 "include_security": False,
+                # v2.3.0
+                "include_github_templates": False,
+                "include_changelog": False,
+                "include_all": False,
                 # v2.2.0
                 "verbose": False,
                 "non_interactive": False,
@@ -219,6 +233,25 @@ LITE_PRINCIPLES = {
         "why": "Vulnerabilities can harm users and reputation",
         "what": "Basic security practices and reporting process",
         "risk": "Without it, projects become attack vectors"
+    },
+    # v2.3.0: Community governance templates
+    "issue-templates": {
+        "name": "Issue Templates",
+        "why": "Structured bug reports and feature requests save time",
+        "what": "Templates that guide users to provide needed information",
+        "risk": "Without them, issues lack context and take longer to resolve"
+    },
+    "pr-template": {
+        "name": "Pull Request Template",
+        "why": "Consistent PR descriptions improve review quality",
+        "what": "Checklist ensuring code quality and documentation",
+        "risk": "Without it, PRs are inconsistent and harder to review"
+    },
+    "changelog": {
+        "name": "Changelog",
+        "why": "Users need to know what changed between versions",
+        "what": "Human-readable history of notable changes",
+        "risk": "Without it, users can't assess upgrade impact"
     }
 }
 
@@ -272,6 +305,35 @@ EDUCATION_CONTENT = {
     can prevent most common vulnerabilities.
 
     Without security practices, you're one CVE away from headlines.
+    """,
+
+    # v2.3.0: Community governance templates
+    "issue-templates": """
+    📚 LEARNING: Structured issue templates reduce resolution time by 30%.
+
+    When users report bugs without environment info, or request features
+    without context, maintainers waste time asking follow-up questions.
+
+    Good templates guide users to provide what you need upfront.
+    """,
+
+    "pr-template": """
+    📚 LEARNING: Projects with PR templates have 50% fewer back-and-forth reviews.
+
+    A PR checklist reminds contributors to run tests, update docs, and
+    describe their changes. It sets quality expectations before review.
+
+    Without it, reviewers must manually check for common oversights.
+    """,
+
+    "changelog": """
+    📚 LEARNING: 70% of users check changelogs before upgrading.
+
+    A changelog is your project's narrative - it tells users what to
+    expect from each version. Keep a Changelog format (keepachangelog.com)
+    is the de facto standard.
+
+    Without it, users fear breaking changes and delay upgrades.
     """
 }
 
@@ -478,6 +540,18 @@ Generating template in 3 seconds...
             if self.args.include_security or include_all:
                 self.educate_before_generating("security")
                 self.generate_security(output_dir)
+
+            # v2.3.0: GitHub templates (issue templates + PR template)
+            if getattr(self.args, 'include_github_templates', False) or include_all:
+                self.educate_before_generating("issue-templates")
+                self.generate_issue_templates(output_dir)
+                self.educate_before_generating("pr-template")
+                self.generate_pr_template(output_dir)
+
+            # v2.3.0: CHANGELOG
+            if getattr(self.args, 'include_changelog', False) or include_all:
+                self.educate_before_generating("changelog")
+                self.generate_changelog(output_dir)
 
             # .gitignore
             self.generate_gitignore(output_dir)
@@ -848,6 +922,192 @@ coverage/
         
         self.write_file(output_dir / ".gitignore", content)
 
+    # v2.3.0: Community governance templates
+
+    def generate_issue_templates(self, output_dir: Path):
+        """Generate GitHub issue templates (bug report and feature request)."""
+        github_dir = output_dir / ".github" / "ISSUE_TEMPLATE"
+        github_dir.mkdir(parents=True, exist_ok=True)
+
+        # Bug report template
+        bug_report = f"""---
+name: Bug Report
+about: Create a report to help us improve
+title: '[Bug]: '
+labels: 'bug, triage'
+assignees: ''
+---
+
+## Bug Description
+<!-- A clear and concise description of what the bug is -->
+
+## Steps to Reproduce
+1. Go to '...'
+2. Click on '...'
+3. Scroll down to '...'
+4. See error
+
+## Expected Behavior
+<!-- What you expected to happen -->
+
+## Actual Behavior
+<!-- What actually happened -->
+
+## Environment
+- OS: [e.g., Windows 11, macOS 14, Ubuntu 22.04]
+- Version: [e.g., v1.0.0]
+- Browser (if applicable): [e.g., Chrome 120]
+
+## Screenshots
+<!-- If applicable, add screenshots to help explain your problem -->
+
+## Additional Context
+<!-- Add any other context about the problem here -->
+
+## Possible Solution
+<!-- Optional: If you have a suggestion for fixing the bug -->
+
+---
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+        self.write_file(github_dir / "bug_report.md", bug_report)
+
+        # Feature request template
+        feature_request = f"""---
+name: Feature Request
+about: Suggest an idea for this project
+title: '[Feature]: '
+labels: 'enhancement'
+assignees: ''
+---
+
+## Problem Statement
+<!-- Is your feature request related to a problem? Describe it -->
+<!-- Example: I'm always frustrated when... -->
+
+## Proposed Solution
+<!-- A clear and concise description of what you want to happen -->
+
+## Alternatives Considered
+<!-- Any alternative solutions or features you've considered -->
+
+## Additional Context
+<!-- Add any other context, mockups, or screenshots about the feature request -->
+
+## Priority Assessment (Optional)
+<!-- If you've evaluated this feature: -->
+- **Impact**: How much does this improve the project?
+- **Effort**: How realistic is implementation?
+- **Risk**: What could go wrong?
+- **Suggested Priority**: High / Medium / Low
+
+---
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+        self.write_file(github_dir / "feature_request.md", feature_request)
+
+    def generate_pr_template(self, output_dir: Path):
+        """Generate GitHub pull request template."""
+        github_dir = output_dir / ".github"
+        github_dir.mkdir(parents=True, exist_ok=True)
+
+        pr_template = f"""## Description
+<!-- Describe your changes in detail -->
+
+## Related Issue
+<!-- Link to the issue this PR addresses (e.g., Closes #123) -->
+
+## Type of Change
+- [ ] Bug fix (non-breaking change that fixes an issue)
+- [ ] New feature (non-breaking change that adds functionality)
+- [ ] Breaking change (fix or feature that would cause existing functionality to not work as expected)
+- [ ] Documentation update
+- [ ] Refactoring (no functional changes)
+- [ ] Performance improvement
+- [ ] Test updates
+
+## Checklist
+- [ ] My code follows the project's style guidelines
+- [ ] I have performed a self-review of my own code
+- [ ] I have commented my code, particularly in hard-to-understand areas
+- [ ] I have made corresponding changes to the documentation
+- [ ] My changes generate no new warnings
+- [ ] I have added tests that prove my fix is effective or that my feature works
+- [ ] New and existing unit tests pass locally with my changes
+
+## Screenshots (if applicable)
+<!-- Add screenshots to demonstrate the change -->
+
+## Additional Notes
+<!-- Any additional information that reviewers should know -->
+
+---
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+        self.write_file(github_dir / "PULL_REQUEST_TEMPLATE.md", pr_template)
+
+    def generate_changelog(self, output_dir: Path):
+        """Generate CHANGELOG.md following Keep a Changelog format."""
+        today = date.today().isoformat()
+        project_name = self.args.project_name
+
+        changelog = f"""# Changelog
+
+All notable changes to {project_name} will be documented in this file.
+
+The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
+and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [Unreleased]
+
+### Added
+- Initial project setup
+
+### Changed
+- (No changes yet)
+
+### Deprecated
+- (No deprecations yet)
+
+### Removed
+- (No removals yet)
+
+### Fixed
+- (No fixes yet)
+
+### Security
+- (No security updates yet)
+
+## [0.1.0] - {today}
+
+### Added
+- Initial project foundation
+- README with project overview
+- CONTRIBUTING guidelines
+- LICENSE file
+
+---
+
+<!--
+How to update this changelog:
+
+1. Add new entries under "Unreleased"
+2. When releasing:
+   - Change "Unreleased" to version number and date
+   - Create new "Unreleased" section above it
+3. Use categories: Added, Changed, Deprecated, Removed, Fixed, Security
+4. Write for humans, not machines
+5. Link to relevant issues/PRs
+
+Example entry:
+### Added
+- New feature description ([#123](link-to-issue))
+-->
+
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+        self.write_file(output_dir / "CHANGELOG.md", changelog)
+
     def add_ethics_notice_to_files(self, output_dir: Path):
         """Add ethics notice to a summary file."""
         notice = f"""# ⚠️ ETHICAL USE NOTICE
@@ -1049,11 +1309,26 @@ Config file format (.foundationrc):
         help="Include Security Policy template"
     )
 
+    # v2.3.0: Community governance templates
+    parser.add_argument(
+        "--include-github-templates",
+        dest="include_github_templates",
+        action="store_true",
+        help="Include GitHub issue and PR templates (.github/ folder)"
+    )
+
+    parser.add_argument(
+        "--include-changelog",
+        dest="include_changelog",
+        action="store_true",
+        help="Include CHANGELOG.md template"
+    )
+
     parser.add_argument(
         "--all",
         dest="include_all",
         action="store_true",
-        help="Include all optional templates (CoC, Security)"
+        help="Include all optional templates (CoC, Security, GitHub, Changelog)"
     )
 
     # v2.2.0: Non-interactive mode
