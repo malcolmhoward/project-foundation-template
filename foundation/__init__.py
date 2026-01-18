@@ -10,11 +10,10 @@ ethical project governance templates.
 Modules:
     config: Configuration loading and argument parsing
     education: Educational content and principles
+    ethics: Ethical safeguards and version advisory checks
+    generator: Main EthicalFoundationGenerator class
     utils: Helper utilities
     templates: Template generation subpackage
-
-Note: The main generator class remains in setup_foundation_lite.py
-for backward compatibility. It imports from these modules.
 """
 
 from foundation.utils import (
@@ -46,6 +45,15 @@ from foundation.education import (
     format_principle_display,
 )
 
+from foundation.ethics import (
+    check_version_advisory,
+    show_ethical_agreement,
+    is_version_expired,
+    get_version_status,
+)
+
+from foundation.generator import EthicalFoundationGenerator
+
 __version__ = "2.6.0-lite"
 __all__ = [
     # Utils
@@ -71,4 +79,11 @@ __all__ = [
     "get_principle",
     "get_education_content",
     "format_principle_display",
+    # Ethics
+    "check_version_advisory",
+    "show_ethical_agreement",
+    "is_version_expired",
+    "get_version_status",
+    # Generator
+    "EthicalFoundationGenerator",
 ]
