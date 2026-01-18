@@ -150,32 +150,14 @@ As features are reintroduced:
 - [ ] Manually integrate understood features
 - [ ] Update your documentation to reflect changes
 
-## Maintaining Enterprise Features Manually
+## Waiting for Feature Reintroduction
 
-If you need enterprise features before their reintroduction:
+If you need features not yet available in the lite edition, we recommend waiting for their official reintroduction. Each version adds features with full educational context, ensuring:
 
-### Option 1: Reference the Enterprise Branch
-The enterprise edition exists in git history. You can reference it for ideas:
-
-```bash
-# View enterprise edition (if available in history)
-git log --all --oneline | grep enterprise
-```
-
-### Option 2: Build Your Own
-Use the lite edition's educational approach to build features yourself:
-
-1. Understand WHAT the feature does
-2. Understand WHY you need it
-3. Implement HOW it works for your context
-
-This approach creates better governance than copy-pasting.
-
-### Option 3: Wait for Reintroduction
-Each version adds features with full educational context. Waiting ensures:
 - You get tested, documented features
 - Educational content explains proper use
 - Community feedback has refined the implementation
+- Ethical safeguards are maintained
 
 ## Feature Prioritization
 
