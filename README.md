@@ -2,31 +2,51 @@
 
 *Educational templates for thoughtful software governance*
 
+## Core Principle
+
+**Education First** — understand WHY before HOW.
+
+Good governance starts with understanding, not automation. We generate templates that teach best practices while providing starting points for project governance.
+
+## Ethical Foundation
+
+This project is built on **Principle Zero: "Do no harm, allow no harm."**
+
+We recognize that governance templates can be misused:
+- To create false impressions of security
+- To exploit trust through professional-looking facades
+- To claim compliance without implementation
+
+Our safeguards ensure templates are used ethically and responsibly.
+
 ## Philosophy
 
-This project believes that good governance starts with understanding,
-not automation. We generate templates that teach best practices while
-providing starting points for:
+Every template:
+- 📚 Explains **WHY** it matters (Education First)
+- ⚠️ Shows what happens **without** it (Risk Awareness)
+- 📝 **Requires customization** (No Copy-Paste)
+- 🎓 **Teaches while generating** (Learning, Not Just Output)
 
+Governance areas covered:
 - Community guidelines
-- Security policies  
+- Security policies
 - Contribution processes
 - Ethical standards
 
-## What Makes This Different
-
-Every template:
-- 📚 Explains WHY it matters
-- ⚠️ Shows what happens without it
-- 📝 Requires customization
-- 🎓 Teaches while generating
-
 ## This Is Not
 
-- ❌ A compliance shortcut
-- ❌ Instant security
-- ❌ A substitute for judgment
-- ❌ Copy-paste governance
+- ❌ A compliance shortcut — templates require implementation
+- ❌ Instant security — security is practice, not documentation
+- ❌ A substitute for judgment — you must think critically
+- ❌ Copy-paste governance — customization is required
+
+## Ethical Safeguards
+
+To prevent misuse, this tool includes:
+- **Ethical Use Agreement** — explicit acknowledgment of responsibilities
+- **Educational Content** — mandatory learning before generating
+- **Template Warnings** — clear notices that customization is required
+- **Version Expiration** — encourages staying current with best practices
 
 ## Getting Started
 
