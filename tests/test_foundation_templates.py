@@ -6,7 +6,7 @@
 import unittest
 from datetime import date
 
-from foundation.templates import (
+from core.templates import (
     # Core
     generate_readme_content,
     generate_contributing_content,

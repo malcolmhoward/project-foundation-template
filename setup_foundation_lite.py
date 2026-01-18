@@ -33,7 +33,7 @@ from datetime import datetime
 from pathlib import Path
 
 # v2.6.0: Import from modular foundation package
-from foundation import (
+from core import (
     # Utils
     SCRIPT_VERSION,
     configure_windows_utf8,
@@ -45,7 +45,7 @@ from foundation import (
 )
 
 # v2.6.0: Import generator class from its own module
-from foundation.generator import EthicalFoundationGenerator
+from core.generator import EthicalFoundationGenerator
 
 # Configure stdout for UTF-8 on Windows (handles Unicode characters in output)
 configure_windows_utf8()

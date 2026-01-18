@@ -12,7 +12,7 @@ Contains template generators for:
 """
 
 from datetime import date
-from foundation.utils import SCRIPT_VERSION, OFFICIAL_REPO
+from core.utils import SCRIPT_VERSION, OFFICIAL_REPO
 
 
 def generate_readme_content(project_name: str, license_type: str) -> str:

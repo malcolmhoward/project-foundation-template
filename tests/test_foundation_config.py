@@ -10,7 +10,7 @@ import unittest
 from argparse import Namespace
 from pathlib import Path
 
-from foundation.config import (
+from core.config import (
     CONFIG_KEY_MAPPING,
     DEFAULT_VALUES,
     load_config_file,

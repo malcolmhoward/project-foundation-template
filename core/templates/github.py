@@ -12,7 +12,7 @@ Contains template generators for:
     - PR validation workflow
 """
 
-from foundation.utils import OFFICIAL_REPO
+from core.utils import OFFICIAL_REPO
 
 
 def generate_bug_report_template() -> str:

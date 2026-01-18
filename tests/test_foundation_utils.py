@@ -7,7 +7,7 @@ import unittest
 from datetime import date
 from unittest.mock import patch
 
-from foundation.utils import (
+from core.utils import (
     SCRIPT_VERSION,
     OFFICIAL_REPO,
     EXPIRATION_DATE,
@@ -57,7 +57,7 @@ class TestCheckExpiration(unittest.TestCase):
         result = check_expiration()
         self.assertIsInstance(result, bool)
 
-    @patch("foundation.utils.date")
+    @patch("core.utils.date")
     def test_check_expiration_not_expired(self, mock_date):
         """Should return False when not expired."""
         mock_date.today.return_value = date(2025, 1, 1)

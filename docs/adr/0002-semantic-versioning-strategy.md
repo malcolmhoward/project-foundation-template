@@ -139,7 +139,7 @@ Ship everything, enable features via flags.
 
 ### Version Definition
 
-Versions are defined in `foundation/utils.py`:
+Versions are defined in `core/utils.py`:
 
 ```python
 SCRIPT_VERSION = "2.6.0-lite"

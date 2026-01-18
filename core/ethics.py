@@ -17,8 +17,8 @@ generated templates.
 import time
 from datetime import date
 
-from foundation.utils import EXPIRATION_DATE, OFFICIAL_REPO
-from foundation.education import ETHICAL_USE_AGREEMENT
+from core.utils import EXPIRATION_DATE, OFFICIAL_REPO
+from core.education import ETHICAL_USE_AGREEMENT
 
 
 def check_version_advisory(

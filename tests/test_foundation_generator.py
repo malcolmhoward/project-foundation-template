@@ -10,7 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-from foundation.generator import EthicalFoundationGenerator
+from core.generator import EthicalFoundationGenerator
 
 
 def create_mock_args(**kwargs):
@@ -404,7 +404,7 @@ class TestGenerateSpecificFiles(unittest.TestCase):
 class TestCheckVersionAdvisory(unittest.TestCase):
     """Test check_version_advisory method."""
 
-    @patch('foundation.generator.check_version_advisory')
+    @patch('core.generator.check_version_advisory')
     def test_calls_standalone_function(self, mock_check):
         """Should call standalone check_version_advisory function."""
         mock_check.return_value = True
@@ -420,7 +420,7 @@ class TestCheckVersionAdvisory(unittest.TestCase):
 class TestShowEthicalAgreement(unittest.TestCase):
     """Test show_ethical_agreement method."""
 
-    @patch('foundation.generator.show_ethical_agreement')
+    @patch('core.generator.show_ethical_agreement')
     def test_calls_standalone_function(self, mock_show):
         """Should call standalone show_ethical_agreement function."""
         mock_show.return_value = True
@@ -450,17 +450,17 @@ class TestLogUsageLocally(unittest.TestCase):
 
 
 class TestImportFromPackage(unittest.TestCase):
-    """Test that generator can be imported from foundation package."""
+    """Test that generator can be imported from core package."""
 
     def test_import_from_foundation(self):
-        """Should be importable from foundation package."""
-        from foundation import EthicalFoundationGenerator as FromPackage
+        """Should be importable from core package."""
+        from core import EthicalFoundationGenerator as FromPackage
         self.assertEqual(FromPackage, EthicalFoundationGenerator)
 
     def test_in_all(self):
-        """Should be in foundation.__all__."""
-        import foundation
-        self.assertIn("EthicalFoundationGenerator", foundation.__all__)
+        """Should be in core.__all__."""
+        import core
+        self.assertIn("EthicalFoundationGenerator", core.__all__)
 
 
 if __name__ == "__main__":
