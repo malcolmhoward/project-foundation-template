@@ -10,7 +10,7 @@ Modules:
     advanced: ADR, CI, secrets detection, enhanced security
 """
 
-from foundation.templates.core import (
+from core.templates.core import (
     generate_readme_content,
     generate_contributing_content,
     generate_license_content,
@@ -18,13 +18,13 @@ from foundation.templates.core import (
     LICENSE_TEMPLATES,
 )
 
-from foundation.templates.governance import (
+from core.templates.governance import (
     generate_code_of_conduct_content,
     generate_security_content,
     generate_changelog_content,
 )
 
-from foundation.templates.github import (
+from core.templates.github import (
     generate_bug_report_template,
     generate_feature_request_template,
     generate_pr_template_content,
@@ -32,7 +32,7 @@ from foundation.templates.github import (
     generate_pr_validation_workflow_content,
 )
 
-from foundation.templates.advanced import (
+from core.templates.advanced import (
     generate_enhanced_security_content,
     generate_pre_commit_config_content,
     generate_detect_secrets_script,

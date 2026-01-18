@@ -5,7 +5,7 @@
 
 import unittest
 
-from foundation.education import (
+from core.education import (
     LITE_PRINCIPLES,
     EDUCATION_CONTENT,
     ETHICAL_USE_AGREEMENT,

@@ -7,7 +7,7 @@ import unittest
 from datetime import date, timedelta
 from unittest.mock import MagicMock
 
-from foundation.ethics import (
+from core.ethics import (
     check_version_advisory,
     show_ethical_agreement,
     is_version_expired,
@@ -301,8 +301,8 @@ class TestIntegration(unittest.TestCase):
     """Integration tests for ethics module functions."""
 
     def test_functions_importable_from_foundation(self):
-        """Should be able to import ethics functions from foundation package."""
-        from foundation import (
+        """Should be able to import ethics functions from core package."""
+        from core import (
             check_version_advisory,
             show_ethical_agreement,
             is_version_expired,

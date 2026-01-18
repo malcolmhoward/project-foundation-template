@@ -16,7 +16,7 @@ Modules:
     templates: Template generation subpackage
 """
 
-from foundation.utils import (
+from core.utils import (
     SCRIPT_VERSION,
     OFFICIAL_REPO,
     EXPIRATION_DATE,
@@ -27,7 +27,7 @@ from foundation.utils import (
     get_expiration_warning,
 )
 
-from foundation.config import (
+from core.config import (
     load_config_file,
     merge_config_with_args,
     parse_arguments,
@@ -36,7 +36,7 @@ from foundation.config import (
     DEFAULT_VALUES,
 )
 
-from foundation.education import (
+from core.education import (
     LITE_PRINCIPLES,
     EDUCATION_CONTENT,
     ETHICAL_USE_AGREEMENT,
@@ -45,14 +45,14 @@ from foundation.education import (
     format_principle_display,
 )
 
-from foundation.ethics import (
+from core.ethics import (
     check_version_advisory,
     show_ethical_agreement,
     is_version_expired,
     get_version_status,
 )
 
-from foundation.generator import EthicalFoundationGenerator
+from core.generator import EthicalFoundationGenerator
 
 __version__ = "2.6.0-lite"
 __all__ = [

@@ -41,12 +41,14 @@ We will modularize the codebase into a `foundation` package with clear module bo
 
 ```
 project-foundation-template/
-├── setup_foundation_lite.py    # 594 lines - orchestration only
-├── foundation/
+├── setup_foundation_lite.py    # 128 lines - thin entry point
+├── core/
 │   ├── __init__.py             # Package exports
 │   ├── utils.py                # Constants and helpers
 │   ├── config.py               # Configuration and argument parsing
 │   ├── education.py            # Principles and educational content
+│   ├── ethics.py               # Ethical safeguards (standalone functions)
+│   ├── generator.py            # EthicalFoundationGenerator class
 │   └── templates/
 │       ├── __init__.py         # Template subpackage exports
 │       ├── core.py             # README, CONTRIBUTING, LICENSE, .gitignore
@@ -110,24 +112,24 @@ project-foundation-template/
 
 ## Gap Analysis: v2.6.0 → v3.0.0
 
-### Already Complete (v2.6.0)
+### Already Complete (v2.6.0+)
 
-| v3.0.0 Requirement | v2.6.0 Status | Notes |
-|--------------------|---------------|-------|
-| Modular package | ✅ Complete | `foundation/` package |
-| Config module | ✅ Complete | `foundation/config.py` |
-| Education module | ✅ Complete | `foundation/education.py` |
-| Template separation | ✅ Complete | `foundation/templates/` subpackage |
-| Unit test suite | ✅ Complete | 83 tests across 5 files |
+| v3.0.0 Requirement | Status | Notes |
+|--------------------|--------|-------|
+| Modular package | ✅ Complete | `core/` package (renamed from `foundation/`) |
+| Config module | ✅ Complete | `core/config.py` |
+| Education module | ✅ Complete | `core/education.py` |
+| Template separation | ✅ Complete | `core/templates/` subpackage |
+| Unit test suite | ✅ Complete | 148 tests across 7 files |
 | 13+ principles | ✅ Complete | LITE_PRINCIPLES has 13 principles |
+| Generator class | ✅ Complete | `core/generator.py` - EthicalFoundationGenerator |
+| Ethics module | ✅ Complete | `core/ethics.py` - standalone ethics functions |
+| Package rename | ✅ Complete | `foundation/` → `core/` |
 
 ### Remaining Work for v3.0.0
 
 | v3.0.0 Requirement | Effort | Risk | Notes |
 |--------------------|--------|------|-------|
-| Generator class extraction | Low | Low | Move from main script to `core/generator.py` |
-| Ethics module | Low | Low | Extract ethics logic to `core/ethics.py` |
-| Package rename | Low | Medium | Rename `foundation/` to `core/` (breaking import) |
 | Preset system | Medium | Low | Create `presets/` with 5 preset configs |
 | Principles directory | Medium | Medium | Split LITE_PRINCIPLES into separate modules |
 | Documentation modules | High | Low | 20 new modules with content |
@@ -176,14 +178,14 @@ python setup_foundation_lite.py --project-name "MyProject" --author-name "Author
 
 ```python
 # Full import
-from foundation import SCRIPT_VERSION, parse_arguments, LITE_PRINCIPLES
+from core import SCRIPT_VERSION, parse_arguments, LITE_PRINCIPLES
 
 # Template imports
-from foundation.templates import generate_readme_content, generate_license_content
+from core.templates import generate_readme_content, generate_license_content
 
 # Direct module access
-from foundation.config import load_config_file
-from foundation.education import get_principle
+from core.config import load_config_file
+from core.education import get_principle
 ```
 
 ## Related Decisions
