@@ -17,8 +17,13 @@ generated templates.
 import time
 from datetime import date
 
+<<<<<<< HEAD:core/ethics.py
 from core.utils import EXPIRATION_DATE, OFFICIAL_REPO
 from core.education import ETHICAL_USE_AGREEMENT
+=======
+from foundation.utils import EXPIRATION_DATE, OFFICIAL_REPO
+from foundation.education import ETHICAL_USE_AGREEMENT
+>>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/ethics.py
 
 
 def check_version_advisory(

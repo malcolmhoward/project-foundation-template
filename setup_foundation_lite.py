@@ -31,11 +31,31 @@ import argparse
 import json
 import os
 import sys
+<<<<<<< HEAD
 import hashlib
 import time
 from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict, Set, Any
+=======
+from datetime import datetime
+from pathlib import Path
+
+# v2.6.0: Import from modular foundation package
+from foundation import (
+    # Utils
+    SCRIPT_VERSION,
+    configure_windows_utf8,
+    # Config
+    load_config_file,
+    merge_config_with_args,
+    parse_arguments,
+    validate_arguments,
+)
+
+# v2.6.0: Import generator class from its own module
+from foundation.generator import EthicalFoundationGenerator
+>>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules)
 
 # Configure stdout for UTF-8 on Windows (handles Unicode characters in output)
 if sys.platform == 'win32':
@@ -448,6 +468,7 @@ EDUCATION_CONTENT = {
     """
 }
 
+<<<<<<< HEAD
 class EthicalFoundationGenerator:
     """Main generator class with ethical safeguards and education."""
 
@@ -2360,6 +2381,8 @@ def validate_arguments(args) -> tuple:
 
     return True, ""
 
+=======
+>>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules)
 
 def main():
     """Main entry point with ethical safeguards."""
