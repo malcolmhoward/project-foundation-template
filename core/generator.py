@@ -13,23 +13,23 @@ import time
 from datetime import date, datetime
 from pathlib import Path
 
-from foundation.utils import (
+from core.utils import (
     SCRIPT_VERSION,
     OFFICIAL_REPO,
     EXPIRATION_DATE,
 )
 
-from foundation.education import (
+from core.education import (
     LITE_PRINCIPLES,
     EDUCATION_CONTENT,
 )
 
-from foundation.ethics import (
+from core.ethics import (
     check_version_advisory,
     show_ethical_agreement,
 )
 
-from foundation.templates import (
+from core.templates import (
     # Core templates
     generate_readme_content,
     generate_contributing_content,
@@ -104,7 +104,7 @@ class EthicalFoundationGenerator:
         """Advisory version check - warns but doesn't block.
 
         This is a thin wrapper around the standalone check_version_advisory
-        function from foundation.ethics for backward compatibility.
+        function from core.ethics for backward compatibility.
         """
         return check_version_advisory(
             expiration_date=EXPIRATION_DATE,
@@ -116,7 +116,7 @@ class EthicalFoundationGenerator:
         """Display ethical use agreement and get acknowledgment.
 
         This is a thin wrapper around the standalone show_ethical_agreement
-        function from foundation.ethics for backward compatibility.
+        function from core.ethics for backward compatibility.
         """
         return show_ethical_agreement(
             is_interactive=self.is_interactive,

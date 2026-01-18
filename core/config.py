@@ -15,7 +15,7 @@ import json
 from pathlib import Path
 from typing import Dict, Any
 
-from foundation.utils import SCRIPT_VERSION, CONFIG_FILES
+from core.utils import SCRIPT_VERSION, CONFIG_FILES
 
 
 # Map config keys to argument names (supports multiple naming conventions)

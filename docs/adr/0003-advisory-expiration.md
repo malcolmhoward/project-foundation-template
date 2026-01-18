@@ -46,7 +46,7 @@ We implement an **Advisory Expiration System** with the following characteristic
 Each version has a hardcoded expiration date:
 
 ```python
-# foundation/utils.py
+# core/utils.py
 SCRIPT_VERSION = "2.6.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)  # ~6 months from release
 ```
@@ -164,7 +164,7 @@ Require acknowledgment even in CI/CD.
 ### Expiration Check
 
 ```python
-# foundation/utils.py
+# core/utils.py
 def check_expiration() -> bool:
     """Check if the script has expired."""
     return date.today() > EXPIRATION_DATE
@@ -231,7 +231,7 @@ When updating versions:
 
 - [SEMANTIC_VERSIONING.md](../../SEMANTIC_VERSIONING.md) - Explains expiration vs. versioning
 - [ETHICS.md](../../ETHICS.md) - Lists expiration as ethical safeguard
-- `foundation/utils.py:50-57` - Implementation of `check_expiration()`
+- `core/utils.py:50-57` - Implementation of `check_expiration()`
 
 ---
 

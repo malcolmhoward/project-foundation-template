@@ -13,7 +13,7 @@ Contains template generators for:
 
 from datetime import date, datetime
 from typing import List
-from foundation.utils import SCRIPT_VERSION, OFFICIAL_REPO
+from core.utils import SCRIPT_VERSION, OFFICIAL_REPO
 
 
 def generate_enhanced_security_content(project_name: str) -> str:

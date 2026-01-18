@@ -11,7 +11,7 @@ Contains template generators for:
 """
 
 from datetime import date
-from foundation.utils import OFFICIAL_REPO
+from core.utils import OFFICIAL_REPO
 
 
 def generate_code_of_conduct_content() -> str:
