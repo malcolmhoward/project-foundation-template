@@ -19,6 +19,38 @@ We recognize that governance templates can be misused:
 
 Our safeguards ensure templates are used ethically and responsibly.
 
+## Generator Output
+
+> **Note**: This section describes what the `setup_foundation_lite.py` tool generates for **your projects**. For this repository's own documentation (ETHICS.md, ROADMAP.md, etc.), see the [Documentation](#documentation) section below.
+
+### Core Templates (v2.1.0)
+- **README.md** - Project documentation with educational comments
+- **CONTRIBUTING.md** - Contribution guidelines
+- **LICENSE** - License selection (MIT, Apache, GPL)
+- **CODE_OF_CONDUCT.md** - Community standards (optional)
+- **SECURITY.md** - Basic security policy (optional)
+- **.gitignore** - Standard ignore patterns
+
+### v2.2.0 - Core Infrastructure
+- `--non-interactive` mode for CI/CD pipelines
+- `.foundationrc` configuration file support
+- `--export-json` for machine-readable output
+- `--quiet` mode for minimal output
+- Educational error messages with guidance
+
+### v2.3.0 - Community Governance
+- `--include-github-templates` - Issue and PR templates
+- `--include-changelog` - Keep a Changelog format
+- `--all` flag for all optional templates
+
+### v2.4.0 - Security Features
+- `--include-enhanced-security` - Comprehensive SECURITY.md
+- `--include-secrets-detection` - Pre-commit hooks for secret scanning
+
+### v2.5.0 - Advanced Governance
+- `--include-adr` - Architecture Decision Records
+- `--include-ci` - GitHub Actions CI workflow
+
 ## Philosophy
 
 Every template:
@@ -26,12 +58,6 @@ Every template:
 - ⚠️ Shows what happens **without** it (Risk Awareness)
 - 📝 **Requires customization** (No Copy-Paste)
 - 🎓 **Teaches while generating** (Learning, Not Just Output)
-
-Governance areas covered:
-- Community guidelines
-- Security policies
-- Contribution processes
-- Ethical standards
 
 ## This Is Not
 
@@ -50,37 +76,53 @@ To prevent misuse, this tool includes:
 
 ## Getting Started
 
-Our tools ensure you understand what you're implementing:
-
+### Interactive Mode (Recommended for Learning)
 ```bash
-python setup_foundation_lite.py --project-name MyProject --author-name "Your Name"
+python setup_foundation_lite.py --project-name "MyProject" --author-name "Your Name"
 ```
 
-The script will educate you about each component before generating templates.
+### Non-Interactive Mode (CI/CD)
+```bash
+python setup_foundation_lite.py --non-interactive --accept-terms \
+  --project-name "MyProject" --author-name "Your Name" --all
+```
 
+### Using Config File
+```json
+// .foundationrc
+{
+  "project_name": "MyProject",
+  "author_name": "Your Name",
+  "license": "mit",
+  "include_coc": true,
+  "include_security": true
+}
+```
+```bash
+python setup_foundation_lite.py --non-interactive --accept-terms
+```
+
+## Documentation
+
+This repository's own governance documentation:
+
+- [ETHICS.md](ETHICS.md) - Ethical framework and Principle Zero
+- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute to this project
+- [ROADMAP.md](ROADMAP.md) - Version roadmap to v3.0.0
+- [CHANGELOG.md](CHANGELOG.md) - Version history
+- [CLAUDE.md](CLAUDE.md) - LLM integration guidance
+- [docs/adr/](docs/adr/) - Architecture Decision Records
 
 ## License
 
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-
-See [LICENSE](LICENSE) file for full details.
+Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
 
 ## Acknowledgments
 
-This framework emerged from collaborative work between human and AI, documenting patterns, failures, and improvements across multiple sessions. It embodies the principle of Mutual Fallibility - that both parties have cognitive biases and benefit from structured verification protocols.
+This framework emerged from collaborative work between human and AI, embodying the principle of **Mutual Fallibility** - that both parties have cognitive biases and benefit from structured verification protocols.
 
 ---
 
-**Status**: Active development  
-**Last Updated**: October 29, 2025  
-**Next Milestone**: [(Issue 2)](https://github.com/malcolmhoward/project-foundation-template/issues/2) Document ethical framework
+**Version**: 2.5.0-lite
+**Status**: Active development
+**Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)

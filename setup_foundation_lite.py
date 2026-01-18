@@ -49,7 +49,7 @@ if sys.platform == 'win32':
         sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 # Version and expiration
-SCRIPT_VERSION = "2.4.0-lite"
+SCRIPT_VERSION = "2.5.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
@@ -155,6 +155,13 @@ def merge_config_with_args(args, config: Dict[str, Any]):
         "include_secrets_detection": "include_secrets_detection",
         "include-secrets-detection": "include_secrets_detection",
         "includeSecretsDetection": "include_secrets_detection",
+        # v2.5.0: Advanced governance
+        "include_adr": "include_adr",
+        "include-adr": "include_adr",
+        "includeAdr": "include_adr",
+        "include_ci": "include_ci",
+        "include-ci": "include_ci",
+        "includeCi": "include_ci",
         # v2.2.0: Non-interactive mode
         "verbose": "verbose",
         "non_interactive": "non_interactive",
@@ -183,6 +190,9 @@ def merge_config_with_args(args, config: Dict[str, Any]):
                 # v2.4.0
                 "include_enhanced_security": False,
                 "include_secrets_detection": False,
+                # v2.5.0
+                "include_adr": False,
+                "include_ci": False,
                 # v2.2.0
                 "verbose": False,
                 "non_interactive": False,
@@ -268,6 +278,19 @@ LITE_PRINCIPLES = {
         "why": "Accidentally committed secrets are a leading cause of breaches",
         "what": "Pre-commit hooks that scan for API keys, passwords, and tokens before they enter history",
         "risk": "Once secrets are in git history, they're nearly impossible to fully remove"
+    },
+    # v2.5.0: Advanced governance
+    "adr": {
+        "name": "Architecture Decision Records",
+        "why": "Teams forget why decisions were made, leading to repeated debates or reversed progress",
+        "what": "Lightweight documents capturing context, decision, and consequences of architectural choices",
+        "risk": "Without ADRs, institutional knowledge leaves when team members do"
+    },
+    "ci-workflow": {
+        "name": "CI/CD Workflow",
+        "why": "Manual testing is error-prone and inconsistent",
+        "what": "GitHub Actions workflow for automated testing, linting, and validation",
+        "risk": "Without CI, bugs slip through and code quality degrades over time"
     },
     # v2.3.0: Community governance templates
     "issue-templates": {
@@ -368,6 +391,31 @@ EDUCATION_CONTENT = {
 
     Common patterns detected: API keys, passwords, tokens, private keys, and
     database connection strings.
+    """,
+
+    # v2.5.0: Advanced governance
+    "adr": """
+    📚 LEARNING: Architecture Decision Records preserve institutional knowledge.
+
+    Michael Nygard introduced ADRs in 2011 as a way to capture the 'why' behind
+    architectural decisions. Without them, teams often reverse good decisions
+    because they don't understand the original context.
+    (Reference: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
+
+    ADRs are lightweight - just markdown files with context, decision, and
+    consequences. They're versioned with the code they describe.
+    """,
+
+    "ci-workflow": """
+    📚 LEARNING: CI/CD catches issues before they reach production.
+
+    Continuous Integration ensures that every change is automatically tested.
+    GitHub Actions provides free CI for public repositories and integrates
+    directly with pull requests.
+    (Reference: https://docs.github.com/en/actions/automating-builds-and-tests)
+
+    A basic CI workflow runs tests, linting, and builds on every PR, giving
+    reviewers confidence that the code works.
     """,
 
     # v2.3.0: Community governance templates
@@ -625,6 +673,16 @@ Generating template in 3 seconds...
             if getattr(self.args, 'include_secrets_detection', False) or include_all:
                 self.educate_before_generating("secrets-detection")
                 self.generate_pre_commit_config(output_dir)
+
+            # v2.5.0: ADR templates
+            if getattr(self.args, 'include_adr', False) or include_all:
+                self.educate_before_generating("adr")
+                self.generate_adr_templates(output_dir)
+
+            # v2.5.0: CI workflow
+            if getattr(self.args, 'include_ci', False) or include_all:
+                self.educate_before_generating("ci-workflow")
+                self.generate_ci_workflow(output_dir)
 
             # .gitignore
             self.generate_gitignore(output_dir)
@@ -1685,6 +1743,296 @@ exit 0
         except Exception:
             pass  # Windows doesn't need this
 
+    # v2.5.0: Advanced governance
+
+    def generate_adr_templates(self, output_dir: Path):
+        """Generate Architecture Decision Record templates and index."""
+        adr_dir = output_dir / "docs" / "adr"
+        adr_dir.mkdir(parents=True, exist_ok=True)
+        today = date.today().isoformat()
+
+        # ADR README/Index
+        adr_readme = f"""# Architecture Decision Records
+
+This directory contains Architecture Decision Records (ADRs) for {self.args.project_name}.
+
+## What is an ADR?
+
+An Architecture Decision Record captures an important architectural decision made along with its context and consequences. ADRs help teams:
+
+- Understand why past decisions were made
+- Onboard new team members effectively
+- Revisit decisions when circumstances change
+- Document trade-offs and alternatives considered
+
+## Process
+
+1. Copy `template.md` to create a new ADR
+2. Name it `NNNN-short-title.md` (e.g., `0002-use-postgresql.md`)
+3. Fill in the template with context, decision, and consequences
+4. Submit via pull request
+5. Discuss and refine with the team
+6. Merge when consensus is reached
+
+## Index
+
+| ADR | Title | Status | Date |
+|-----|-------|--------|------|
+| [0001](0001-record-architecture-decisions.md) | Record Architecture Decisions | Accepted | {today} |
+
+## Status Types
+
+- **Proposed** - Under discussion
+- **Accepted** - Approved and implemented
+- **Rejected** - Not approved (keep for context)
+- **Deprecated** - No longer relevant
+- **Superseded** - Replaced by another ADR
+
+## References
+
+- [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) - Michael Nygard
+- [ADR GitHub Organization](https://adr.github.io/)
+
+---
+
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+        self.write_file(adr_dir / "README.md", adr_readme)
+
+        # ADR Template
+        adr_template = """# ADR-NNNN: [Short Title]
+
+**Date**: YYYY-MM-DD
+
+**Status**: [Proposed | Accepted | Rejected | Deprecated | Superseded by ADR-XXXX]
+
+## Context
+
+What is the issue motivating this decision? Describe the forces at play:
+- Technical constraints
+- Business requirements
+- Team capabilities
+- Time pressures
+
+## Decision
+
+What is the change we're proposing or have agreed to implement?
+
+Be specific and actionable. This is the core of the ADR.
+
+## Consequences
+
+### Positive
+- [What becomes easier?]
+- [What improves?]
+
+### Negative
+- [What becomes harder?]
+- [What trade-offs are we accepting?]
+
+### Neutral
+- [What changes but isn't clearly better or worse?]
+
+## Options Considered
+
+### Option 1: [Name]
+- **Pros**: ...
+- **Cons**: ...
+
+### Option 2: [Name]
+- **Pros**: ...
+- **Cons**: ...
+
+## References
+
+- [Link to relevant documentation]
+- [Link to related ADRs]
+
+## History
+
+- YYYY-MM-DD: Initial draft
+"""
+        self.write_file(adr_dir / "template.md", adr_template)
+
+        # First ADR - Recording Architecture Decisions
+        first_adr = f"""# ADR-0001: Record Architecture Decisions
+
+**Date**: {today}
+
+**Status**: Accepted
+
+## Context
+
+We need to record architectural decisions made on this project so that:
+
+- Future team members understand why decisions were made
+- We can revisit decisions when circumstances change
+- Knowledge isn't lost when people leave the team
+- We learn from past decisions (both good and bad)
+
+## Decision
+
+We will use Architecture Decision Records (ADRs), as described by Michael Nygard, stored in `docs/adr/`.
+
+Each ADR will:
+1. Be numbered sequentially (0001, 0002, etc.)
+2. Be written in Markdown
+3. Follow our standard template
+4. Be reviewed via pull request
+5. Include a History section for updates
+
+## Consequences
+
+### Positive
+- Architectural decisions are documented and discoverable
+- New team members can understand historical context
+- Decision-making process becomes transparent
+
+### Negative
+- Requires discipline to maintain
+- Adds overhead to decision-making process
+
+### Neutral
+- Team needs to learn the ADR process
+- Templates need periodic updates
+
+## References
+
+- [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) - Michael Nygard
+- [ADR Tools](https://github.com/npryce/adr-tools)
+
+## History
+
+- {today}: Initial ADR created and accepted
+
+---
+
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+        self.write_file(adr_dir / "0001-record-architecture-decisions.md", first_adr)
+
+    def generate_ci_workflow(self, output_dir: Path):
+        """Generate GitHub Actions CI workflow."""
+        workflows_dir = output_dir / ".github" / "workflows"
+        workflows_dir.mkdir(parents=True, exist_ok=True)
+
+        ci_workflow = f"""# Continuous Integration Workflow
+# Generated by Project Foundation Template v2.5.0
+#
+# This workflow runs on every push and pull request to ensure code quality.
+# Customize the steps below for your project's needs.
+
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        # [CUSTOMIZE]: Update for your language/runtime versions
+        node-version: [18.x, 20.x]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # [CUSTOMIZE]: Replace with your language's setup action
+      - name: Setup Node.js ${{{{ matrix.node-version }}}}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{{{ matrix.node-version }}}}
+          cache: 'npm'
+
+      # [CUSTOMIZE]: Replace with your package manager commands
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run linter
+        run: npm run lint
+        continue-on-error: true  # Remove this line once linting is configured
+
+      - name: Run tests
+        run: npm test
+        continue-on-error: true  # Remove this line once tests are configured
+
+      - name: Build
+        run: npm run build
+        continue-on-error: true  # Remove this line once build is configured
+
+  # Optional: Add security scanning
+  # security:
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Run security audit
+  #       run: npm audit
+
+# ---
+# TEMPLATE NOTICE:
+# This is a starting point. You must:
+# 1. Replace placeholder commands with your actual build/test commands
+# 2. Update the matrix for your language versions
+# 3. Remove continue-on-error once steps are properly configured
+# 4. Add additional jobs as needed (deploy, security scan, etc.)
+#
+# Generated with Project Foundation Template
+# https://github.com/malcolmhoward/project-foundation-template
+"""
+        self.write_file(workflows_dir / "ci.yml", ci_workflow)
+
+        # Also create a basic PR validation workflow
+        pr_workflow = """# Pull Request Validation
+# Validates PR title follows conventional commits format
+
+name: PR Validation
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize]
+
+jobs:
+  validate-pr-title:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Validate PR title
+        uses: amannn/action-semantic-pull-request@v5
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          # Require conventional commit format
+          types: |
+            feat
+            fix
+            docs
+            style
+            refactor
+            perf
+            test
+            build
+            ci
+            chore
+            revert
+          requireScope: false
+          subjectPattern: ^.{1,50}$
+          subjectPatternError: |
+            PR title must be 50 characters or less.
+            Current length: {length}
+
+# ---
+# This workflow ensures PR titles follow conventional commits format.
+# This helps with automatic changelog generation and semantic versioning.
+#
+# Generated with Project Foundation Template
+"""
+        self.write_file(workflows_dir / "pr-validation.yml", pr_workflow)
+
     def add_ethics_notice_to_files(self, output_dir: Path):
         """Add ethics notice to a summary file."""
         notice = f"""# ⚠️ ETHICAL USE NOTICE
@@ -1905,7 +2253,7 @@ Config file format (.foundationrc):
         "--all",
         dest="include_all",
         action="store_true",
-        help="Include all optional templates (CoC, Security, GitHub, Changelog, Enhanced Security, Secrets Detection)"
+        help="Include all optional templates (CoC, Security, GitHub, Changelog, Enhanced Security, Secrets Detection, ADR, CI)"
     )
 
     # v2.4.0: Security features
@@ -1921,6 +2269,21 @@ Config file format (.foundationrc):
         dest="include_secrets_detection",
         action="store_true",
         help="Include pre-commit config with secrets detection hooks"
+    )
+
+    # v2.5.0: Advanced governance
+    parser.add_argument(
+        "--include-adr",
+        dest="include_adr",
+        action="store_true",
+        help="Include Architecture Decision Record templates"
+    )
+
+    parser.add_argument(
+        "--include-ci",
+        dest="include_ci",
+        action="store_true",
+        help="Include GitHub Actions CI workflow"
     )
 
     # v2.2.0: Non-interactive mode

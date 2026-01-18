@@ -198,6 +198,7 @@ These features don't add governance principles but make the tool more usable for
 3. **Full Principle Set**: All 23 principles with education
 4. **Complete Documentation**: All 20 modules
 5. **Configuration System**: Advanced customization
+6. **Comprehensive Test Suite**: Full unit and integration testing
 
 ### Architecture
 
@@ -234,6 +235,38 @@ project-foundation-template/
     ├── workflows/
     └── configs/
 ```
+
+### Testing Architecture
+
+The modular architecture enables comprehensive testing:
+
+```
+tests/
+├── __init__.py
+├── conftest.py              # Shared fixtures
+├── test_smoke.py            # Basic integration tests (current)
+├── unit/                    # Unit tests per module
+│   ├── test_generator.py
+│   ├── test_config.py
+│   ├── test_education.py
+│   └── test_ethics.py
+├── principles/              # Tests for each principle
+│   ├── test_readme.py
+│   ├── test_contributing.py
+│   └── ...
+├── integration/             # End-to-end tests
+│   ├── test_presets.py
+│   ├── test_workflows.py
+│   └── test_full_generation.py
+└── fixtures/                # Test data and templates
+```
+
+**Testing Philosophy:**
+- Each module is independently testable
+- Unit tests verify individual components
+- Integration tests verify feature combinations
+- Smoke tests (v2.5.0) provide basic coverage during development
+- CI runs tests on every PR
 
 ### Final Principles (21-23)
 
@@ -275,6 +308,8 @@ project-foundation-template/
 - [ ] Performance acceptable
 - [ ] All ethical safeguards maintained
 - [ ] Education-first philosophy preserved
+- [ ] Comprehensive test suite with >80% coverage
+- [ ] All tests passing in CI
 
 ---
 
