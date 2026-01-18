@@ -49,12 +49,24 @@ if sys.platform == 'win32':
         sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
 
 # Version and expiration
-SCRIPT_VERSION = "2.3.0-lite"
+SCRIPT_VERSION = "2.4.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
 # Default config file names (searched in order)
 CONFIG_FILES = [".foundationrc", ".foundationrc.json", "foundationrc.json"]
+
+# v2.4.0: Secrets patterns for detection
+SECRETS_PATTERNS = [
+    r"(api[_-]?key|apikey)['\"]?\s*[:=]\s*['\"]?[A-Za-z0-9+/]{20,}",
+    r"(secret|token|password|passwd|pwd)['\"]?\s*[:=]\s*['\"]?[A-Za-z0-9+/]{8,}",
+    r"(aws[_-]?access[_-]?key[_-]?id|aws[_-]?secret[_-]?access[_-]?key)",
+    r"-----BEGIN (RSA |EC |OPENSSH |DSA |SSH2 |)PRIVATE KEY-----",
+    r"(ghp|gho|ghs|ghu)_[A-Za-z0-9_]{36,}",  # GitHub tokens
+    r"sk-[A-Za-z0-9]{48}",  # OpenAI keys
+    r"(mongodb(\+srv)?|postgres(ql)?|mysql|redis)://[^\\s]+",  # Database URLs
+    r"eyJ[A-Za-z0-9+/]*\\.eyJ[A-Za-z0-9+/]*\\.[A-Za-z0-9+/_-]*"  # JWT tokens
+]
 
 
 def load_config_file(config_path: str = None) -> Dict[str, Any]:
@@ -136,6 +148,13 @@ def merge_config_with_args(args, config: Dict[str, Any]):
         "include_all": "include_all",
         "include-all": "include_all",
         "includeAll": "include_all",
+        # v2.4.0: Security features
+        "include_enhanced_security": "include_enhanced_security",
+        "include-enhanced-security": "include_enhanced_security",
+        "includeEnhancedSecurity": "include_enhanced_security",
+        "include_secrets_detection": "include_secrets_detection",
+        "include-secrets-detection": "include_secrets_detection",
+        "includeSecretsDetection": "include_secrets_detection",
         # v2.2.0: Non-interactive mode
         "verbose": "verbose",
         "non_interactive": "non_interactive",
@@ -161,6 +180,9 @@ def merge_config_with_args(args, config: Dict[str, Any]):
                 "include_github_templates": False,
                 "include_changelog": False,
                 "include_all": False,
+                # v2.4.0
+                "include_enhanced_security": False,
+                "include_secrets_detection": False,
                 # v2.2.0
                 "verbose": False,
                 "non_interactive": False,
@@ -234,6 +256,19 @@ LITE_PRINCIPLES = {
         "what": "Basic security practices and reporting process",
         "risk": "Without it, projects become attack vectors"
     },
+    # v2.4.0: Enhanced security features
+    "enhanced-security": {
+        "name": "Enhanced Security Policy",
+        "why": "Comprehensive security documentation builds trust and enables responsible disclosure",
+        "what": "Detailed SECURITY.md with vulnerability reporting, response timelines, and best practices",
+        "risk": "Without clear security processes, vulnerabilities go unreported or are disclosed publicly"
+    },
+    "secrets-detection": {
+        "name": "Secrets Detection",
+        "why": "Accidentally committed secrets are a leading cause of breaches",
+        "what": "Pre-commit hooks that scan for API keys, passwords, and tokens before they enter history",
+        "risk": "Once secrets are in git history, they're nearly impossible to fully remove"
+    },
     # v2.3.0: Community governance templates
     "issue-templates": {
         "name": "Issue Templates",
@@ -305,6 +340,34 @@ EDUCATION_CONTENT = {
     can prevent most common vulnerabilities.
 
     Without security practices, you're one CVE away from headlines.
+    """,
+
+    # v2.4.0: Enhanced security features
+    "enhanced-security": """
+    📚 LEARNING: A clear security policy enables responsible vulnerability disclosure.
+
+    Security researchers need to know how to report issues safely. Without a
+    SECURITY.md, they may disclose publicly, report to the wrong channel, or
+    not report at all. GitHub recommends security policies for all public repos.
+    (Reference: https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository)
+
+    Key elements: Supported versions, reporting process, response timeline, and
+    security best practices specific to your project.
+    """,
+
+    "secrets-detection": """
+    📚 LEARNING: Exposed credentials are consistently among the top causes of breaches.
+
+    According to the Verizon Data Breach Investigations Report, stolen/compromised
+    credentials are involved in a significant portion of breaches each year.
+    (Reference: https://www.verizon.com/business/resources/reports/dbir/)
+
+    Once a secret is committed to git, it's in the history forever - even if you
+    delete it from the current version. Pre-commit hooks catch secrets BEFORE
+    they become permanent security risks.
+
+    Common patterns detected: API keys, passwords, tokens, private keys, and
+    database connection strings.
     """,
 
     # v2.3.0: Community governance templates
@@ -552,6 +615,16 @@ Generating template in 3 seconds...
             if getattr(self.args, 'include_changelog', False) or include_all:
                 self.educate_before_generating("changelog")
                 self.generate_changelog(output_dir)
+
+            # v2.4.0: Enhanced security
+            if getattr(self.args, 'include_enhanced_security', False) or include_all:
+                self.educate_before_generating("enhanced-security")
+                self.generate_enhanced_security(output_dir)
+
+            # v2.4.0: Secrets detection
+            if getattr(self.args, 'include_secrets_detection', False) or include_all:
+                self.educate_before_generating("secrets-detection")
+                self.generate_pre_commit_config(output_dir)
 
             # .gitignore
             self.generate_gitignore(output_dir)
@@ -1369,6 +1442,249 @@ Example entry:
 """
         self.write_file(output_dir / "CHANGELOG.md", changelog)
 
+    # v2.4.0: Security features
+
+    def generate_enhanced_security(self, output_dir: Path):
+        """Generate comprehensive SECURITY.md with vulnerability reporting process."""
+        author_email = f"security@{self.args.project_name.lower().replace(' ', '-')}.example.com"
+        today = date.today().isoformat()
+
+        security_content = f"""# Security Policy
+
+<!--
+TEMPLATE NOTICE: This is a comprehensive security policy template.
+You MUST customize the email addresses, response times, and supported versions.
+A security policy without actual processes behind it creates false confidence.
+-->
+
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| Latest  | ✅ Yes            |
+| Previous| ⚠️  Limited       |
+| Older   | ❌ No             |
+
+[REPLACE: Update this table with your actual version support policy]
+
+## Reporting a Vulnerability
+
+We take security vulnerabilities seriously. If you discover a security vulnerability,
+please report it responsibly.
+
+### How to Report
+
+**Email**: [REPLACE: {author_email}]
+
+**Do NOT**:
+- Open a public GitHub issue for security vulnerabilities
+- Disclose the vulnerability publicly before it's fixed
+- Exploit the vulnerability beyond proof of concept
+
+### What to Include in Your Report
+
+- **Description**: Clear description of the vulnerability
+- **Impact**: What an attacker could achieve
+- **Steps to Reproduce**: Detailed steps to reproduce the issue
+- **Proof of Concept**: If possible, include a minimal example
+- **Suggested Fix**: If you have ideas for fixing it
+
+### What to Expect
+
+| Stage | Timeline |
+|-------|----------|
+| Initial Response | Within 72 hours |
+| Assessment | Within 1 week |
+| Status Updates | Every 5 business days |
+| Resolution | Depends on severity |
+
+[REPLACE: Adjust these timelines to match your capacity]
+
+## Security Best Practices
+
+### For Users
+
+- Keep your dependencies updated
+- Use the latest supported version
+- Report suspicious behavior immediately
+- Follow the principle of least privilege
+
+### For Contributors
+
+- Never commit secrets (API keys, passwords, tokens)
+- Use environment variables for sensitive configuration
+- Review dependencies before adding them
+- Follow secure coding guidelines
+
+## Secrets Management
+
+This project uses pre-commit hooks to prevent accidental secret commits.
+
+### Protected Patterns
+
+The following types of secrets are automatically detected:
+- API keys and access tokens
+- Database credentials and connection strings
+- Private keys and certificates
+- OAuth secrets and JWT tokens
+- Cloud service credentials (AWS, Azure, GCP)
+- GitHub tokens and other VCS credentials
+
+### If You Accidentally Commit a Secret
+
+1. **Rotate immediately**: Change the exposed credential
+2. **Don't just delete**: Secrets remain in git history
+3. **Consider git-filter-repo**: For complete removal (complex)
+4. **Notify security team**: If it's a production credential
+
+## Security Contacts
+
+- **Security Issues**: [REPLACE: {author_email}]
+- **General Questions**: [REPLACE: Add general contact]
+
+## Acknowledgments
+
+We appreciate responsible disclosure and may acknowledge security researchers
+who help improve our security (with their permission).
+
+---
+
+*Last updated: {today}*
+*Generated with [Project Foundation Template]({OFFICIAL_REPO}) - MUST BE CUSTOMIZED*
+"""
+        self.write_file(output_dir / "SECURITY.md", security_content)
+
+    def generate_pre_commit_config(self, output_dir: Path):
+        """Generate pre-commit configuration with secrets detection."""
+        # Create .pre-commit-config.yaml
+        pre_commit_config = """# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+# Run: pip install pre-commit && pre-commit install
+
+repos:
+  # Secrets detection
+  - repo: local
+    hooks:
+      - id: secrets-detection
+        name: Detect secrets
+        entry: .hooks/detect-secrets.sh
+        language: script
+        types: [text]
+        pass_filenames: false
+
+  # Basic file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+# To install: pre-commit install
+# To run manually: pre-commit run --all-files
+"""
+        self.write_file(output_dir / ".pre-commit-config.yaml", pre_commit_config)
+
+        # Create hooks directory and detection script
+        hooks_dir = output_dir / ".hooks"
+        hooks_dir.mkdir(parents=True, exist_ok=True)
+
+        patterns_for_script = "\\n".join([
+            "api[_-]?key.*[:=]",
+            "secret.*[:=]",
+            "password.*[:=]",
+            "token.*[:=]",
+            "BEGIN.*PRIVATE KEY",
+            "ghp_[A-Za-z0-9]",
+            "sk-[A-Za-z0-9]",
+            "mongodb://",
+            "postgres://",
+            "mysql://"
+        ])
+
+        detect_secrets_script = f"""#!/bin/bash
+# Secrets detection pre-commit hook
+# Generated by Project Foundation Template v2.4.0
+
+set -e
+
+RED='\\033[0;31m'
+GREEN='\\033[0;32m'
+YELLOW='\\033[1;33m'
+NC='\\033[0m'
+
+echo "${{YELLOW}}[secrets-detection] Scanning staged files for potential secrets...${{NC}}"
+
+# Get staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || echo "")
+
+if [ -z "$STAGED_FILES" ]; then
+    echo "${{GREEN}}No files to check${{NC}}"
+    exit 0
+fi
+
+SECRETS_FOUND=0
+
+# Patterns to check (simplified for portability)
+PATTERNS=(
+    "api[_-]?key.*[:=]"
+    "secret.*[:=]"
+    "password.*[:=]"
+    "token.*[:=]"
+    "BEGIN.*PRIVATE KEY"
+    "ghp_[A-Za-z0-9]"
+    "sk-[A-Za-z0-9]"
+)
+
+for file in $STAGED_FILES; do
+    if [ ! -f "$file" ]; then
+        continue
+    fi
+
+    # Skip binary files
+    if file "$file" 2>/dev/null | grep -q "binary"; then
+        continue
+    fi
+
+    for pattern in "${{PATTERNS[@]}}"; do
+        if grep -iE "$pattern" "$file" 2>/dev/null | grep -v "^#" | grep -v "REPLACE" > /dev/null; then
+            echo "${{RED}}Potential secret in $file:${{NC}}"
+            grep -n -iE "$pattern" "$file" 2>/dev/null | grep -v "^#" | grep -v "REPLACE" | head -3
+            SECRETS_FOUND=1
+        fi
+    done
+done
+
+if [ $SECRETS_FOUND -eq 1 ]; then
+    echo ""
+    echo "${{RED}}Potential secrets detected! Please review before committing.${{NC}}"
+    echo "${{YELLOW}}Tips:${{NC}}"
+    echo "  - Use environment variables instead of hardcoded values"
+    echo "  - Add sensitive files to .gitignore"
+    echo "  - Use a secrets manager for production credentials"
+    echo ""
+    echo "To bypass (NOT RECOMMENDED): git commit --no-verify"
+    exit 1
+fi
+
+echo "${{GREEN}}No secrets detected${{NC}}"
+exit 0
+"""
+        hook_path = hooks_dir / "detect-secrets.sh"
+        self.write_file(hook_path, detect_secrets_script)
+
+        # Make script executable on Unix
+        try:
+            import stat
+            hook_path.chmod(hook_path.stat().st_mode | stat.S_IEXEC)
+        except Exception:
+            pass  # Windows doesn't need this
+
     def add_ethics_notice_to_files(self, output_dir: Path):
         """Add ethics notice to a summary file."""
         notice = f"""# ⚠️ ETHICAL USE NOTICE
@@ -1589,7 +1905,22 @@ Config file format (.foundationrc):
         "--all",
         dest="include_all",
         action="store_true",
-        help="Include all optional templates (CoC, Security, GitHub, Changelog)"
+        help="Include all optional templates (CoC, Security, GitHub, Changelog, Enhanced Security, Secrets Detection)"
+    )
+
+    # v2.4.0: Security features
+    parser.add_argument(
+        "--include-enhanced-security",
+        dest="include_enhanced_security",
+        action="store_true",
+        help="Include comprehensive SECURITY.md with vulnerability reporting process"
+    )
+
+    parser.add_argument(
+        "--include-secrets-detection",
+        dest="include_secrets_detection",
+        action="store_true",
+        help="Include pre-commit config with secrets detection hooks"
     )
 
     # v2.2.0: Non-interactive mode
