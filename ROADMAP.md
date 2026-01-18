@@ -252,7 +252,7 @@ The v2.6.0 modularization completed approximately **60% of the v3.0.0 architectu
 | Category | Items | Effort | Risk |
 |----------|-------|--------|------|
 | Low-hanging fruit | Generator extraction, ethics module, package rename | Low | Low |
-| Medium investment | Preset system, priority module, principles split | Medium | Low |
+| Medium investment | Preset system, principles split | Medium | Low |
 | High investment | 20 documentation modules, plugin architecture | High | Medium |
 
 **Recommendation**: The hardest architectural decisions are made. Remaining work is primarily content creation and configuration systems.
@@ -275,8 +275,7 @@ project-foundation-template/
 │   ├── generator.py            # Base generator class (extracted)
 │   ├── config.py               # Configuration management ✅
 │   ├── education.py            # Educational content system ✅
-│   ├── ethics.py               # Ethical safeguards (new)
-│   └── priority.py             # Feature priority assessment (new)
+│   └── ethics.py               # Ethical safeguards (new)
 ├── principles/                  # 23 Governance Principles (new)
 │   ├── __init__.py
 │   ├── readme.py
