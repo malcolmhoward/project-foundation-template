@@ -37,10 +37,126 @@ from datetime import date, datetime, timedelta
 from pathlib import Path
 from typing import Dict, Set, Any
 
+# Configure stdout for UTF-8 on Windows (handles Unicode characters in output)
+if sys.platform == 'win32':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+        sys.stderr.reconfigure(encoding='utf-8')
+    except AttributeError:
+        # Python < 3.7 fallback
+        import io
+        sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+
 # Version and expiration
-SCRIPT_VERSION = "2.1.0-lite"
+SCRIPT_VERSION = "2.2.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
+
+# Default config file names (searched in order)
+CONFIG_FILES = [".foundationrc", ".foundationrc.json", "foundationrc.json"]
+
+
+def load_config_file(config_path: str = None) -> Dict[str, Any]:
+    """
+    Load configuration from a .foundationrc file.
+
+    Searches for config files in order:
+    1. Explicit path if provided via --config
+    2. .foundationrc in current directory
+    3. .foundationrc.json in current directory
+    4. foundationrc.json in current directory
+
+    Returns empty dict if no config found (not an error).
+    """
+    config = {}
+
+    if config_path:
+        # Explicit config path provided
+        path = Path(config_path)
+        if not path.exists():
+            print(f"⚠️  Config file not found: {config_path}")
+            print("   Continuing with command-line arguments only.\n")
+            return {}
+        try:
+            with open(path, 'r', encoding='utf-8') as f:
+                config = json.load(f)
+            print(f"📋 Loaded config from: {path}\n")
+            return config
+        except json.JSONDecodeError as e:
+            print(f"❌ Error parsing config file: {e}")
+            print("   Config file must be valid JSON.\n")
+            return {}
+
+    # Search for default config files
+    for filename in CONFIG_FILES:
+        path = Path(filename)
+        if path.exists():
+            try:
+                with open(path, 'r', encoding='utf-8') as f:
+                    config = json.load(f)
+                print(f"📋 Loaded config from: {path}\n")
+                return config
+            except json.JSONDecodeError:
+                continue  # Try next file
+
+    return config
+
+
+def merge_config_with_args(args, config: Dict[str, Any]):
+    """
+    Merge config file settings with command-line arguments.
+    Command-line arguments take precedence over config file.
+    """
+    # Map config keys to argument names
+    config_mapping = {
+        "project_name": "project_name",
+        "project-name": "project_name",
+        "projectName": "project_name",
+        "author_name": "author_name",
+        "author-name": "author_name",
+        "authorName": "author_name",
+        "license": "license",
+        "output_dir": "output_dir",
+        "output-dir": "output_dir",
+        "outputDir": "output_dir",
+        "include_coc": "include_coc",
+        "include-coc": "include_coc",
+        "includeCoc": "include_coc",
+        "include_security": "include_security",
+        "include-security": "include_security",
+        "includeSecurity": "include_security",
+        # v2.2.0: Non-interactive mode
+        "verbose": "verbose",
+        "non_interactive": "non_interactive",
+        "non-interactive": "non_interactive",
+        "nonInteractive": "non_interactive",
+        "accept_terms": "accept_terms",
+        "accept-terms": "accept_terms",
+        "acceptTerms": "accept_terms",
+    }
+
+    for config_key, arg_name in config_mapping.items():
+        if config_key in config:
+            # Only apply config value if arg wasn't explicitly set
+            current_value = getattr(args, arg_name, None)
+            default_values = {
+                "project_name": None,
+                "author_name": None,
+                "license": "mit",
+                "output_dir": ".",
+                "include_coc": False,
+                "include_security": False,
+                # v2.2.0
+                "verbose": False,
+                "non_interactive": False,
+                "accept_terms": False,
+            }
+            if current_value == default_values.get(arg_name):
+                setattr(args, arg_name, config[config_key])
+
+    return args
+
 
 # Ethical use agreement that must be acknowledged
 ETHICAL_USE_AGREEMENT = """
@@ -150,23 +266,33 @@ EDUCATION_CONTENT = {
     
     "security": """
     📚 LEARNING: 83% of projects have at least one vulnerability.
-    
-    Security isn't optional - it's a responsibility to your users. 
+
+    Security isn't optional - it's a responsibility to your users.
     Basic practices like dependency scanning and security policies
     can prevent most common vulnerabilities.
-    
+
     Without security practices, you're one CVE away from headlines.
     """
 }
 
 class EthicalFoundationGenerator:
     """Main generator class with ethical safeguards and education."""
-    
+
     def __init__(self, args):
         self.args = args
         self.generated_files = []
         self.education_shown = set()
         self.start_time = datetime.now()
+
+    @property
+    def is_interactive(self) -> bool:
+        """Check if running in interactive mode."""
+        return not getattr(self.args, 'non_interactive', False)
+
+    @property
+    def is_quiet(self) -> bool:
+        """Check if running in quiet mode."""
+        return getattr(self.args, 'quiet', False)
         
     def run(self):
         """Main execution with ethical safeguards."""
@@ -196,9 +322,10 @@ class EthicalFoundationGenerator:
     def check_version_advisory(self):
         """Advisory version check - warns but doesn't block."""
         if date.today() > EXPIRATION_DATE:
-            print(f"""
+            if not self.is_quiet:
+                print(f"""
 ⚠️  VERSION OUTDATED - SECURITY RISK
-            
+
 This version expired on {EXPIRATION_DATE.isoformat()}.
 Security practices and compliance requirements have likely changed.
 
@@ -207,41 +334,56 @@ Using outdated templates may introduce vulnerabilities or compliance issues.
 Get the latest version at: {OFFICIAL_REPO}
 
 """)
-            response = input("Type 'I understand the risks' to continue anyway: ")
-            if response.strip() != "I understand the risks":
-                print("❌ Exiting for your safety. Please get the latest version.")
-                return False
-                
-            print("⚠️  Proceeding with outdated version at your own risk.\\n")
-            
+
+            if self.is_interactive:
+                response = input("Type 'I understand the risks' to continue anyway: ")
+                if response.strip() != "I understand the risks":
+                    print("❌ Exiting for your safety. Please get the latest version.")
+                    return False
+                print("⚠️  Proceeding with outdated version at your own risk.\n")
+            else:
+                # Non-interactive mode: warn but continue (user accepted terms)
+                if not self.is_quiet:
+                    print("⚠️  Non-interactive mode: Proceeding with outdated version.\n")
+
         return True
     
     def show_ethical_agreement(self):
         """Display ethical use agreement and get acknowledgment."""
+        # In non-interactive mode, terms are pre-accepted via --accept-terms
+        if not self.is_interactive:
+            if not self.is_quiet:
+                print("✓ Ethical use agreement accepted via --accept-terms flag.\n")
+            return True
+
         print(ETHICAL_USE_AGREEMENT)
-        
+
         # Force them to read it
         for i in range(3, 0, -1):
-            print(f"\\rPlease read the agreement carefully... {i}", end="")
+            print(f"\rPlease read the agreement carefully... {i}", end="")
             time.sleep(1)
-        print("\\n")
-        
+        print("\n")
+
         response = input("Do you understand and agree to these terms? (yes/no): ")
         if response.lower() != "yes":
             print("❌ You must agree to the ethical use terms to continue.")
             return False
-            
+
         # Second confirmation for emphasis
         response = input("Will you customize these templates for your specific needs? (yes/no): ")
         if response.lower() != "yes":
             print("❌ Templates MUST be customized. They are not complete solutions.")
             return False
-            
+
         return True
     
     def show_educational_intro(self):
         """Explain what we're doing and why."""
-        print("""
+        if self.is_quiet:
+            return
+
+        if self.is_interactive:
+            print("""
 🎓 EDUCATION FIRST, GENERATION SECOND
 
 This tool will:
@@ -255,19 +397,28 @@ Remember: Understanding > Copy-Pasting
 Let's build a thoughtful foundation for your project...
 
 """)
-        time.sleep(2)
+            time.sleep(2)
+        else:
+            # Non-interactive: brief message
+            print("🏗️  Generating project foundation (non-interactive mode)...\n")
     
     def educate_before_generating(self, principle: str):
         """Show education content before generating each component."""
         if principle in self.education_shown:
             return  # Don't repeat education
-            
+
         self.education_shown.add(principle)
-        
+
         info = LITE_PRINCIPLES[principle]
         education = EDUCATION_CONTENT.get(principle, "")
-        
-        print(f"""
+
+        if self.is_quiet:
+            # Quiet mode: minimal output
+            return
+
+        if self.is_interactive:
+            # Full interactive education experience
+            print(f"""
 {'='*70}
 📖 PRINCIPLE: {info['name']}
 {'='*70}
@@ -284,19 +435,22 @@ Let's build a thoughtful foundation for your project...
 
 Generating template in 3 seconds...
 """)
-        time.sleep(3)
-        
-        # Quiz to ensure understanding
-        response = input("Quick check: Will you customize this template? (yes/no): ")
-        if response.lower() != "yes":
-            print("⚠️  Remember: Templates must be customized!\\n")
+            time.sleep(3)
+
+            # Quiz to ensure understanding
+            response = input("Quick check: Will you customize this template? (yes/no): ")
+            if response.lower() != "yes":
+                print("⚠️  Remember: Templates must be customized!\n")
+        else:
+            # Non-interactive: condensed output
+            print(f"  📖 {info['name']}: {info['why']}")
     
     def generate_foundation(self):
         """Generate the core foundation files with education."""
         output_dir = Path(self.args.output_dir)
         output_dir.mkdir(parents=True, exist_ok=True)
         
-        print(f"\\n🏗️  Building foundation in: {output_dir.absolute()}\\n")
+        print(f"\n🏗️  Building foundation in: {output_dir.absolute()}\n")
         
         # Generate each component with education
         try:
@@ -312,22 +466,25 @@ Generating template in 3 seconds...
             self.educate_before_generating("license")
             self.generate_license(output_dir)
             
+            # Handle --all flag
+            include_all = getattr(self.args, 'include_all', False)
+
             # CODE_OF_CONDUCT
-            if self.args.include_coc:
+            if self.args.include_coc or include_all:
                 self.educate_before_generating("code-of-conduct")
                 self.generate_code_of_conduct(output_dir)
-            
+
             # SECURITY
-            if self.args.include_security:
+            if self.args.include_security or include_all:
                 self.educate_before_generating("security")
                 self.generate_security(output_dir)
-            
+
             # .gitignore
             self.generate_gitignore(output_dir)
-            
+
             # Ethics notice in each file
             self.add_ethics_notice_to_files(output_dir)
-            
+
             return True
             
         except Exception as e:
@@ -690,7 +847,7 @@ coverage/
 """
         
         self.write_file(output_dir / ".gitignore", content)
-    
+
     def add_ethics_notice_to_files(self, output_dir: Path):
         """Add ethics notice to a summary file."""
         notice = f"""# ⚠️ ETHICAL USE NOTICE
@@ -760,10 +917,10 @@ Learn more: {OFFICIAL_REPO}
         }
         
         with open(log_file, 'a') as f:
-            f.write(json.dumps(log_entry) + "\\n")
+            f.write(json.dumps(log_entry) + "\n")
         
         if self.args.verbose:
-            print(f"\\n📝 Usage logged to: {log_file}")
+            print(f"\n📝 Usage logged to: {log_file}")
     
     def show_next_steps(self):
         """Show what to do next with emphasis on customization."""
@@ -829,79 +986,223 @@ def parse_arguments():
 This tool generates TEMPLATE documentation for project governance.
 Templates must be customized for your specific needs.
 
-Example:
-  %(prog)s --project-name MyProject --author "Jane Doe"
+Examples:
+  Interactive mode:
+    %(prog)s --project-name MyProject --author-name "Jane Doe"
+
+  Non-interactive mode (for CI/scripts):
+    %(prog)s --non-interactive --accept-terms --project-name MyProject --author-name "Jane Doe"
+
+  Using config file:
+    %(prog)s --config .foundationrc
+
+Config file format (.foundationrc):
+  {
+    "project_name": "MyProject",
+    "author_name": "Jane Doe",
+    "license": "mit",
+    "include_coc": true,
+    "include_security": true
+  }
         """
     )
-    
+
+    # Core options
     parser.add_argument(
         "--project-name",
-        required=True,
-        help="Name of your project"
+        dest="project_name",
+        help="Name of your project (required unless in config)"
     )
-    
+
     parser.add_argument(
         "--author-name",
-        required=True,
-        help="Your name or organization"
+        dest="author_name",
+        help="Your name or organization (required unless in config)"
     )
-    
+
     parser.add_argument(
         "--license",
         choices=["mit", "apache", "gpl"],
         default="mit",
         help="License type (default: mit)"
     )
-    
+
     parser.add_argument(
         "--output-dir",
+        dest="output_dir",
         default=".",
         help="Output directory (default: current directory)"
     )
-    
+
+    # Optional components
     parser.add_argument(
         "--include-coc",
+        dest="include_coc",
         action="store_true",
         help="Include Code of Conduct template"
     )
-    
+
     parser.add_argument(
         "--include-security",
+        dest="include_security",
         action="store_true",
         help="Include Security Policy template"
     )
-    
+
+    parser.add_argument(
+        "--all",
+        dest="include_all",
+        action="store_true",
+        help="Include all optional templates (CoC, Security)"
+    )
+
+    # v2.2.0: Non-interactive mode
+    parser.add_argument(
+        "--non-interactive",
+        dest="non_interactive",
+        action="store_true",
+        help="Run without prompts (for CI/scripts). Requires --accept-terms."
+    )
+
+    parser.add_argument(
+        "--accept-terms",
+        dest="accept_terms",
+        action="store_true",
+        help="Accept ethical use agreement (required for --non-interactive)"
+    )
+
+    # v2.2.0: Config file support
+    parser.add_argument(
+        "--config",
+        dest="config_path",
+        help="Path to config file (default: .foundationrc in current directory)"
+    )
+
+    # v2.2.0: JSON export
+    parser.add_argument(
+        "--export-json",
+        dest="export_json",
+        action="store_true",
+        help="Output results as JSON (useful for tooling integration)"
+    )
+
+    # Output control
     parser.add_argument(
         "--verbose",
         action="store_true",
         help="Show detailed output"
     )
-    
+
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Minimal output (implies --non-interactive behavior for output only)"
+    )
+
     parser.add_argument(
         "--version",
         action="version",
         version=f"%(prog)s {SCRIPT_VERSION}"
     )
-    
+
     return parser.parse_args()
+
+def validate_arguments(args) -> tuple:
+    """
+    Validate that required arguments are provided.
+    Returns (is_valid, error_message).
+    """
+    errors = []
+
+    if not args.project_name:
+        errors.append("--project-name is required (or set 'project_name' in config file)")
+
+    if not args.author_name:
+        errors.append("--author-name is required (or set 'author_name' in config file)")
+
+    if args.non_interactive and not args.accept_terms:
+        errors.append("--accept-terms is required when using --non-interactive mode")
+        errors.append("  This ensures you've read and understood the ethical use agreement.")
+        errors.append("  Review the agreement by running without --non-interactive first.")
+
+    if errors:
+        return False, "\n".join(errors)
+
+    return True, ""
+
 
 def main():
     """Main entry point with ethical safeguards."""
     args = parse_arguments()
-    
-    print(f"""
+
+    # Load config file and merge with arguments
+    config = load_config_file(args.config_path)
+    if config:
+        args = merge_config_with_args(args, config)
+
+    # Validate arguments
+    is_valid, error_message = validate_arguments(args)
+    if not is_valid:
+        # Educational error message
+        print(f"""
+❌ MISSING REQUIRED ARGUMENTS
+
+{error_message}
+
+📚 HELP: How to provide required values
+
+Option 1: Command line arguments
+  python {sys.argv[0]} --project-name "MyProject" --author-name "Your Name"
+
+Option 2: Config file (.foundationrc)
+  Create a file named .foundationrc with:
+  {{
+    "project_name": "MyProject",
+    "author_name": "Your Name"
+  }}
+
+Option 3: Both (command line overrides config)
+  python {sys.argv[0]} --config .foundationrc --project-name "Override"
+
+For CI/automation, use:
+  python {sys.argv[0]} --non-interactive --accept-terms --project-name "MyProject" --author-name "Your Name"
+
+Run with --help for all options.
+""")
+        return 1
+
+    # Show banner (unless quiet mode)
+    if not args.quiet:
+        print(f"""
 ╔══════════════════════════════════════════════════════════════╗
 ║     Project Foundation Generator - Ethical Lite Edition      ║
 ║                      Version {SCRIPT_VERSION:^8}                      ║
 ╚══════════════════════════════════════════════════════════════╝
 """)
-    
+
     generator = EthicalFoundationGenerator(args)
-    
-    if generator.run():
+
+    success = generator.run()
+
+    # Export JSON if requested
+    if args.export_json:
+        result = {
+            "success": success,
+            "version": SCRIPT_VERSION,
+            "project_name": args.project_name,
+            "author_name": args.author_name,
+            "output_dir": str(Path(args.output_dir).absolute()),
+            "files_generated": generator.generated_files if success else [],
+            "timestamp": datetime.now().isoformat()
+        }
+        print("\n--- JSON OUTPUT ---")
+        print(json.dumps(result, indent=2))
+
+    if success:
         return 0
     else:
         return 1
+
 
 if __name__ == "__main__":
     sys.exit(main())
