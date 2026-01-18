@@ -1,0 +1,445 @@
+# foundation/templates/advanced.py
+# Advanced template generators: Enhanced security, secrets detection, ADR
+
+"""
+Advanced templates for Project Foundation Template.
+
+Contains template generators for:
+    - Enhanced SECURITY.md (comprehensive)
+    - Pre-commit configuration with secrets detection
+    - Architecture Decision Records (ADR)
+    - Ethics notice
+"""
+
+from datetime import date, datetime
+from typing import List
+from foundation.utils import SCRIPT_VERSION, OFFICIAL_REPO
+
+
+def generate_enhanced_security_content(project_name: str) -> str:
+    """Generate comprehensive SECURITY.md with vulnerability reporting process."""
+    author_email = f"security@{project_name.lower().replace(' ', '-')}.example.com"
+    today = date.today().isoformat()
+
+    return f"""# Security Policy
+
+<!--
+TEMPLATE NOTICE: This is a comprehensive security policy template.
+You MUST customize the email addresses, response times, and supported versions.
+A security policy without actual processes behind it creates false confidence.
+-->
+
+## Supported Versions
+
+| Version | Supported          |
+| ------- | ------------------ |
+| Latest  | Yes                |
+| Previous| Limited            |
+| Older   | No                 |
+
+[REPLACE: Update this table with your actual version support policy]
+
+## Reporting a Vulnerability
+
+We take security vulnerabilities seriously. If you discover a security vulnerability,
+please report it responsibly.
+
+### How to Report
+
+**Email**: [REPLACE: {author_email}]
+
+**Do NOT**:
+- Open a public GitHub issue for security vulnerabilities
+- Disclose the vulnerability publicly before it's fixed
+- Exploit the vulnerability beyond proof of concept
+
+### What to Include in Your Report
+
+- **Description**: Clear description of the vulnerability
+- **Impact**: What an attacker could achieve
+- **Steps to Reproduce**: Detailed steps to reproduce the issue
+- **Proof of Concept**: If possible, include a minimal example
+- **Suggested Fix**: If you have ideas for fixing it
+
+### What to Expect
+
+| Stage | Timeline |
+|-------|----------|
+| Initial Response | Within 72 hours |
+| Assessment | Within 1 week |
+| Status Updates | Every 5 business days |
+| Resolution | Depends on severity |
+
+[REPLACE: Adjust these timelines to match your capacity]
+
+## Security Best Practices
+
+### For Users
+
+- Keep your dependencies updated
+- Use the latest supported version
+- Report suspicious behavior immediately
+- Follow the principle of least privilege
+
+### For Contributors
+
+- Never commit secrets (API keys, passwords, tokens)
+- Use environment variables for sensitive configuration
+- Review dependencies before adding them
+- Follow secure coding guidelines
+
+## Secrets Management
+
+This project uses pre-commit hooks to prevent accidental secret commits.
+
+### Protected Patterns
+
+The following types of secrets are automatically detected:
+- API keys and access tokens
+- Database credentials and connection strings
+- Private keys and certificates
+- OAuth secrets and JWT tokens
+- Cloud service credentials (AWS, Azure, GCP)
+- GitHub tokens and other VCS credentials
+
+### If You Accidentally Commit a Secret
+
+1. **Rotate immediately**: Change the exposed credential
+2. **Don't just delete**: Secrets remain in git history
+3. **Consider git-filter-repo**: For complete removal (complex)
+4. **Notify security team**: If it's a production credential
+
+## Security Contacts
+
+- **Security Issues**: [REPLACE: {author_email}]
+- **General Questions**: [REPLACE: Add general contact]
+
+## Acknowledgments
+
+We appreciate responsible disclosure and may acknowledge security researchers
+who help improve our security (with their permission).
+
+---
+
+*Last updated: {today}*
+*Generated with [Project Foundation Template]({OFFICIAL_REPO}) - MUST BE CUSTOMIZED*
+"""
+
+
+def generate_pre_commit_config_content() -> str:
+    """Generate pre-commit configuration with secrets detection."""
+    return """# Pre-commit hooks configuration
+# See https://pre-commit.com for more information
+# Run: pip install pre-commit && pre-commit install
+
+repos:
+  # Secrets detection
+  - repo: local
+    hooks:
+      - id: secrets-detection
+        name: Detect secrets
+        entry: .hooks/detect-secrets.sh
+        language: script
+        types: [text]
+        pass_filenames: false
+
+  # Basic file checks
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v4.5.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+        args: ['--maxkb=1000']
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+# To install: pre-commit install
+# To run manually: pre-commit run --all-files
+"""
+
+
+def generate_detect_secrets_script() -> str:
+    """Generate the secrets detection bash script."""
+    return """#!/bin/bash
+# Secrets detection pre-commit hook
+# Generated by Project Foundation Template v2.6.0
+
+set -e
+
+RED='\\033[0;31m'
+GREEN='\\033[0;32m'
+YELLOW='\\033[1;33m'
+NC='\\033[0m'
+
+echo "${YELLOW}[secrets-detection] Scanning staged files for potential secrets...${NC}"
+
+# Get staged files
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null || echo "")
+
+if [ -z "$STAGED_FILES" ]; then
+    echo "${GREEN}No files to check${NC}"
+    exit 0
+fi
+
+SECRETS_FOUND=0
+
+# Patterns to check (simplified for portability)
+PATTERNS=(
+    "api[_-]?key.*[:=]"
+    "secret.*[:=]"
+    "password.*[:=]"
+    "token.*[:=]"
+    "BEGIN.*PRIVATE KEY"
+    "ghp_[A-Za-z0-9]"
+    "sk-[A-Za-z0-9]"
+)
+
+for file in $STAGED_FILES; do
+    if [ ! -f "$file" ]; then
+        continue
+    fi
+
+    # Skip binary files
+    if file "$file" 2>/dev/null | grep -q "binary"; then
+        continue
+    fi
+
+    for pattern in "${PATTERNS[@]}"; do
+        if grep -iE "$pattern" "$file" 2>/dev/null | grep -v "^#" | grep -v "REPLACE" > /dev/null; then
+            echo "${RED}Potential secret in $file:${NC}"
+            grep -n -iE "$pattern" "$file" 2>/dev/null | grep -v "^#" | grep -v "REPLACE" | head -3
+            SECRETS_FOUND=1
+        fi
+    done
+done
+
+if [ $SECRETS_FOUND -eq 1 ]; then
+    echo ""
+    echo "${RED}Potential secrets detected! Please review before committing.${NC}"
+    echo "${YELLOW}Tips:${NC}"
+    echo "  - Use environment variables instead of hardcoded values"
+    echo "  - Add sensitive files to .gitignore"
+    echo "  - Use a secrets manager for production credentials"
+    echo ""
+    echo "To bypass (NOT RECOMMENDED): git commit --no-verify"
+    exit 1
+fi
+
+echo "${GREEN}No secrets detected${NC}"
+exit 0
+"""
+
+
+def generate_adr_readme_content(project_name: str) -> str:
+    """Generate ADR README/Index."""
+    today = date.today().isoformat()
+
+    return f"""# Architecture Decision Records
+
+This directory contains Architecture Decision Records (ADRs) for {project_name}.
+
+## What is an ADR?
+
+An Architecture Decision Record captures an important architectural decision made along with its context and consequences. ADRs help teams:
+
+- Understand why past decisions were made
+- Onboard new team members effectively
+- Revisit decisions when circumstances change
+- Document trade-offs and alternatives considered
+
+## Process
+
+1. Copy `template.md` to create a new ADR
+2. Name it `NNNN-short-title.md` (e.g., `0002-use-postgresql.md`)
+3. Fill in the template with context, decision, and consequences
+4. Submit via pull request
+5. Discuss and refine with the team
+6. Merge when consensus is reached
+
+## Index
+
+| ADR | Title | Status | Date |
+|-----|-------|--------|------|
+| [0001](0001-record-architecture-decisions.md) | Record Architecture Decisions | Accepted | {today} |
+
+## Status Types
+
+- **Proposed** - Under discussion
+- **Accepted** - Approved and implemented
+- **Rejected** - Not approved (keep for context)
+- **Deprecated** - No longer relevant
+- **Superseded** - Replaced by another ADR
+
+## References
+
+- [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) - Michael Nygard
+- [ADR GitHub Organization](https://adr.github.io/)
+
+---
+
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+
+
+def generate_adr_template_content() -> str:
+    """Generate ADR template."""
+    return """# ADR-NNNN: [Short Title]
+
+**Date**: YYYY-MM-DD
+
+**Status**: [Proposed | Accepted | Rejected | Deprecated | Superseded by ADR-XXXX]
+
+## Context
+
+What is the issue motivating this decision? Describe the forces at play:
+- Technical constraints
+- Business requirements
+- Team capabilities
+- Time pressures
+
+## Decision
+
+What is the change we're proposing or have agreed to implement?
+
+Be specific and actionable. This is the core of the ADR.
+
+## Consequences
+
+### Positive
+- [What becomes easier?]
+- [What improves?]
+
+### Negative
+- [What becomes harder?]
+- [What trade-offs are we accepting?]
+
+### Neutral
+- [What changes but isn't clearly better or worse?]
+
+## Options Considered
+
+### Option 1: [Name]
+- **Pros**: ...
+- **Cons**: ...
+
+### Option 2: [Name]
+- **Pros**: ...
+- **Cons**: ...
+
+## References
+
+- [Link to relevant documentation]
+- [Link to related ADRs]
+
+## History
+
+- YYYY-MM-DD: Initial draft
+"""
+
+
+def generate_first_adr_content() -> str:
+    """Generate the first ADR about recording architecture decisions."""
+    today = date.today().isoformat()
+
+    return f"""# ADR-0001: Record Architecture Decisions
+
+**Date**: {today}
+
+**Status**: Accepted
+
+## Context
+
+We need to record architectural decisions made on this project so that:
+
+- Future team members understand why decisions were made
+- We can revisit decisions when circumstances change
+- Knowledge isn't lost when people leave the team
+- We learn from past decisions (both good and bad)
+
+## Decision
+
+We will use Architecture Decision Records (ADRs), as described by Michael Nygard, stored in `docs/adr/`.
+
+Each ADR will:
+1. Be numbered sequentially (0001, 0002, etc.)
+2. Be written in Markdown
+3. Follow our standard template
+4. Be reviewed via pull request
+5. Include a History section for updates
+
+## Consequences
+
+### Positive
+- Architectural decisions are documented and discoverable
+- New team members can understand historical context
+- Decision-making process becomes transparent
+
+### Negative
+- Requires discipline to maintain
+- Adds overhead to decision-making process
+
+### Neutral
+- Team needs to learn the ADR process
+- Templates need periodic updates
+
+## References
+
+- [Documenting Architecture Decisions](https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions) - Michael Nygard
+- [ADR Tools](https://github.com/npryce/adr-tools)
+
+## History
+
+- {today}: Initial ADR created and accepted
+
+---
+
+*Generated with [Project Foundation Template]({OFFICIAL_REPO})*
+"""
+
+
+def generate_ethics_notice_content(generated_files: List[str]) -> str:
+    """Generate ethics notice file content."""
+    files_list = "\n".join(f"- {f}" for f in generated_files)
+
+    return f"""# ETHICAL USE NOTICE
+
+This project foundation was generated on {datetime.now().isoformat()}.
+
+The following templates were created:
+{files_list}
+
+## Critical Reminders:
+
+1. **These are TEMPLATES** - They must be customized
+2. **This is NOT legal advice** - Consult professionals for compliance
+3. **This is NOT security consultation** - Implement actual security measures
+4. **Templates != Implementation** - You must actually follow these practices
+5. **Your responsibility** - You are liable for how you use these templates
+
+## Why These Notices Matter
+
+Every year, companies face penalties for:
+- Claiming false compliance (fraud)
+- Inadequate security practices (negligence)
+- Toxic project cultures (liability)
+- Misleading documentation (misrepresentation)
+
+Don't be a statistic. Use these templates as education and starting points,
+not as final solutions.
+
+## Next Steps
+
+1. Customize every template for your specific needs
+2. Review with appropriate professionals
+3. Implement the actual practices
+4. Keep them updated
+5. Keep learning
+
+---
+
+Generated with Project Foundation Generator {SCRIPT_VERSION}
+Learn more: {OFFICIAL_REPO}
+"""
