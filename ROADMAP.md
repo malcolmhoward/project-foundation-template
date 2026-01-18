@@ -1,0 +1,325 @@
+# Roadmap to v3.0.0
+
+This document outlines the planned evolution of Project Foundation Template from the current lite edition to the full modular architecture.
+
+## Philosophy
+
+Features are reintroduced gradually with:
+1. **Educational context** - WHAT/WHY/HOW for each feature
+2. **Priority assessment** - Evaluation of impact, effort, and risk
+3. **Ethical review** - Principle Zero compliance
+4. **Community feedback** - Time for testing and refinement
+
+## Current State: v2.1.x (Lite Edition)
+
+**Available Features:**
+- 5 core governance principles
+- Ethical safeguards (agreement, education, logging, warnings, expiration)
+- Basic template generation
+- Educational-first approach
+
+**Principles Included:**
+1. README Documentation
+2. Contribution Guidelines
+3. License Selection
+4. Code of Conduct (optional)
+5. Security Basics (optional)
+
+---
+
+## Version 2.2.x - Core Infrastructure
+
+**Target**: Improved developer experience without adding governance complexity
+
+### Features
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| `--non-interactive` mode | Scripted/CI usage support | High |
+| Configuration files | `.foundationrc` support | High |
+| JSON export | Machine-readable output | High |
+| Improved error messages | Educational error handling | Medium |
+
+### Rationale
+
+These features don't add governance principles but make the tool more usable for advanced users while maintaining educational focus.
+
+### Release Criteria
+- [ ] All features pass Principle Zero review
+- [ ] Documentation complete with WHAT/WHY/HOW
+- [ ] Backward compatible with v2.1.x
+- [ ] Community testing period complete
+
+---
+
+## Version 2.3.x - Community Governance
+
+**Target**: Issue/PR templates and community documentation
+
+### Features
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Issue templates | Bug reports, feature requests | High |
+| PR templates | Standardized contribution format | High |
+| Enhanced CONTRIBUTING.md | Comprehensive guide | Medium |
+| CHANGELOG.md generation | Release tracking | Medium |
+| ROADMAP.md template | Project planning | Medium |
+
+### New Principles (6-10)
+
+| # | Principle | Educational Focus |
+|---|-----------|-------------------|
+| 6 | Issue Management | How to report and track issues effectively |
+| 7 | Pull Request Standards | How to contribute quality code |
+| 8 | Changelog Maintenance | Why and how to track changes |
+| 9 | Community Guidelines | Building healthy contributor communities |
+| 10 | Project Planning | Roadmap creation and maintenance |
+
+### Preset Update
+
+| Preset | Principles |
+|--------|------------|
+| minimal | 1-5 (unchanged) |
+| **light** | **1-10 (new)** |
+
+### Release Criteria
+- [ ] Templates tested in real projects
+- [ ] Educational content reviewed
+- [ ] GitHub integration verified
+- [ ] Migration guide updated
+
+---
+
+## Version 2.4.x - Security & Quality
+
+**Target**: Security policies and code quality standards
+
+### Features
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Advanced security policy | Vulnerability disclosure, scanning | High |
+| Secrets detection | Pre-commit hook integration | High |
+| Dependency scanning | Outdated/vulnerable dependency alerts | Medium |
+| GLOSSARY.md | Terminology definitions | Medium |
+| COMPLIANCE.md | Compliance tracking template | Medium |
+
+### New Principles (11-15)
+
+| # | Principle | Educational Focus |
+|---|-----------|-------------------|
+| 11 | Security Policy (Advanced) | Beyond basics: disclosure, scanning, monitoring |
+| 12 | Quality Assurance | Testing strategies and coverage |
+| 13 | Code Standards | Linting, formatting, style guides |
+| 14 | Versioning Strategy | Semantic versioning in practice |
+| 15 | Compliance Tracking | Regulatory and standard compliance |
+
+### Preset Update
+
+| Preset | Principles |
+|--------|------------|
+| minimal | 1-5 |
+| light | 1-10 |
+| **standard** | **1-15 (new, becomes default)** |
+
+### Release Criteria
+- [ ] Security features don't create false confidence
+- [ ] Clear distinction between template and actual security
+- [ ] Scanning tools are optional/educational
+- [ ] Compliance templates include heavy disclaimers
+
+---
+
+## Version 2.5.x - Advanced Governance
+
+**Target**: CI/CD, architecture decisions, and advanced documentation
+
+### Features
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| GitHub Actions workflows | CI/CD templates | Medium |
+| ADR system | Architecture Decision Records | High |
+| Branch protection guide | Security recommendations | Medium |
+| Release management | Automated release workflows | Medium |
+| Full documentation suite | Test strategies, code review, etc. | Medium |
+
+### New Principles (16-20)
+
+| # | Principle | Educational Focus |
+|---|-----------|-------------------|
+| 16 | CI/CD Pipelines | Continuous integration philosophy |
+| 17 | Branch Protection | Git workflow security |
+| 18 | Release Management | Version and release automation |
+| 19 | Architecture Decisions | ADR creation and maintenance |
+| 20 | Documentation System | Comprehensive docs structure |
+
+### New Documentation Modules (1-10)
+
+| # | Module | Focus |
+|---|--------|-------|
+| 1 | Test Strategies | Testing philosophy and approaches |
+| 2 | Code Review Guide | Effective code review |
+| 3 | Versioning Guide | SemVer in depth |
+| 4 | Release Process | Step-by-step releases |
+| 5 | Dependency Guide | Managing dependencies |
+| 6 | Internationalization | i18n basics |
+| 7 | Audit Logging | Activity tracking |
+| 8 | Container Support | Docker fundamentals |
+| 9 | API Standards | REST/GraphQL patterns |
+| 10 | Security Disclosure | Responsible disclosure |
+
+### Preset Update
+
+| Preset | Principles |
+|--------|------------|
+| minimal | 1-5 |
+| light | 1-10 |
+| standard | 1-15 |
+| **strict** | **1-20 (new)** |
+
+### Release Criteria
+- [ ] CI/CD templates emphasize necessity, not default-on
+- [ ] Environmental impact considered
+- [ ] ADR system proven useful
+- [ ] Documentation modules standalone-useful
+
+---
+
+## Version 3.0.0 - Modular Architecture
+
+**Target**: Full plugin architecture with enterprise feature parity
+
+### Major Changes
+
+1. **Plugin System**: Governance modules as independent plugins
+2. **All Presets**: minimal → enterprise all available
+3. **Full Principle Set**: All 23 principles with education
+4. **Complete Documentation**: All 20 modules
+5. **Configuration System**: Advanced customization
+
+### Architecture
+
+```
+project-foundation-template/
+├── setup_foundation.py          # Main entry point
+├── core/
+│   ├── generator.py            # Base generator class
+│   ├── config.py               # Configuration management
+│   ├── education.py            # Educational content system
+│   ├── ethics.py               # Ethical safeguards
+│   └── priority.py             # Feature priority assessment
+├── principles/                  # 23 Governance Principles
+│   ├── __init__.py
+│   ├── readme.py
+│   ├── contributing.py
+│   ├── license.py
+│   ├── code_of_conduct.py
+│   ├── security.py
+│   └── ... (18 more)
+├── modules/                     # 20 Documentation Modules
+│   ├── __init__.py
+│   ├── test_strategies.py
+│   ├── code_review.py
+│   └── ... (18 more)
+├── presets/
+│   ├── minimal.py
+│   ├── light.py
+│   ├── standard.py
+│   ├── strict.py
+│   └── enterprise.py
+└── templates/
+    ├── markdown/
+    ├── workflows/
+    └── configs/
+```
+
+### Final Principles (21-23)
+
+| # | Principle | Educational Focus |
+|---|-----------|-------------------|
+| 21 | Deprecation Policy | Managing breaking changes |
+| 22 | Accessibility | A11y in documentation and tools |
+| 23 | Performance Standards | Performance budgets and monitoring |
+
+### Final Documentation Modules (11-20)
+
+| # | Module | Focus |
+|---|--------|-------|
+| 11 | Compliance Guide | Regulatory compliance depth |
+| 12 | Troubleshooting | Common issues and solutions |
+| 13 | FAQ | Frequently asked questions |
+| 14 | References | External resources |
+| 15 | Glossary | Complete terminology |
+| 16 | Onboarding | New contributor guide |
+| 17 | Architecture Guide | System design docs |
+| 18 | Performance Guide | Optimization strategies |
+| 19 | Accessibility Guide | A11y implementation |
+| 20 | Deprecation Guide | Managing sunset features |
+
+### Preset Update (Final)
+
+| Preset | Principles | Use Case |
+|--------|------------|----------|
+| minimal | 1-5 | Learning, personal projects |
+| light | 1-10 | Small teams, simple projects |
+| standard | 1-15 | Most projects (default) |
+| strict | 1-20 | Regulated industries |
+| enterprise | 1-23 | Large organizations |
+
+### Release Criteria
+- [ ] Plugin system battle-tested
+- [ ] Full backward compatibility
+- [ ] Migration from v2.x documented
+- [ ] Performance acceptable
+- [ ] All ethical safeguards maintained
+- [ ] Education-first philosophy preserved
+
+---
+
+## Priority Summary
+
+| Version | Risk Level | Complexity |
+|---------|------------|------------|
+| 2.2.x | Low | Low |
+| 2.3.x | Low | Medium |
+| 2.4.x | Medium | Medium |
+| 2.5.x | Medium | High |
+| 3.0.0 | Medium-High | High |
+
+---
+
+## Timeline
+
+**Note**: We intentionally do not provide dates. See [SEMANTIC_VERSIONING.md](SEMANTIC_VERSIONING.md) for why.
+
+Versions release when:
+1. All features complete
+2. Educational content reviewed
+3. Community testing done
+4. Ethical review passed
+
+Quality over speed. Always.
+
+---
+
+## How to Influence the Roadmap
+
+1. **Open issues**: Discuss specific features
+2. **Assess priorities**: Help evaluate impact, effort, and risk
+3. **Contribute**: PRs that align with roadmap get priority review
+4. **Test prereleases**: Early feedback shapes final releases
+
+---
+
+## Related Documents
+
+- [MIGRATION.md](MIGRATION.md) - Upgrading between versions
+- [SEMANTIC_VERSIONING.md](SEMANTIC_VERSIONING.md) - Version numbering strategy
+- [ETHICS.md](ETHICS.md) - Ethical framework guiding decisions
+- [docs/adr/](docs/adr/) - Architecture decisions
+
+---
+
+*This roadmap is a living document. It will evolve based on community feedback, emerging best practices, and our commitment to education-first development.*
