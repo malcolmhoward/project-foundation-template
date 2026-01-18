@@ -2,26 +2,13 @@
 
 *Educational templates for thoughtful software governance*
 
-## Core Principle
+## Philosophy
 
-**Education First** — understand WHY before HOW.
+This project believes that good governance starts with understanding, not automation. We generate templates that teach best practices while providing starting points for project governance.
 
-Good governance starts with understanding, not automation. We generate templates that teach best practices while providing starting points for project governance.
+**Core Principle**: Education First - understand WHY before HOW.
 
-## Ethical Foundation
-
-This project is built on **Principle Zero: "Do no harm, allow no harm."**
-
-We recognize that governance templates can be misused:
-- To create false impressions of security
-- To exploit trust through professional-looking facades
-- To claim compliance without implementation
-
-Our safeguards ensure templates are used ethically and responsibly.
-
-## Generator Output
-
-> **Note**: This section describes what the `setup_foundation_lite.py` tool generates for **your projects**. For this repository's own documentation (ETHICS.md, ROADMAP.md, etc.), see the [Documentation](#documentation) section below.
+## Features
 
 ### Core Templates (v2.1.0)
 - **README.md** - Project documentation with educational comments
@@ -51,28 +38,20 @@ Our safeguards ensure templates are used ethically and responsibly.
 - `--include-adr` - Architecture Decision Records
 - `--include-ci` - GitHub Actions CI workflow
 
-## Philosophy
+## What Makes This Different
 
 Every template:
-- 📚 Explains **WHY** it matters (Education First)
-- ⚠️ Shows what happens **without** it (Risk Awareness)
-- 📝 **Requires customization** (No Copy-Paste)
-- 🎓 **Teaches while generating** (Learning, Not Just Output)
+- 📚 Explains WHY it matters before generating
+- ⚠️ Shows risks of not having it
+- 📝 Requires customization (not copy-paste ready)
+- 🎓 Teaches governance principles
 
 ## This Is Not
 
-- ❌ A compliance shortcut — templates require implementation
-- ❌ Instant security — security is practice, not documentation
-- ❌ A substitute for judgment — you must think critically
-- ❌ Copy-paste governance — customization is required
-
-## Ethical Safeguards
-
-To prevent misuse, this tool includes:
-- **Ethical Use Agreement** — explicit acknowledgment of responsibilities
-- **Educational Content** — mandatory learning before generating
-- **Template Warnings** — clear notices that customization is required
-- **Version Expiration** — encourages staying current with best practices
+- ❌ A compliance shortcut
+- ❌ Instant security certification
+- ❌ A substitute for professional judgment
+- ❌ Copy-paste governance theater
 
 ## Getting Started
 
@@ -104,13 +83,10 @@ python setup_foundation_lite.py --non-interactive --accept-terms
 
 ## Documentation
 
-This repository's own governance documentation:
-
 - [ETHICS.md](ETHICS.md) - Ethical framework and Principle Zero
-- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute to this project
+- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
 - [ROADMAP.md](ROADMAP.md) - Version roadmap to v3.0.0
 - [CHANGELOG.md](CHANGELOG.md) - Version history
-- [CLAUDE.md](CLAUDE.md) - LLM integration guidance
 - [docs/adr/](docs/adr/) - Architecture Decision Records
 
 ## License
