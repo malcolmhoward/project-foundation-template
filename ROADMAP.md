@@ -26,7 +26,7 @@ Features are reintroduced gradually with:
 
 **Package Structure (v2.6.0):**
 ```
-foundation/
+core/
 ├── __init__.py             # Package exports
 ├── utils.py                # Constants and helpers
 ├── config.py               # Configuration and argument parsing
