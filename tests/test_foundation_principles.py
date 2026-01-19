@@ -26,6 +26,7 @@ from core.principles import (
     INFRASTRUCTURE_PRINCIPLES,
     INCLUSIVITY_PRINCIPLES,
     LIFECYCLE_PRINCIPLES,
+    USABILITY_PRINCIPLES,
     PRINCIPLE_VERSIONS,
     get_principle,
     get_education,
@@ -47,12 +48,12 @@ class TestPrincipleDefinitions:
         assert isinstance(ALL_EDUCATION, dict)
 
     def test_principle_count(self):
-        """Should have 23 principles defined."""
-        assert len(ALL_PRINCIPLES) == 23
+        """Should have 25 principles defined (23 + 2 v3.1.0 usability)."""
+        assert len(ALL_PRINCIPLES) == 25
 
     def test_education_count(self):
-        """Should have 23 education entries (one per principle)."""
-        assert len(ALL_EDUCATION) == 23
+        """Should have 25 education entries (one per principle)."""
+        assert len(ALL_EDUCATION) == 25
 
     def test_principles_and_education_keys_match(self):
         """ALL_PRINCIPLES and ALL_EDUCATION should have the same keys."""
@@ -107,6 +108,11 @@ class TestPrincipleCategories:
         expected = ["issue-templates", "pr-template", "changelog"]
         assert COMMUNITY_PRINCIPLES == expected
 
+    def test_usability_principles_list(self):
+        """USABILITY_PRINCIPLES should contain expected principles (v3.1.0)."""
+        expected = ["glossary", "maintainers"]
+        assert USABILITY_PRINCIPLES == expected
+
     def test_all_categories_cover_all_principles(self):
         """All category lists together should cover all principles."""
         all_categorized = set(
@@ -119,7 +125,8 @@ class TestPrincipleCategories:
             COMPLIANCE_PRINCIPLES +
             INFRASTRUCTURE_PRINCIPLES +
             INCLUSIVITY_PRINCIPLES +
-            LIFECYCLE_PRINCIPLES
+            LIFECYCLE_PRINCIPLES +
+            USABILITY_PRINCIPLES
         )
         assert all_categorized == set(ALL_PRINCIPLES.keys())
 
@@ -135,7 +142,8 @@ class TestPrincipleCategories:
             COMPLIANCE_PRINCIPLES +
             INFRASTRUCTURE_PRINCIPLES +
             INCLUSIVITY_PRINCIPLES +
-            LIFECYCLE_PRINCIPLES
+            LIFECYCLE_PRINCIPLES +
+            USABILITY_PRINCIPLES
         )
         assert len(all_lists) == len(set(all_lists))
 
@@ -172,6 +180,11 @@ class TestPrincipleVersions:
         """Advanced principles should be introduced in v2.5.0."""
         for pid in ADVANCED_PRINCIPLES:
             assert PRINCIPLE_VERSIONS[pid] == "2.5.0"
+
+    def test_usability_principles_introduced_v310(self):
+        """Usability principles should be introduced in v3.1.0."""
+        for pid in USABILITY_PRINCIPLES:
+            assert PRINCIPLE_VERSIONS[pid] == "3.1.0"
 
 
 class TestGetPrinciple:
@@ -237,6 +250,11 @@ class TestGetPrinciplesByCategory:
         result = get_principles_by_category("community")
         assert result == COMMUNITY_PRINCIPLES
 
+    def test_get_usability_category(self):
+        """Should return usability principles list (v3.1.0)."""
+        result = get_principles_by_category("usability")
+        assert result == USABILITY_PRINCIPLES
+
     def test_get_nonexistent_category(self):
         """Should return empty list for nonexistent category."""
         result = get_principles_by_category("nonexistent")
@@ -275,15 +293,27 @@ class TestGetPrinciplesForVersion:
         for pid in ADVANCED_PRINCIPLES:
             assert pid in result
 
-    def test_version_300_has_all_principles(self):
-        """v3.0.0 should include all principles."""
+    def test_version_300_has_v300_principles(self):
+        """v3.0.0 should include all v3.0.0 and earlier principles (23 total)."""
         result = get_principles_for_version("3.0.0")
+        # v3.0.0 has 23 principles (excludes v3.1.0 usability principles)
+        assert len(result) == 23
+        assert "glossary" not in result  # Added in 3.1.0
+        assert "maintainers" not in result  # Added in 3.1.0
+
+    def test_version_310_has_all_principles(self):
+        """v3.1.0 should include all 25 principles."""
+        result = get_principles_for_version("3.1.0")
         assert set(result) == set(ALL_PRINCIPLES.keys())
+        assert len(result) == 25
+        assert "glossary" in result
+        assert "maintainers" in result
 
     def test_lite_suffix_handled(self):
-        """Version with -lite suffix should work."""
-        result = get_principles_for_version("3.0.0-lite")
-        assert set(result) == set(ALL_PRINCIPLES.keys())
+        """Version with -lite suffix should work (v2.x legacy compatibility)."""
+        # -lite suffix was used in v2.x before presets were introduced in v3.0.0
+        result = get_principles_for_version("2.1.0-lite")
+        assert len(result) == 5  # Core principles only in v2.1.0
 
     def test_early_version_excludes_later_principles(self):
         """Early version should not include later principles."""
@@ -305,10 +335,10 @@ class TestListAllPrinciples:
         result = list_all_principles()
         assert set(result) == set(ALL_PRINCIPLES.keys())
 
-    def test_returns_23_principles(self):
-        """Should return 23 principles."""
+    def test_returns_25_principles(self):
+        """Should return 25 principles (23 v3.0.0 + 2 v3.1.0 usability)."""
         result = list_all_principles()
-        assert len(result) == 23
+        assert len(result) == 25
 
 
 class TestIndividualPrincipleModules:
@@ -327,6 +357,9 @@ class TestIndividualPrincipleModules:
         "issue-templates",
         "pr-template",
         "changelog",
+        # v3.1.0 usability principles
+        "glossary",
+        "maintainers",
     ])
     def test_principle_in_all_principles(self, principle_id):
         """Each principle ID should be in ALL_PRINCIPLES."""
@@ -345,6 +378,9 @@ class TestIndividualPrincipleModules:
         "issue-templates",
         "pr-template",
         "changelog",
+        # v3.1.0 usability principles
+        "glossary",
+        "maintainers",
     ])
     def test_principle_in_all_education(self, principle_id):
         """Each principle ID should be in ALL_EDUCATION."""
@@ -363,6 +399,9 @@ class TestIndividualPrincipleModules:
         "issue-templates",
         "pr-template",
         "changelog",
+        # v3.1.0 usability principles
+        "glossary",
+        "maintainers",
     ])
     def test_principle_in_versions(self, principle_id):
         """Each principle ID should be in PRINCIPLE_VERSIONS."""
