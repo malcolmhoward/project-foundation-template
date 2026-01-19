@@ -10,11 +10,7 @@ from datetime import datetime
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
-<<<<<<< HEAD
 from core.generator import EthicalFoundationGenerator
-=======
-from foundation.generator import EthicalFoundationGenerator
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules)
 
 
 def create_mock_args(**kwargs):
@@ -408,11 +404,7 @@ class TestGenerateSpecificFiles(unittest.TestCase):
 class TestCheckVersionAdvisory(unittest.TestCase):
     """Test check_version_advisory method."""
 
-<<<<<<< HEAD
     @patch('core.generator.check_version_advisory')
-=======
-    @patch('foundation.generator.check_version_advisory')
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules)
     def test_calls_standalone_function(self, mock_check):
         """Should call standalone check_version_advisory function."""
         mock_check.return_value = True
@@ -428,11 +420,7 @@ class TestCheckVersionAdvisory(unittest.TestCase):
 class TestShowEthicalAgreement(unittest.TestCase):
     """Test show_ethical_agreement method."""
 
-<<<<<<< HEAD
     @patch('core.generator.show_ethical_agreement')
-=======
-    @patch('foundation.generator.show_ethical_agreement')
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules)
     def test_calls_standalone_function(self, mock_show):
         """Should call standalone show_ethical_agreement function."""
         mock_show.return_value = True
@@ -462,7 +450,6 @@ class TestLogUsageLocally(unittest.TestCase):
 
 
 class TestImportFromPackage(unittest.TestCase):
-<<<<<<< HEAD
     """Test that generator can be imported from core package."""
 
     def test_import_from_foundation(self):
@@ -474,19 +461,6 @@ class TestImportFromPackage(unittest.TestCase):
         """Should be in core.__all__."""
         import core
         self.assertIn("EthicalFoundationGenerator", core.__all__)
-=======
-    """Test that generator can be imported from foundation package."""
-
-    def test_import_from_foundation(self):
-        """Should be importable from foundation package."""
-        from foundation import EthicalFoundationGenerator as FromPackage
-        self.assertEqual(FromPackage, EthicalFoundationGenerator)
-
-    def test_in_all(self):
-        """Should be in foundation.__all__."""
-        import foundation
-        self.assertIn("EthicalFoundationGenerator", foundation.__all__)
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules)
 
 
 if __name__ == "__main__":
