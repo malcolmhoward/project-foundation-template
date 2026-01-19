@@ -19,6 +19,8 @@ from core.guides import (
     GOVERNANCE_GUIDES,
     DEVELOPMENT_GUIDES,
     SECURITY_GUIDES,
+    ONBOARDING_GUIDES,
+    OPERATIONS_GUIDES,
     GUIDE_COMPLEXITY,
     GUIDE_VERSIONS,
     get_guide,
@@ -41,12 +43,12 @@ class TestGuideDefinitions:
         assert isinstance(ALL_GUIDE_CONTENT, dict)
 
     def test_guide_count(self):
-        """Should have 6 guides defined."""
-        assert len(ALL_GUIDES) == 6
+        """Should have 15 guides defined."""
+        assert len(ALL_GUIDES) == 15
 
     def test_content_count(self):
-        """Should have 6 content entries (one per guide)."""
-        assert len(ALL_GUIDE_CONTENT) == 6
+        """Should have 15 content entries (one per guide)."""
+        assert len(ALL_GUIDE_CONTENT) == 15
 
     def test_guides_and_content_keys_match(self):
         """ALL_GUIDES and ALL_GUIDE_CONTENT should have the same keys."""
@@ -78,12 +80,12 @@ class TestGuideCategories:
 
     def test_governance_guides_list(self):
         """GOVERNANCE_GUIDES should contain expected guides."""
-        expected = ["versioning", "release-process", "changelog"]
+        expected = ["versioning", "release-process", "changelog", "compliance-guide"]
         assert GOVERNANCE_GUIDES == expected
 
     def test_development_guides_list(self):
         """DEVELOPMENT_GUIDES should contain expected guides."""
-        expected = ["code-review", "adr"]
+        expected = ["code-review", "adr", "test-strategies", "coding-standards", "api-standards"]
         assert DEVELOPMENT_GUIDES == expected
 
     def test_security_guides_list(self):
@@ -91,12 +93,24 @@ class TestGuideCategories:
         expected = ["security-disclosure"]
         assert SECURITY_GUIDES == expected
 
+    def test_onboarding_guides_list(self):
+        """ONBOARDING_GUIDES should contain expected guides."""
+        expected = ["onboarding", "glossary", "faq", "troubleshooting"]
+        assert ONBOARDING_GUIDES == expected
+
+    def test_operations_guides_list(self):
+        """OPERATIONS_GUIDES should contain expected guides."""
+        expected = ["dependency-guide"]
+        assert OPERATIONS_GUIDES == expected
+
     def test_all_categories_cover_all_guides(self):
         """All category lists together should cover all guides."""
         all_categorized = set(
             GOVERNANCE_GUIDES +
             DEVELOPMENT_GUIDES +
-            SECURITY_GUIDES
+            SECURITY_GUIDES +
+            ONBOARDING_GUIDES +
+            OPERATIONS_GUIDES
         )
         assert all_categorized == set(ALL_GUIDES.keys())
 
@@ -105,7 +119,9 @@ class TestGuideCategories:
         all_lists = (
             GOVERNANCE_GUIDES +
             DEVELOPMENT_GUIDES +
-            SECURITY_GUIDES
+            SECURITY_GUIDES +
+            ONBOARDING_GUIDES +
+            OPERATIONS_GUIDES
         )
         assert len(all_lists) == len(set(all_lists))
 
@@ -272,10 +288,10 @@ class TestListAllGuides:
         result = list_all_guides()
         assert set(result) == set(ALL_GUIDES.keys())
 
-    def test_returns_6_guides(self):
-        """Should return 6 guides."""
+    def test_returns_15_guides(self):
+        """Should return 15 guides."""
         result = list_all_guides()
-        assert len(result) == 6
+        assert len(result) == 15
 
 
 class TestIndividualGuideModules:
@@ -288,6 +304,15 @@ class TestIndividualGuideModules:
         "changelog",
         "security-disclosure",
         "adr",
+        "test-strategies",
+        "dependency-guide",
+        "compliance-guide",
+        "api-standards",
+        "troubleshooting",
+        "faq",
+        "glossary",
+        "coding-standards",
+        "onboarding",
     ])
     def test_guide_in_all_guides(self, guide_id):
         """Each guide ID should be in ALL_GUIDES."""
@@ -300,6 +325,15 @@ class TestIndividualGuideModules:
         "changelog",
         "security-disclosure",
         "adr",
+        "test-strategies",
+        "dependency-guide",
+        "compliance-guide",
+        "api-standards",
+        "troubleshooting",
+        "faq",
+        "glossary",
+        "coding-standards",
+        "onboarding",
     ])
     def test_guide_in_all_content(self, guide_id):
         """Each guide ID should be in ALL_GUIDE_CONTENT."""
@@ -312,6 +346,15 @@ class TestIndividualGuideModules:
         "changelog",
         "security-disclosure",
         "adr",
+        "test-strategies",
+        "dependency-guide",
+        "compliance-guide",
+        "api-standards",
+        "troubleshooting",
+        "faq",
+        "glossary",
+        "coding-standards",
+        "onboarding",
     ])
     def test_guide_in_complexity(self, guide_id):
         """Each guide ID should be in GUIDE_COMPLEXITY."""
@@ -324,6 +367,15 @@ class TestIndividualGuideModules:
         "changelog",
         "security-disclosure",
         "adr",
+        "test-strategies",
+        "dependency-guide",
+        "compliance-guide",
+        "api-standards",
+        "troubleshooting",
+        "faq",
+        "glossary",
+        "coding-standards",
+        "onboarding",
     ])
     def test_guide_in_versions(self, guide_id):
         """Each guide ID should be in GUIDE_VERSIONS."""
@@ -340,6 +392,15 @@ class TestGuideContentQuality:
         "changelog",
         "security-disclosure",
         "adr",
+        "test-strategies",
+        "dependency-guide",
+        "compliance-guide",
+        "api-standards",
+        "troubleshooting",
+        "faq",
+        "glossary",
+        "coding-standards",
+        "onboarding",
     ])
     def test_content_has_overview(self, guide_id):
         """Each guide content should have an overview section."""
@@ -353,6 +414,15 @@ class TestGuideContentQuality:
         "changelog",
         "security-disclosure",
         "adr",
+        "test-strategies",
+        "dependency-guide",
+        "compliance-guide",
+        "api-standards",
+        "troubleshooting",
+        "faq",
+        "glossary",
+        "coding-standards",
+        "onboarding",
     ])
     def test_content_minimum_length(self, guide_id):
         """Each guide content should have substantial content."""

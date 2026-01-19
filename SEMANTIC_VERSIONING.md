@@ -1,4 +1,4 @@
-# Semantic Versioning Strategy
+# Semantic Versioning Policy
 
 This document explains how Project Foundation Template uses semantic versioning and why we make the choices we do.
 
@@ -7,66 +7,98 @@ This document explains how Project Foundation Template uses semantic versioning 
 Semantic Versioning (SemVer) uses a three-part version number: `MAJOR.MINOR.PATCH`
 
 ```
-2.3.1
-│ │ └── PATCH: Bug fixes, no new features
-│ └──── MINOR: New features, backward compatible
-└────── MAJOR: Breaking changes
+2.9.0
+| | |__ PATCH: Bug fixes, no new features
+| |____ MINOR: New features, backward compatible
+|______ MAJOR: Breaking changes
 ```
 
-For full specification, see [semver.org](https://semver.org).
+For the full specification, see [semver.org](https://semver.org).
 
 ## Our Version Philosophy
 
-### Why We Don't Give Dates
+### Why We Do Not Provide Dates
 
-You'll notice our [ROADMAP.md](ROADMAP.md) has no dates. This is intentional:
+You will notice our [ROADMAP.md](ROADMAP.md) has no release dates. This is intentional:
 
 1. **Quality over speed**: Features ship when ready, not when calendars say
-2. **Honest expectations**: We can't predict complexity accurately
+2. **Honest expectations**: We cannot predict complexity accurately
 3. **Education takes time**: Rushing undermines our core mission
 4. **No false promises**: Missed dates erode trust
 
 Instead, we communicate:
 - What each version will contain
-- What criteria must be met
-- What's currently in progress
+- What criteria must be met before release
+- What is currently in progress
 
 ### Version Numbering Decisions
 
 #### Why v2.x Instead of v1.0?
 
 The "lite" edition continues the v2.x line because:
-- It's an evolution of v2.0.1, not a fresh start
+- It is an evolution of v2.0.1, not a fresh start
 - Users expect v2.x to be compatible with v2.0.x patterns
 - Starting at v1.0 would suggest less maturity than exists
+- The ethical pivot was a scope change, not a rewrite
 
 #### Why v3.0.0 for Modular Architecture?
 
-The plugin system is a breaking change:
-- API changes for generator usage
+The plugin system will be a breaking change:
+- API changes for programmatic generator usage
 - Configuration file format changes
 - Different output organization
+- Import paths will change
 
-MAJOR version increment signals "expect changes."
+MAJOR version increment signals "expect changes, read migration guide."
+
+## What Constitutes a Breaking Change
+
+### Breaking Changes (Require MAJOR Bump)
+
+These changes require incrementing the MAJOR version:
+
+| Change Type | Example |
+|-------------|---------|
+| Removed CLI flags | `--old-flag` no longer exists |
+| Changed default output | Files now go to `./output/` instead of `./` |
+| Renamed generated files | `SECURITY.md` renamed to `security-policy.md` |
+| Changed config file format | JSON schema incompatibility |
+| Changed programmatic API | Function signatures changed |
+| Removed features | A principle is removed entirely |
+
+### Non-Breaking Changes (MINOR or PATCH)
+
+These changes do not require a MAJOR bump:
+
+| Change Type | Version | Example |
+|-------------|---------|---------|
+| New CLI flag | MINOR | Added `--include-adr` |
+| New template type | MINOR | Added PR template generation |
+| Bug fix | PATCH | Fixed Unicode handling |
+| Documentation fix | PATCH | Corrected typo in CONTRIBUTING.md |
+| New optional feature | MINOR | Added secrets detection |
+| Performance improvement | PATCH | Faster template generation |
 
 ## Our Versioning Rules
 
-### PATCH Increments (2.1.x → 2.1.y)
+### PATCH Increments (2.9.x to 2.9.y)
 
 Increment PATCH for:
 - Bug fixes
 - Documentation corrections
 - Typo fixes
-- Security patches that don't change API
+- Security patches that do not change API
+- Performance improvements
 
 **Examples:**
 - Fix Unicode handling in generator
 - Correct markdown formatting in templates
 - Patch vulnerability in dependency
+- Improve error message clarity
 
 **User impact**: Update freely, no changes needed.
 
-### MINOR Increments (2.x.0 → 2.y.0)
+### MINOR Increments (2.x.0 to 2.y.0)
 
 Increment MINOR for:
 - New features (backward compatible)
@@ -75,13 +107,14 @@ Increment MINOR for:
 - New CLI flags
 
 **Examples:**
-- Add `--non-interactive` flag
+- Add `--include-adr` flag
 - New issue templates
 - Additional license options
+- New documentation guide
 
 **User impact**: Update to get new features. Existing usage unchanged.
 
-### MAJOR Increments (x.0.0 → y.0.0)
+### MAJOR Increments (x.0.0 to y.0.0)
 
 Increment MAJOR for:
 - Breaking API changes
@@ -93,6 +126,7 @@ Increment MAJOR for:
 - v3.0.0 plugin architecture
 - Output directory structure changes
 - Required flag becomes optional (changes behavior)
+- Configuration file schema changes
 
 **User impact**: Read migration guide before updating.
 
@@ -101,19 +135,13 @@ Increment MAJOR for:
 We use pre-release tags for testing:
 
 ```
-2.3.0-alpha.1   # Early testing, may be unstable
-2.3.0-beta.1    # Feature complete, needs testing
-2.3.0-rc.1      # Release candidate, final testing
-2.3.0           # Stable release
+2.9.0-alpha.1   # Early testing, may be unstable
+2.9.0-beta.1    # Feature complete, needs testing
+2.9.0-rc.1      # Release candidate, final testing
+2.9.0           # Stable release
 ```
 
 ### When to Use Pre-releases
-
-- **Alpha**: Internal testing, adventurous early adopters
-- **Beta**: Feature complete, seeking feedback
-- **RC**: Final validation before release
-
-### Pre-release Stability
 
 | Tag | Stability | Recommended For |
 |-----|-----------|-----------------|
@@ -122,12 +150,12 @@ We use pre-release tags for testing:
 | rc | Stable | Staging environments |
 | (none) | Production | All users |
 
-## Version Comparison
+### Pre-release Sorting
 
 Versions sort correctly per SemVer:
 
 ```
-1.0.0 < 2.0.0 < 2.0.1 < 2.1.0 < 2.1.0-alpha.1 < 2.1.0-beta.1 < 2.1.0-rc.1 < 2.1.0 < 3.0.0
+2.8.0 < 2.9.0-alpha.1 < 2.9.0-beta.1 < 2.9.0-rc.1 < 2.9.0 < 3.0.0
 ```
 
 Note: Pre-releases sort *before* the release they modify.
@@ -141,11 +169,83 @@ Our templates have "advisory expiration" dates. This is different from versionin
 | Version | Track changes | SemVer numbering |
 | Expiration | Prompt updates | Date-based warning |
 
-A template can be the latest version but still expired if it hasn't been updated. Expiration says "this might be stale," not "a newer version exists."
+A template can be the latest version but still expired if it has not been updated in a long time. Expiration says "this might be stale," not "a newer version exists."
+
+## Release Process
+
+### 1. Feature Completion
+
+All planned features for the version are complete and tested.
+
+### 2. Educational Review
+
+- All new features have WHAT/WHY/HOW documentation
+- Educational content is accurate and helpful
+- Examples are tested and working
+
+### 3. Ethical Review
+
+- Features pass Principle Zero test
+- Misuse potential has been considered
+- Appropriate safeguards are in place
+
+### 4. Community Testing
+
+- Pre-release available for testing
+- Feedback incorporated
+- Issues resolved
+
+### 5. Documentation Update
+
+- CHANGELOG updated
+- MIGRATION guide updated (if needed)
+- README updated
+- ROADMAP updated
+
+### 6. Release
+
+```bash
+# Create annotated tag
+git tag -a v2.9.0 -m "Release v2.9.0: Documentation and stability"
+
+# Push tag
+git push origin v2.9.0
+```
+
+### 7. Post-Release
+
+- Announce release
+- Monitor for issues
+- Begin next version planning
+
+## Version Support Policy
+
+### Active Support
+
+| Version | Support Level | Duration |
+|---------|---------------|----------|
+| Current | Full | Until next MINOR release |
+| Previous MINOR | Security only | 6 months after next MINOR |
+| Previous MAJOR | None | Migration guide available |
+
+### What "Security Only" Means
+
+- Critical security fixes backported
+- No new features
+- No bug fixes (except security)
+- Documentation updates only for security
+
+### End of Life
+
+When a version reaches end of life:
+- No further updates
+- Users encouraged to migrate
+- Documentation remains available
+- Advisory expiration may trigger warnings
 
 ## Backward Compatibility Promises
 
-### Within MINOR versions
+### Within MINOR Versions
 
 All 2.x releases maintain:
 - CLI flag compatibility
@@ -153,19 +253,19 @@ All 2.x releases maintain:
 - Configuration file format
 - Generated file format
 
-### Across MAJOR versions
+### Across MAJOR Versions
 
 Breaking changes are:
 - Documented in release notes
 - Explained in migration guides
-- Announced in advance
+- Announced in advance via pre-releases
 
 ## Changelog Conventions
 
 Our CHANGELOG follows [Keep a Changelog](https://keepachangelog.com):
 
 ```markdown
-## [2.3.0] - YYYY-MM-DD
+## [2.9.0] - 2026-01-18
 
 ### Added
 - New features
@@ -188,28 +288,14 @@ Our CHANGELOG follows [Keep a Changelog](https://keepachangelog.com):
 
 ## Version in Code
 
-The version is defined in `setup_foundation_lite.py`:
+The version is defined in `setup_foundation_lite.py` and `core/utils.py`:
 
 ```python
-VERSION = "2.1.0-lite"
-EXPIRATION_DATE = "2026-03-01"
+SCRIPT_VERSION = "2.9.0-lite"
+EXPIRATION_DATE = date(2026, 6, 1)
 ```
 
 Both should be updated together during releases.
-
-## Tagging Releases
-
-Releases are tagged in Git:
-
-```bash
-# Create annotated tag
-git tag -a v2.3.0 -m "Release v2.3.0: Community governance features"
-
-# Push tag
-git push origin v2.3.0
-```
-
-Tag format: `v` prefix + version number (e.g., `v2.3.0`)
 
 ## Checking Versions
 
@@ -224,20 +310,10 @@ python setup_foundation_lite.py --version
 Generated files include version metadata:
 
 ```markdown
-<!-- Generated by Project Foundation Template v2.1.0 -->
+<!-- Generated by Project Foundation Template v2.9.0 -->
 ```
 
 This helps track which version generated which files.
-
-## Priority and Versions
-
-Features are assigned to versions based on priority assessment:
-
-| Priority | Typical Version | Rationale |
-|----------|-----------------|-----------|
-| High | Next MINOR | Low risk, high impact, ship soon |
-| Medium | MINOR+1 or +2 | Moderate complexity, needs preparation |
-| Low | Later MINOR or MAJOR | Lower urgency or higher complexity |
 
 ## Questions
 
@@ -247,17 +323,21 @@ Use the latest stable release (no pre-release tags).
 
 ### "When will version X release?"
 
-When it's ready. Check GitHub issues for progress.
+When it is ready. Check GitHub issues and ROADMAP for progress.
 
 ### "Is my version out of date?"
 
 The generator will warn you if:
 - Advisory expiration has passed
-- A significantly newer version exists (future feature)
+- You are using an alpha/beta version
 
 ### "Can I skip versions when upgrading?"
 
-Yes, but read all intermediate release notes to understand cumulative changes.
+Yes, but read all intermediate release notes to understand cumulative changes. Check MIGRATION.md for any breaking changes.
+
+### "Why does the version say 'lite'?"
+
+The `-lite` suffix indicates this is the education-first edition that emerged from the ethical pivot. It will be dropped in v3.0.0 when the full modular architecture is complete.
 
 ---
 
@@ -265,6 +345,7 @@ Yes, but read all intermediate release notes to understand cumulative changes.
 
 - [ROADMAP.md](ROADMAP.md) - Planned features per version
 - [MIGRATION.md](MIGRATION.md) - Upgrading guidance
+- [CHANGELOG.md](CHANGELOG.md) - Version history
 - [CONTRIBUTING.md](CONTRIBUTING.md) - How versions are developed
 
 ---

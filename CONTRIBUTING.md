@@ -14,7 +14,7 @@ This project prioritizes **education over automation**. Before contributing, ple
 
 1. **Principle Zero**: "Do no harm, allow no harm" - All contributions must pass this test
 2. **WHAT/WHY/HOW**: Documentation explains what something is, why it matters, then how to use it
-3. **Education First**: Help users understand, don't just give them files
+3. **Education First**: Help users understand, do not just give them files
 4. **No Governance Theater**: Substance over appearance
 
 ## Fork-First Workflow
@@ -39,6 +39,9 @@ git remote -v
 # origin    https://github.com/YOUR-USERNAME/project-foundation-template.git (push)
 # upstream  https://github.com/malcolmhoward/project-foundation-template.git (fetch)
 # upstream  https://github.com/malcolmhoward/project-foundation-template.git (push)
+
+# 5. Install development dependencies
+pip install -r requirements-dev.txt
 ```
 
 ### Keeping Your Fork Updated
@@ -120,6 +123,10 @@ type(scope): description
 | Scope | Description |
 |-------|-------------|
 | `generator` | Changes to setup_foundation_lite.py |
+| `core` | Changes to core/ package |
+| `principles` | Changes to governance principles |
+| `guides` | Changes to documentation guides |
+| `presets` | Changes to governance presets |
 | `templates` | Changes to generated templates |
 | `docs` | Documentation files |
 | `ethics` | Ethical framework changes |
@@ -136,10 +143,10 @@ docs(ethics): clarify Principle Zero application
 chore(deps): update Python minimum version to 3.9
 
 # With body
-feat(generator): add JSON export option
+feat(principles): add deprecation policy principle
 
-Adds --export-json flag that outputs generated file paths
-and metadata in JSON format for tooling integration.
+Adds principle #21 for managing breaking changes and sunset features.
+Includes educational content explaining WHAT/WHY/HOW of deprecation.
 
 Closes #42
 
@@ -177,7 +184,7 @@ Reviewers evaluate PRs against these criteria:
 
 #### Ethical Alignment
 - [ ] Passes Principle Zero ("Do no harm, allow no harm")
-- [ ] Doesn't enable governance theater
+- [ ] Does not enable governance theater
 - [ ] Considers potential for misuse
 - [ ] Maintains educational focus
 
@@ -197,6 +204,7 @@ Reviewers evaluate PRs against these criteria:
 - [ ] Generator still runs correctly
 - [ ] Generated files are valid
 - [ ] Edge cases considered
+- [ ] Tests pass (`pytest`)
 
 ### What We Look For
 
@@ -206,9 +214,9 @@ Reviewers evaluate PRs against these criteria:
 Adds Docker template generation for projects that need containerization.
 
 ## Why This Matters
-Many projects need Docker support but don't know where to start.
+Many projects need Docker support but do not know where to start.
 This provides an educational foundation that explains:
-- What Docker does and why it's useful
+- What Docker does and why it is useful
 - Basic Dockerfile structure
 - When to use vs. not use containers
 
@@ -244,33 +252,46 @@ git checkout -b feat/42-your-feature
 - Add educational documentation
 - Test thoroughly
 
-### 3. Commit Your Changes
+### 3. Run Tests
+
+```bash
+# Run all tests
+pytest
+
+# Run with verbose output
+pytest -v
+
+# Run specific test file
+pytest tests/test_foundation_generator.py
+```
+
+### 4. Commit Your Changes
 
 ```bash
 git add .
 git commit -m "feat(scope): clear description"
 ```
 
-### 4. Push to Your Fork
+### 5. Push to Your Fork
 
 ```bash
 git push origin feat/42-your-feature
 ```
 
-### 5. Create Pull Request
+### 6. Create Pull Request
 
 - Go to your fork on GitHub
 - Click "Compare & pull request"
 - Fill out the PR template completely
 - Link related issues
 
-### 6. Address Review Feedback
+### 7. Address Review Feedback
 
 - Respond to all comments
 - Make requested changes
-- Push additional commits (don't force-push during review)
+- Push additional commits (do not force-push during review)
 
-### 7. After Approval
+### 8. After Approval
 
 - Maintainer will merge
 - Delete your branch
@@ -278,25 +299,213 @@ git push origin feat/42-your-feature
 ## Types of Contributions
 
 ### Documentation
+
 - Fix typos and clarify language
 - Add examples
 - Improve educational content
-- Translate (future)
+- Expand WHAT/WHY/HOW explanations
 
 ### Bug Fixes
+
 - Fix generator errors
 - Correct template formatting
 - Handle edge cases
 
 ### New Features
+
 - Propose via issue first
 - Include educational justification
 - Assess priority based on impact, effort, and risk
 
 ### Tests
+
 - Add test cases
 - Improve coverage
 - Test edge cases
+
+## Adding New Principles
+
+Want to add a new governance principle? Follow this process:
+
+### 1. Propose the Principle
+
+Open an issue with:
+- **WHAT**: What is this principle?
+- **WHY**: Why does it matter? What problem does it solve?
+- **HOW**: How would users implement it?
+- **Risks**: How could it be misused?
+
+### 2. Educational Content
+
+Draft the educational content that will be shown to users:
+
+```python
+# In core/education.py
+"new_principle": {
+    "name": "New Principle Name",
+    "what": "A clear definition of what this principle is.",
+    "why": "Why this principle matters and what problem it solves.",
+    "how": "How to implement and customize this principle.",
+}
+```
+
+### 3. Create the Principle Module
+
+Create `core/principles/new_principle.py`:
+
+```python
+"""
+New Principle - Brief description
+
+This module generates [description] for projects.
+
+Educational Focus:
+- WHAT: What this principle is
+- WHY: Why it matters
+- HOW: How to implement it
+"""
+
+from datetime import date
+from core.utils import SCRIPT_VERSION, OFFICIAL_REPO
+
+
+def generate_new_principle_content(project_name: str, **kwargs) -> str:
+    """Generate the content for this principle."""
+    today = date.today().isoformat()
+
+    return f"""# Title
+
+<!--
+TEMPLATE NOTICE: This is a template that MUST be customized.
+Generated by Project Foundation Template {SCRIPT_VERSION}
+Learn more: {OFFICIAL_REPO}
+-->
+
+## What Is This?
+
+[Explanation of what this file is]
+
+## Why It Matters
+
+[Explanation of why this matters]
+
+## How to Customize
+
+[Instructions for customization]
+
+---
+
+*Generated on {today} - CUSTOMIZE BEFORE USE*
+"""
+```
+
+### 4. Register the Principle
+
+Add to `core/principles/__init__.py`:
+
+```python
+from core.principles.new_principle import generate_new_principle_content
+```
+
+### 5. Add to Presets
+
+Update the appropriate preset(s) in `core/presets/`:
+
+```python
+# In the appropriate preset file
+PRINCIPLES = [
+    # ... existing principles ...
+    "new_principle",
+]
+```
+
+### 6. Add Tests
+
+Create tests in `tests/test_foundation_principles.py`:
+
+```python
+def test_new_principle_generation():
+    """Test new principle generates valid content."""
+    content = generate_new_principle_content("TestProject")
+    assert "TestProject" in content or "TEMPLATE NOTICE" in content
+    assert "CUSTOMIZE BEFORE USE" in content
+```
+
+### 7. Update Documentation
+
+- Add to ROADMAP.md if it is a new principle number
+- Update CLAUDE.md with the new principle
+- Update any relevant guides
+
+## Adding New Guides
+
+Want to add a new documentation guide? Follow this process:
+
+### 1. Propose the Guide
+
+Open an issue with:
+- **WHAT**: What is this guide about?
+- **WHY**: Why would users need this guide?
+- **HOW**: What will the guide teach?
+
+### 2. Create the Guide Module
+
+Create `core/guides/new_guide.py`:
+
+```python
+"""
+New Guide - Brief description
+
+Generates documentation guide for [topic].
+"""
+
+from datetime import date
+from core.utils import SCRIPT_VERSION, OFFICIAL_REPO
+
+
+GUIDE_INFO = {
+    "id": "new_guide",
+    "name": "New Guide Name",
+    "filename": "docs/guides/new-guide.md",
+    "description": "Brief description of what this guide covers.",
+}
+
+
+def generate_new_guide_content(project_name: str, **kwargs) -> str:
+    """Generate the guide content."""
+    today = date.today().isoformat()
+
+    return f"""# New Guide for {project_name}
+
+## What Is This Guide?
+
+[Explanation]
+
+## Why It Matters
+
+[Explanation]
+
+## How to Use This Guide
+
+[Instructions]
+
+---
+
+*Generated by Project Foundation Template {SCRIPT_VERSION}*
+"""
+```
+
+### 3. Register the Guide
+
+Add to `core/guides/__init__.py`:
+
+```python
+from core.guides.new_guide import generate_new_guide_content, GUIDE_INFO
+```
+
+### 4. Add Tests
+
+Create tests in `tests/test_foundation_guides.py`.
 
 ## Priority Assessment
 
@@ -312,7 +521,7 @@ Significant changes should include priority evaluation:
 
 ## Code of Conduct
 
-We don't have a separate Code of Conduct file because our [ETHICS.md](ETHICS.md) covers behavioral expectations. In summary:
+We do not have a separate Code of Conduct file because our [ETHICS.md](ETHICS.md) covers behavioral expectations. In summary:
 
 - Be respectful and constructive
 - Focus on education over ego
@@ -331,10 +540,19 @@ We don't have a separate Code of Conduct file because our [ETHICS.md](ETHICS.md)
 Contributors are recognized in:
 - Release notes
 - README acknowledgments
-- Git history (obviously)
+- Git history
 
 We value all contributions, from typo fixes to major features.
 
 ---
 
-*Contributing is about more than code—it's about helping others learn. Thank you for being part of that mission.*
+## Related Documents
+
+- [ETHICS.md](ETHICS.md) - Ethical framework
+- [ROADMAP.md](ROADMAP.md) - Feature roadmap
+- [SEMANTIC_VERSIONING.md](SEMANTIC_VERSIONING.md) - Versioning policy
+- [CLAUDE.md](CLAUDE.md) - LLM integration guide
+
+---
+
+*Contributing is about more than code. It is about helping others learn. Thank you for being part of that mission.*
