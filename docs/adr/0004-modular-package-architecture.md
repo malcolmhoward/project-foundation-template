@@ -190,11 +190,11 @@ from core.education import get_principle
 
 ## Related Decisions
 
-- ADR 0001: Education-First Approach
-- ADR 0002: Semantic Versioning Strategy
-- ADR 0003: Advisory Expiration
-- ADR 0005: Preset System (planned, v2.7.0)
-- ADR 0006: Plugin Architecture (planned, v3.0.0)
+- [ADR 0001: Education-First Approach](0001-education-first.md) (v2.1.0)
+- [ADR 0002: Semantic Versioning Strategy](0002-semantic-versioning-strategy.md) (v2.6.0)
+- [ADR 0003: Advisory Expiration System](0003-advisory-expiration.md) (v2.6.0)
+- [ADR 0005: Governance Preset System](0005-preset-system.md) (v2.7.0)
+- ADR 0006: Plugin Architecture (v2.11.0)
 
 ## References
 
