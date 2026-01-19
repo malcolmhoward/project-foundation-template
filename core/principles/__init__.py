@@ -29,6 +29,19 @@ from .issue_templates import PRINCIPLE as ISSUE_PRINCIPLE, EDUCATION as ISSUE_ED
 from .pr_template import PRINCIPLE as PR_PRINCIPLE, EDUCATION as PR_EDUCATION
 from .changelog import PRINCIPLE as CHANGELOG_PRINCIPLE, EDUCATION as CHANGELOG_EDUCATION
 
+# v3.0.0 principles
+from .quality_assurance import PRINCIPLE as QA_PRINCIPLE, EDUCATION as QA_EDUCATION
+from .code_standards import PRINCIPLE as CODE_STANDARDS_PRINCIPLE, EDUCATION as CODE_STANDARDS_EDUCATION
+from .versioning import PRINCIPLE as VERSIONING_PRINCIPLE, EDUCATION as VERSIONING_EDUCATION
+from .compliance_policy import PRINCIPLE as COMPLIANCE_PRINCIPLE, EDUCATION as COMPLIANCE_EDUCATION
+from .internationalization import PRINCIPLE as I18N_PRINCIPLE, EDUCATION as I18N_EDUCATION
+from .audit_logging import PRINCIPLE as AUDIT_PRINCIPLE, EDUCATION as AUDIT_EDUCATION
+from .dependency_scanning import PRINCIPLE as DEPSCAN_PRINCIPLE, EDUCATION as DEPSCAN_EDUCATION
+from .container_support import PRINCIPLE as CONTAINER_PRINCIPLE, EDUCATION as CONTAINER_EDUCATION
+from .deprecation_policy import PRINCIPLE as DEPRECATION_PRINCIPLE, EDUCATION as DEPRECATION_EDUCATION
+from .accessibility import PRINCIPLE as A11Y_PRINCIPLE, EDUCATION as A11Y_EDUCATION
+from .performance_standards import PRINCIPLE as PERF_PRINCIPLE, EDUCATION as PERF_EDUCATION
+
 # Aggregated principles dictionary (backward compatible with LITE_PRINCIPLES)
 ALL_PRINCIPLES = {
     "readme": README_PRINCIPLE,
@@ -43,6 +56,18 @@ ALL_PRINCIPLES = {
     "issue-templates": ISSUE_PRINCIPLE,
     "pr-template": PR_PRINCIPLE,
     "changelog": CHANGELOG_PRINCIPLE,
+    # v3.0.0 principles
+    "quality-assurance": QA_PRINCIPLE,
+    "code-standards": CODE_STANDARDS_PRINCIPLE,
+    "versioning": VERSIONING_PRINCIPLE,
+    "compliance-policy": COMPLIANCE_PRINCIPLE,
+    "internationalization": I18N_PRINCIPLE,
+    "audit-logging": AUDIT_PRINCIPLE,
+    "dependency-scanning": DEPSCAN_PRINCIPLE,
+    "container-support": CONTAINER_PRINCIPLE,
+    "deprecation-policy": DEPRECATION_PRINCIPLE,
+    "accessibility": A11Y_PRINCIPLE,
+    "performance-standards": PERF_PRINCIPLE,
 }
 
 # Aggregated education content dictionary (backward compatible with EDUCATION_CONTENT)
@@ -59,6 +84,18 @@ ALL_EDUCATION = {
     "issue-templates": ISSUE_EDUCATION,
     "pr-template": PR_EDUCATION,
     "changelog": CHANGELOG_EDUCATION,
+    # v3.0.0 principles
+    "quality-assurance": QA_EDUCATION,
+    "code-standards": CODE_STANDARDS_EDUCATION,
+    "versioning": VERSIONING_EDUCATION,
+    "compliance-policy": COMPLIANCE_EDUCATION,
+    "internationalization": I18N_EDUCATION,
+    "audit-logging": AUDIT_EDUCATION,
+    "dependency-scanning": DEPSCAN_EDUCATION,
+    "container-support": CONTAINER_EDUCATION,
+    "deprecation-policy": DEPRECATION_EDUCATION,
+    "accessibility": A11Y_EDUCATION,
+    "performance-standards": PERF_EDUCATION,
 }
 
 # Principle categories for organization
@@ -67,6 +104,13 @@ GOVERNANCE_PRINCIPLES = ["code-of-conduct", "security"]
 SECURITY_PRINCIPLES = ["enhanced-security", "secrets-detection"]
 ADVANCED_PRINCIPLES = ["adr", "ci-workflow"]
 COMMUNITY_PRINCIPLES = ["issue-templates", "pr-template", "changelog"]
+
+# v3.0.0 categories
+QUALITY_PRINCIPLES = ["quality-assurance", "code-standards", "performance-standards"]
+COMPLIANCE_PRINCIPLES = ["compliance-policy", "audit-logging"]
+INFRASTRUCTURE_PRINCIPLES = ["dependency-scanning", "container-support", "versioning"]
+INCLUSIVITY_PRINCIPLES = ["internationalization", "accessibility"]
+LIFECYCLE_PRINCIPLES = ["deprecation-policy"]
 
 # Version mapping (when each principle was introduced)
 PRINCIPLE_VERSIONS = {
@@ -82,6 +126,18 @@ PRINCIPLE_VERSIONS = {
     "issue-templates": "2.3.0",
     "pr-template": "2.3.0",
     "changelog": "2.3.0",
+    # v3.0.0 principles
+    "quality-assurance": "3.0.0",
+    "code-standards": "3.0.0",
+    "versioning": "3.0.0",
+    "compliance-policy": "3.0.0",
+    "internationalization": "3.0.0",
+    "audit-logging": "3.0.0",
+    "dependency-scanning": "3.0.0",
+    "container-support": "3.0.0",
+    "deprecation-policy": "3.0.0",
+    "accessibility": "3.0.0",
+    "performance-standards": "3.0.0",
 }
 
 
@@ -113,7 +169,8 @@ def get_principles_by_category(category: str) -> list:
     """Get principle IDs by category.
 
     Args:
-        category: One of 'core', 'governance', 'security', 'advanced', 'community'
+        category: One of 'core', 'governance', 'security', 'advanced', 'community',
+                  'quality', 'compliance', 'infrastructure', 'inclusivity', 'lifecycle'
 
     Returns:
         List of principle IDs in that category
@@ -124,6 +181,12 @@ def get_principles_by_category(category: str) -> list:
         "security": SECURITY_PRINCIPLES,
         "advanced": ADVANCED_PRINCIPLES,
         "community": COMMUNITY_PRINCIPLES,
+        # v3.0.0 categories
+        "quality": QUALITY_PRINCIPLES,
+        "compliance": COMPLIANCE_PRINCIPLES,
+        "infrastructure": INFRASTRUCTURE_PRINCIPLES,
+        "inclusivity": INCLUSIVITY_PRINCIPLES,
+        "lifecycle": LIFECYCLE_PRINCIPLES,
     }
     return categories.get(category.lower(), [])
 
@@ -169,6 +232,12 @@ __all__ = [
     "SECURITY_PRINCIPLES",
     "ADVANCED_PRINCIPLES",
     "COMMUNITY_PRINCIPLES",
+    # v3.0.0 categories
+    "QUALITY_PRINCIPLES",
+    "COMPLIANCE_PRINCIPLES",
+    "INFRASTRUCTURE_PRINCIPLES",
+    "INCLUSIVITY_PRINCIPLES",
+    "LIFECYCLE_PRINCIPLES",
     # Version mapping
     "PRINCIPLE_VERSIONS",
     # Helper functions
