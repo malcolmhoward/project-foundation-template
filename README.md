@@ -48,6 +48,11 @@ This project believes that good governance starts with understanding, not automa
 - Progressive governance adoption
 - Preset-specific principle selection
 
+### v2.8.0 - Modular Principles
+- Split governance principles into individual modules under `core/principles/`
+- Category groupings (core, governance, security, advanced, community)
+- WHAT/WHY/RISK education pattern per principle
+
 ## What Makes This Different
 
 Every template:
@@ -109,6 +114,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 2.7.0
+**Version**: 2.8.0
 **Status**: Active development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
