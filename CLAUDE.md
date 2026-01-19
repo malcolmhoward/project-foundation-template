@@ -21,9 +21,11 @@ This template can generate governance for any project—including instances that
 
 | File | Purpose |
 |------|---------|
-| `setup_foundation_lite.py` | Core generator (v2.1.0-lite, ~900 lines) |
+| `generate_foundation.py` | Main entrypoint (v3.0.0) |
+| `setup_foundation_lite.py` | Legacy entrypoint (deprecated) |
+| `core/` | Modular core package |
 | `ETHICS.md` | Ethical framework and safeguards |
-| `ROADMAP.md` | Version roadmap to v3.0.0 |
+| `ROADMAP.md` | Version roadmap |
 | `docs/adr/` | Architecture Decision Records |
 
 ## Working with This Codebase
@@ -64,8 +66,16 @@ Features should have clear educational value and align with Principle Zero.
 ## Commands
 
 ```bash
-# Run the generator
-python setup_foundation_lite.py --project-name "MyProject" --author-name "Author" --output-dir ./output
+# Run the generator (v3.0.0)
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ./output
+
+# With preset selection
+python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Author"
+
+# Discovery commands
+python generate_foundation.py --list-presets
+python generate_foundation.py --list-principles
+python generate_foundation.py --list-guides
 
 # Test generated output
 ls -la ./output/
@@ -80,6 +90,6 @@ ls -la ./output/
 
 ## Version Information
 
-- **Current**: v2.1.0-lite
-- **Advisory Expiration**: Check `setup_foundation_lite.py` for current date
-- **Roadmap Target**: v3.0.0 with modular plugin architecture
+- **Current**: v3.0.0
+- **Advisory Expiration**: Check `generate_foundation.py` for current date
+- **Architecture**: Modular core with plugin support

@@ -1,12 +1,16 @@
-# Project Foundation Template
+# Project Foundation Template (PFT)
 
 **Educational templates for thoughtful software governance**
+
+> **Governance** in software projects refers to the policies, processes, and documentation that guide how a project is developed, maintained, and contributed to. This includes things like contribution guidelines, security policies, codes of conduct, and architectural decision records.
 
 ---
 
 ## What is This?
 
-Project Foundation Template helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
+Project Foundation Template (PFT) helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, PFT generates the foundational files you need while teaching you *why* each piece matters.
+
+For definitions of terms used throughout this documentation, see the [Glossary](#glossary) section or the comprehensive [GLOSSARY.md](GLOSSARY.md).
 
 ---
 
@@ -16,7 +20,7 @@ This project is built on a fundamental principle:
 
 > **Principle Zero: "Do No Harm, Allow No Harm"**
 
-We believe governance templates carry responsibility. Unlike tools that prioritize speed over understanding, Project Foundation Template:
+We believe governance templates carry responsibility. Unlike tools that prioritize speed over understanding, PFT:
 
 - **Teaches before it generates** — Every template explains WHAT it is, WHY it matters, and the RISK of not having it
 - **Requires acknowledgment** — Users must understand that templates are starting points, not finished products
@@ -52,7 +56,7 @@ Create a new project directory and generate governance files directly into it:
 mkdir my-new-project && cd my-new-project
 
 # Run PFT from its location, outputting to current directory
-python /path/to/project-foundation-template/setup_foundation.py \
+python /path/to/project-foundation-template/generate_foundation.py \
   --project-name "MyProject" \
   --author-name "Your Name" \
   --output-dir .
@@ -66,7 +70,7 @@ Add governance to an existing project by targeting its directory:
 
 ```bash
 # From anywhere, target your existing project
-python /path/to/project-foundation-template/setup_foundation.py \
+python /path/to/project-foundation-template/generate_foundation.py \
   --project-name "ExistingProject" \
   --author-name "Your Name" \
   --output-dir /path/to/existing-project \
@@ -85,7 +89,7 @@ cd your-project
 git submodule add https://github.com/malcolmhoward/project-foundation-template.git tools/pft
 
 # Generate governance files to your project root
-python tools/pft/setup_foundation.py \
+python tools/pft/generate_foundation.py \
   --project-name "YourProject" \
   --author-name "Your Name" \
   --output-dir . \
@@ -106,7 +110,7 @@ Benefits of submodule approach:
 Non-interactive mode for automated environments:
 
 ```bash
-python setup_foundation.py \
+python generate_foundation.py \
   --non-interactive \
   --accept-terms \
   --preset standard \
@@ -122,7 +126,7 @@ Generate governance for multiple projects from a central location:
 ```bash
 # Generate for each project in a monorepo
 for project in frontend backend shared; do
-  python /path/to/pft/setup_foundation.py \
+  python /path/to/pft/generate_foundation.py \
     --non-interactive \
     --accept-terms \
     --preset light \
@@ -138,7 +142,7 @@ Use plugins to enforce organization-specific governance:
 
 ```bash
 # Create custom plugins in your org's shared location
-python setup_foundation.py \
+python generate_foundation.py \
   --plugins-dir /shared/org-governance-plugins \
   --preset enterprise \
   --project-name "CorpProject" \
@@ -149,10 +153,10 @@ python setup_foundation.py \
 ### Discover Available Options
 
 ```bash
-python setup_foundation.py --list-presets      # Show all governance presets
-python setup_foundation.py --list-principles   # Show all 23 principles
-python setup_foundation.py --list-guides       # Show all 15 implementation guides
-python setup_foundation.py --help              # Full command reference
+python generate_foundation.py --list-presets      # Show all governance presets
+python generate_foundation.py --list-principles   # Show all 23 principles
+python generate_foundation.py --list-guides       # Show all 15 implementation guides
+python generate_foundation.py --help              # Full command reference
 ```
 
 ---
@@ -259,7 +263,7 @@ Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK
 ```
 project-foundation-template/
 │
-├── setup_foundation.py          # Main entry point (v3.0.0)
+├── generate_foundation.py          # Main entry point (v3.0.0)
 ├── setup_foundation_lite.py     # Legacy entry point (deprecated)
 │
 ├── core/                        # Core modules
@@ -312,7 +316,7 @@ Create custom principles and guides for your organization:
 
 ```bash
 # Use plugins from a custom directory
-python setup_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
 ```
 
 See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
@@ -347,6 +351,26 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 - Branch naming conventions
 - Conventional commits
 - Educational review criteria
+
+---
+
+## Glossary
+
+Key terms used in this project:
+
+| Term | Definition |
+|------|------------|
+| **ADR** | Architecture Decision Record - documents capturing important architectural decisions |
+| **CI/CD** | Continuous Integration / Continuous Deployment - automated build and release pipelines |
+| **Governance** | The policies, processes, and documentation guiding project development and maintenance |
+| **i18n** | Internationalization - designing software for multiple languages and regions |
+| **a11y** | Accessibility - making software usable by people with disabilities |
+| **Preset** | A predefined collection of governance principles bundled for common use cases |
+| **Principle** | A governance concept that defines WHAT must be done, WHY it matters, and the RISK of omission |
+| **Guide** | Implementation documentation explaining HOW to apply a principle |
+| **SemVer** | Semantic Versioning - version numbers in MAJOR.MINOR.PATCH format |
+
+For a comprehensive glossary of software development terms, see [GLOSSARY.md](GLOSSARY.md).
 
 ---
 
