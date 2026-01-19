@@ -1,5 +1,5 @@
 # core - Project Foundation Template Package
-# v2.7.0 - Preset System
+# v2.8.0 - Modular Principles
 
 """
 Project Foundation Template - Modular Package
@@ -9,10 +9,11 @@ ethical project governance templates.
 
 Modules:
     config: Configuration loading and argument parsing
-    education: Educational content and principles
+    education: Educational content and ethical agreement
     ethics: Ethical safeguards and version advisory checks
     generator: Main EthicalFoundationGenerator class
     presets: Governance preset configurations
+    principles: Individual governance principle modules
     utils: Helper utilities
     templates: Template generation subpackage
 """
@@ -63,7 +64,21 @@ from core.presets import (
     get_preset_description,
 )
 
-__version__ = "2.7.0-lite"
+from core.principles import (
+    ALL_PRINCIPLES,
+    ALL_EDUCATION,
+    CORE_PRINCIPLES,
+    GOVERNANCE_PRINCIPLES,
+    SECURITY_PRINCIPLES,
+    ADVANCED_PRINCIPLES,
+    COMMUNITY_PRINCIPLES,
+    PRINCIPLE_VERSIONS,
+    get_principles_by_category,
+    get_principles_for_version,
+    list_all_principles,
+)
+
+__version__ = "2.8.0-lite"
 __all__ = [
     # Utils
     "SCRIPT_VERSION",
@@ -101,4 +116,16 @@ __all__ = [
     "get_preset",
     "list_presets",
     "get_preset_description",
+    # Principles
+    "ALL_PRINCIPLES",
+    "ALL_EDUCATION",
+    "CORE_PRINCIPLES",
+    "GOVERNANCE_PRINCIPLES",
+    "SECURITY_PRINCIPLES",
+    "ADVANCED_PRINCIPLES",
+    "COMMUNITY_PRINCIPLES",
+    "PRINCIPLE_VERSIONS",
+    "get_principles_by_category",
+    "get_principles_for_version",
+    "list_all_principles",
 ]
