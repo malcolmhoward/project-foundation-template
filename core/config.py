@@ -178,21 +178,21 @@ Templates must be customized for your specific needs.
 
 Examples:
   Interactive mode:
-    python setup_foundation.py --project-name MyProject --author-name "Jane Doe"
+    python generate_foundation.py --project-name MyProject --author-name "Jane Doe"
 
   Using a preset:
-    python setup_foundation.py --preset enterprise --project-name MyProject --author-name "Jane Doe"
+    python generate_foundation.py --preset enterprise --project-name MyProject --author-name "Jane Doe"
 
   Non-interactive mode (for CI/scripts):
-    python setup_foundation.py --non-interactive --accept-terms --project-name MyProject --author-name "Jane Doe"
+    python generate_foundation.py --non-interactive --accept-terms --project-name MyProject --author-name "Jane Doe"
 
   List available options:
-    python setup_foundation.py --list-presets
-    python setup_foundation.py --list-principles
-    python setup_foundation.py --list-guides
+    python generate_foundation.py --list-presets
+    python generate_foundation.py --list-principles
+    python generate_foundation.py --list-guides
 
   Using config file:
-    python setup_foundation.py --config .foundationrc
+    python generate_foundation.py --config .foundationrc
 
 Config file format (.foundationrc):
   {

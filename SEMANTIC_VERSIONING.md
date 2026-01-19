@@ -288,10 +288,10 @@ Our CHANGELOG follows [Keep a Changelog](https://keepachangelog.com):
 
 ## Version in Code
 
-The version is defined in `setup_foundation_lite.py` and `core/utils.py`:
+The version is defined in `generate_foundation.py` and `core/utils.py`:
 
 ```python
-SCRIPT_VERSION = "2.9.0-lite"
+SCRIPT_VERSION = "3.0.0"
 EXPIRATION_DATE = date(2026, 6, 1)
 ```
 
@@ -302,7 +302,7 @@ Both should be updated together during releases.
 ### Current Version
 
 ```bash
-python setup_foundation_lite.py --version
+python generate_foundation.py --version
 ```
 
 ### Version in Generated Files

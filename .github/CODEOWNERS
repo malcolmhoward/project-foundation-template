@@ -6,6 +6,7 @@
 
 # Ethical framework - requires careful review
 ETHICS.md @malcolmhoward
+generate_foundation.py @malcolmhoward
 setup_foundation_lite.py @malcolmhoward
 
 # Documentation
