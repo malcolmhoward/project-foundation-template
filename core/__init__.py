@@ -1,5 +1,5 @@
 # core - Project Foundation Template Package
-# v2.8.0 - Modular Principles
+# v2.9.0 - Modular Guides
 
 """
 Project Foundation Template - Modular Package
@@ -13,7 +13,8 @@ Modules:
     ethics: Ethical safeguards and version advisory checks
     generator: Main EthicalFoundationGenerator class
     presets: Governance preset configurations
-    principles: Individual governance principle modules
+    principles: Individual governance principle modules (WHAT/WHY)
+    guides: Implementation guidance modules (HOW)
     utils: Helper utilities
     templates: Template generation subpackage
 """
@@ -78,7 +79,22 @@ from core.principles import (
     list_all_principles,
 )
 
-__version__ = "2.8.0-lite"
+from core.guides import (
+    ALL_GUIDES,
+    ALL_GUIDE_CONTENT,
+    GOVERNANCE_GUIDES,
+    DEVELOPMENT_GUIDES,
+    SECURITY_GUIDES,
+    GUIDE_COMPLEXITY,
+    GUIDE_VERSIONS,
+    get_guide,
+    get_guide_content,
+    get_guides_by_category,
+    get_guides_by_complexity,
+    list_all_guides,
+)
+
+__version__ = "2.9.0-lite"
 __all__ = [
     # Utils
     "SCRIPT_VERSION",
@@ -128,4 +144,17 @@ __all__ = [
     "get_principles_by_category",
     "get_principles_for_version",
     "list_all_principles",
+    # Guides
+    "ALL_GUIDES",
+    "ALL_GUIDE_CONTENT",
+    "GOVERNANCE_GUIDES",
+    "DEVELOPMENT_GUIDES",
+    "SECURITY_GUIDES",
+    "GUIDE_COMPLEXITY",
+    "GUIDE_VERSIONS",
+    "get_guide",
+    "get_guide_content",
+    "get_guides_by_category",
+    "get_guides_by_complexity",
+    "list_all_guides",
 ]
