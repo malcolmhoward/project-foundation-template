@@ -1,39 +1,16 @@
-# Project Foundation Template (PFT)
+# Project Foundation Template
 
 **Educational templates for thoughtful software governance**
-
-> **Governance** in software projects refers to the policies, processes, and documentation that guide how a project is developed, maintained, and contributed to. This includes things like contribution guidelines, security policies, codes of conduct, and architectural decision records.
 
 ---
 
 ## What is This?
 
-Project Foundation Template (PFT) helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, PFT generates the foundational files you need while teaching you *why* each piece matters.
+Project Foundation Template helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
 
-For definitions of terms used throughout this documentation, see the [Glossary](#glossary) section or the comprehensive [GLOSSARY.md](GLOSSARY.md).
+**Core Philosophy**: Education First — understand WHY before HOW.
 
----
-
-## Ethical Foundation
-
-This project is built on a fundamental principle:
-
-> **Principle Zero: "Do No Harm, Allow No Harm"**
-
-We believe governance templates carry responsibility. Unlike tools that prioritize speed over understanding, PFT:
-
-- **Teaches before it generates** — Every template explains WHAT it is, WHY it matters, and the RISK of not having it
-- **Requires acknowledgment** — Users must understand that templates are starting points, not finished products
-- **Prevents misuse** — We intentionally limit features that could enable governance theater or mass automation
-- **Expires gracefully** — Advisory dates prompt users to check for updates rather than running outdated governance
-
-This framework emerged from collaborative work between human and AI, embodying the principle of **Mutual Fallibility** — recognizing that both parties have cognitive biases and benefit from structured verification.
-
-See [ETHICS.md](ETHICS.md) for our complete ethical framework.
-
----
-
-## Who is This For?
+### Who is This For?
 
 | You Are... | This Helps You... |
 |------------|-------------------|
@@ -47,116 +24,36 @@ See [ETHICS.md](ETHICS.md) for our complete ethical framework.
 
 ## Quick Start
 
-### Scenario 1: New Project (Interactive Learning)
-
-Create a new project directory and generate governance files directly into it:
+### For New Users (Interactive Learning Mode)
 
 ```bash
-# Create and enter your project directory
-mkdir my-new-project && cd my-new-project
-
-# Run PFT from its location, outputting to current directory
-python /path/to/project-foundation-template/generate_foundation.py \
-  --project-name "MyProject" \
-  --author-name "Your Name" \
-  --output-dir .
+python setup_foundation.py --project-name "MyProject" --author-name "Your Name"
 ```
 
 This walks you through each decision, explaining what each file does and why it matters.
 
-### Scenario 2: Existing Project
-
-Add governance to an existing project by targeting its directory:
+### For Experienced Users (Preset Selection)
 
 ```bash
-# From anywhere, target your existing project
-python /path/to/project-foundation-template/generate_foundation.py \
-  --project-name "ExistingProject" \
-  --author-name "Your Name" \
-  --output-dir /path/to/existing-project \
-  --preset standard
+# Choose your governance level
+python setup_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name"
+python setup_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Default
+python setup_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name"
 ```
 
-Files are generated into the target directory. Existing files are not overwritten without confirmation.
-
-### Scenario 3: Git Submodule Integration
-
-Embed PFT within your project for version-controlled governance updates:
+### For CI/CD Pipelines
 
 ```bash
-# Add PFT as a submodule in your project
-cd your-project
-git submodule add https://github.com/malcolmhoward/project-foundation-template.git tools/pft
-
-# Generate governance files to your project root
-python tools/pft/generate_foundation.py \
-  --project-name "YourProject" \
-  --author-name "Your Name" \
-  --output-dir . \
-  --preset standard
-
-# Commit the submodule and generated files
-git add .gitmodules tools/pft
-git commit -m "Add Project Foundation Template as submodule"
-```
-
-Benefits of submodule approach:
-- Lock to a specific PFT version
-- Update governance templates by updating the submodule
-- Keep PFT separate from your project code
-
-### Scenario 4: CI/CD Pipeline Integration
-
-Non-interactive mode for automated environments:
-
-```bash
-python generate_foundation.py \
-  --non-interactive \
-  --accept-terms \
-  --preset standard \
-  --project-name "MyProject" \
-  --author-name "CI Bot" \
-  --output-dir ./output
-```
-
-### Scenario 5: Monorepo / Multi-Project
-
-Generate governance for multiple projects from a central location:
-
-```bash
-# Generate for each project in a monorepo
-for project in frontend backend shared; do
-  python /path/to/pft/generate_foundation.py \
-    --non-interactive \
-    --accept-terms \
-    --preset light \
-    --project-name "$project" \
-    --author-name "Team" \
-    --output-dir "./packages/$project"
-done
-```
-
-### Scenario 6: Organization-Wide Standards
-
-Use plugins to enforce organization-specific governance:
-
-```bash
-# Create custom plugins in your org's shared location
-python generate_foundation.py \
-  --plugins-dir /shared/org-governance-plugins \
-  --preset enterprise \
-  --project-name "CorpProject" \
-  --author-name "Enterprise Team" \
-  --output-dir ./new-project
+python setup_foundation.py --non-interactive --accept-terms --preset standard \
+  --project-name "MyProject" --author-name "Your Name" --output-dir ./output
 ```
 
 ### Discover Available Options
 
 ```bash
-python generate_foundation.py --list-presets      # Show all governance presets
-python generate_foundation.py --list-principles   # Show all 23 principles
-python generate_foundation.py --list-guides       # Show all 15 implementation guides
-python generate_foundation.py --help              # Full command reference
+python setup_foundation.py --list-presets      # Show all governance presets
+python setup_foundation.py --list-principles   # Show all 23 principles
+python setup_foundation.py --list-guides       # Show all 15 implementation guides
 ```
 
 ---
@@ -263,7 +160,7 @@ Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK
 ```
 project-foundation-template/
 │
-├── generate_foundation.py          # Main entry point (v3.0.0)
+├── setup_foundation.py          # Main entry point (v3.0.0)
 ├── setup_foundation_lite.py     # Legacy entry point (deprecated)
 │
 ├── core/                        # Core modules
@@ -275,22 +172,79 @@ project-foundation-template/
 │   ├── utils.py                # Utility functions
 │   │
 │   ├── principles/             # 23 Governance Principles
+│   │   ├── __init__.py         # Principle aggregation
+│   │   ├── readme.py           # README principle
+│   │   ├── contributing.py     # Contributing principle
+│   │   ├── license.py          # License principle
+│   │   └── ...                 # (20 more principles)
+│   │
 │   ├── guides/                 # 15 Implementation Guides
+│   │   ├── __init__.py         # Guide aggregation
+│   │   ├── versioning.py       # Versioning guide
+│   │   ├── code_review.py      # Code review guide
+│   │   └── ...                 # (13 more guides)
+│   │
 │   ├── presets/                # Governance Presets
+│   │   ├── __init__.py         # Preset aggregation
+│   │   ├── minimal.py          # 3 principles
+│   │   ├── light.py            # 6 principles
+│   │   ├── standard.py         # 9 principles (default)
+│   │   ├── strict.py           # 12 principles
+│   │   └── enterprise.py       # 23 principles
+│   │
 │   └── plugins/                # Plugin System
+│       ├── __init__.py         # Plugin API
+│       ├── base.py             # Base classes
+│       ├── loader.py           # Plugin discovery
+│       └── validator.py        # Plugin validation
+│
+├── templates/                   # Generated file templates
+│   ├── markdown/               # Documentation templates
+│   ├── workflows/              # GitHub Actions templates
+│   └── configs/                # Configuration templates
+│
+├── tests/                       # Test suite
+│   ├── test_foundation_*.py    # Core module tests
+│   └── ...
 │
 ├── docs/                        # Documentation
 │   ├── adr/                    # Architecture Decision Records
-│   └── case-studies/           # Real-world adoption stories
+│   │   └── 0001-education-first.md
+│   └── guides/                 # Implementation guides
 │
-├── ETHICS.md                    # Ethical framework (start here)
 ├── CLAUDE.md                    # LLM integration guidance
+├── ETHICS.md                    # Ethical framework
 ├── ROADMAP.md                   # Version roadmap
 ├── MIGRATION.md                 # Migration guide
 ├── CONTRIBUTING.md              # How to contribute
 ├── CHANGELOG.md                 # Version history
+├── SECURITY.md                  # Security policy
+├── CODE_OF_CONDUCT.md          # Community standards
 └── LICENSE                      # Apache 2.0
 ```
+
+---
+
+## Key Concepts
+
+### Education First
+
+Every template teaches before it generates:
+- **WHAT**: What is this file/principle?
+- **WHY**: Why does it matter?
+- **HOW**: How do you implement it?
+- **RISK**: What happens without it?
+
+### Principle Zero: "Do No Harm, Allow No Harm"
+
+This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. See [ETHICS.md](ETHICS.md) for our complete ethical framework.
+
+### Templates vs. Implementation
+
+Templates are starting points, not finished products. Every generated file requires:
+- Review and customization
+- Understanding of its purpose
+- Ongoing maintenance
 
 ---
 
@@ -298,15 +252,14 @@ project-foundation-template/
 
 | Document | Purpose |
 |----------|---------|
-| [ETHICS.md](ETHICS.md) | Ethical framework and Principle Zero |
 | [CLAUDE.md](CLAUDE.md) | LLM/AI integration guidance |
+| [ETHICS.md](ETHICS.md) | Ethical framework and Principle Zero |
 | [ROADMAP.md](ROADMAP.md) | Version roadmap and future plans |
 | [MIGRATION.md](MIGRATION.md) | Upgrading between versions |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
 | [SEMANTIC_VERSIONING.md](SEMANTIC_VERSIONING.md) | Versioning policy |
 | [docs/adr/](docs/adr/) | Architecture Decision Records |
-| [docs/case-studies/](docs/case-studies/) | Real-world adoption stories |
 
 ---
 
@@ -316,7 +269,7 @@ Create custom principles and guides for your organization:
 
 ```bash
 # Use plugins from a custom directory
-python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
+python setup_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
 ```
 
 See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
@@ -354,29 +307,15 @@ We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
 
 ---
 
-## Glossary
-
-Key terms used in this project:
-
-| Term | Definition |
-|------|------------|
-| **ADR** | Architecture Decision Record - documents capturing important architectural decisions |
-| **CI/CD** | Continuous Integration / Continuous Deployment - automated build and release pipelines |
-| **Governance** | The policies, processes, and documentation guiding project development and maintenance |
-| **i18n** | Internationalization - designing software for multiple languages and regions |
-| **a11y** | Accessibility - making software usable by people with disabilities |
-| **Preset** | A predefined collection of governance principles bundled for common use cases |
-| **Principle** | A governance concept that defines WHAT must be done, WHY it matters, and the RISK of omission |
-| **Guide** | Implementation documentation explaining HOW to apply a principle |
-| **SemVer** | Semantic Versioning - version numbers in MAJOR.MINOR.PATCH format |
-
-For a comprehensive glossary of software development terms, see [GLOSSARY.md](GLOSSARY.md).
-
----
-
 ## License
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
+
+---
+
+## Acknowledgments
+
+This framework emerged from collaborative work between human and AI, embodying the principle of **Mutual Fallibility** — both parties have cognitive biases and benefit from structured verification protocols.
 
 ---
 
