@@ -25,6 +25,10 @@ Each ADR follows this structure:
 | ADR | Title | Status | Date |
 |-----|-------|--------|------|
 | [0001](0001-education-first.md) | Education-First Approach | Accepted | 2025-10-29 |
+| [0002](0002-semantic-versioning-strategy.md) | Semantic Versioning Strategy | Accepted | 2026-01-18 |
+| [0003](0003-advisory-expiration.md) | Advisory Expiration System | Accepted | 2026-01-18 |
+| [0004](0004-modular-package-architecture.md) | Modular Package Architecture (v2.6.0) | Accepted | 2026-01-18 |
+| [0005](0005-preset-system.md) | Governance Preset System (v2.7.0) | Accepted | 2026-01-18 |
 
 ## Creating New ADRs
 
