@@ -17,7 +17,7 @@ python setup_foundation_lite.py --project-name "My Project" --author-name "Name"
 
 **After (v3.0.0):**
 ```bash
-python setup_foundation.py --project-name "My Project" --author-name "Name"
+python generate_foundation.py --project-name "My Project" --author-name "Name"
 ```
 
 The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
@@ -28,32 +28,32 @@ The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
 
 ```bash
 # Minimal (5 principles)
-python setup_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
+python generate_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
 
 # Standard (15 principles) - Default
-python setup_foundation.py --preset standard --project-name "My Project" --author-name "Name"
+python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
 
 # Enterprise (23 principles)
-python setup_foundation.py --preset enterprise --project-name "My Project" --author-name "Name"
+python generate_foundation.py --preset enterprise --project-name "My Project" --author-name "Name"
 ```
 
 #### Discovery Commands
 
 ```bash
-python setup_foundation.py --list-presets      # Show available presets
-python setup_foundation.py --list-principles   # Show available principles
-python setup_foundation.py --list-guides       # Show available guides
+python generate_foundation.py --list-presets      # Show available presets
+python generate_foundation.py --list-principles   # Show available principles
+python generate_foundation.py --list-guides       # Show available guides
 ```
 
 #### Plugin Support (v2.11.0+)
 
 ```bash
-python setup_foundation.py --plugins-dir ./my-plugins --project-name "My Project" --author-name "Name"
+python generate_foundation.py --plugins-dir ./my-plugins --project-name "My Project" --author-name "Name"
 ```
 
 ### v3.0.0 Migration Checklist
 
-- [ ] Update scripts: `setup_foundation_lite.py` → `setup_foundation.py`
+- [ ] Update scripts: `setup_foundation_lite.py` → `generate_foundation.py`
 - [ ] Review preset options (may simplify your command line)
 - [ ] Update CI/CD pipelines referencing old entrypoint
 - [ ] Test with existing configuration files

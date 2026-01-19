@@ -14,11 +14,11 @@ BREAKING CHANGES from v2.x:
     - Modular architecture with core/ package
 
 Usage:
-    python setup_foundation.py --project-name "My Project" --author-name "Name"
-    python setup_foundation.py --preset enterprise --all
-    python setup_foundation.py --list-presets
-    python setup_foundation.py --list-principles
-    python setup_foundation.py --list-guides
+    python generate_foundation.py --project-name "My Project" --author-name "Name"
+    python generate_foundation.py --preset enterprise --all
+    python generate_foundation.py --list-presets
+    python generate_foundation.py --list-principles
+    python generate_foundation.py --list-guides
 
 Copyright (c) 2025 Malcolm Howard
 Licensed under the Apache License, Version 2.0
@@ -114,7 +114,7 @@ Use --preset <name> to apply a preset configuration.
         print()
 
     print("""
-Usage: python setup_foundation.py --preset standard --project-name "My Project" --author-name "Name"
+Usage: python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
 
 For more details on a specific preset, see the documentation.
 """)
@@ -293,14 +293,14 @@ Error: Missing required arguments
 {error_message}
 
 Quick help:
-  python setup_foundation.py --project-name "MyProject" --author-name "Your Name"
-  python setup_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"
-  python setup_foundation.py --help
+  python generate_foundation.py --project-name "MyProject" --author-name "Your Name"
+  python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"
+  python generate_foundation.py --help
 
 Discovery commands:
-  python setup_foundation.py --list-presets
-  python setup_foundation.py --list-principles
-  python setup_foundation.py --list-guides
+  python generate_foundation.py --list-presets
+  python generate_foundation.py --list-principles
+  python generate_foundation.py --list-guides
 """)
         return 1
 
