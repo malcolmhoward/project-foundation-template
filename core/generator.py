@@ -13,39 +13,23 @@ import time
 from datetime import date, datetime
 from pathlib import Path
 
-<<<<<<< HEAD:core/generator.py
 from core.utils import (
-=======
-from foundation.utils import (
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/generator.py
     SCRIPT_VERSION,
     OFFICIAL_REPO,
     EXPIRATION_DATE,
 )
 
-<<<<<<< HEAD:core/generator.py
 from core.education import (
-=======
-from foundation.education import (
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/generator.py
     LITE_PRINCIPLES,
     EDUCATION_CONTENT,
 )
 
-<<<<<<< HEAD:core/generator.py
 from core.ethics import (
-=======
-from foundation.ethics import (
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/generator.py
     check_version_advisory,
     show_ethical_agreement,
 )
 
-<<<<<<< HEAD:core/generator.py
 from core.templates import (
-=======
-from foundation.templates import (
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/generator.py
     # Core templates
     generate_readme_content,
     generate_contributing_content,
@@ -120,11 +104,7 @@ class EthicalFoundationGenerator:
         """Advisory version check - warns but doesn't block.
 
         This is a thin wrapper around the standalone check_version_advisory
-<<<<<<< HEAD:core/generator.py
         function from core.ethics for backward compatibility.
-=======
-        function from foundation.ethics for backward compatibility.
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/generator.py
         """
         return check_version_advisory(
             expiration_date=EXPIRATION_DATE,
@@ -136,11 +116,7 @@ class EthicalFoundationGenerator:
         """Display ethical use agreement and get acknowledgment.
 
         This is a thin wrapper around the standalone show_ethical_agreement
-<<<<<<< HEAD:core/generator.py
         function from core.ethics for backward compatibility.
-=======
-        function from foundation.ethics for backward compatibility.
->>>>>>> 2d1b774 (refactor(v3.0.0): Phase 1 - Extract generator and ethics modules):foundation/generator.py
         """
         return show_ethical_agreement(
             is_interactive=self.is_interactive,
