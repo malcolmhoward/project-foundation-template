@@ -17,6 +17,7 @@ This modular structure provides:
     - Clear separation from template generation
 """
 
+# Existing guides (v2.9.0)
 from .versioning import GUIDE as VERSIONING_GUIDE, CONTENT as VERSIONING_CONTENT
 from .code_review import GUIDE as CODE_REVIEW_GUIDE, CONTENT as CODE_REVIEW_CONTENT
 from .release_process import GUIDE as RELEASE_GUIDE, CONTENT as RELEASE_CONTENT
@@ -24,49 +25,106 @@ from .changelog import GUIDE as CHANGELOG_GUIDE, CONTENT as CHANGELOG_CONTENT
 from .security_disclosure import GUIDE as SECURITY_DISCLOSURE_GUIDE, CONTENT as SECURITY_DISCLOSURE_CONTENT
 from .adr import GUIDE as ADR_GUIDE, CONTENT as ADR_CONTENT
 
+# New guides (v3.0.0)
+from .test_strategies import GUIDE as TEST_STRATEGIES_GUIDE, CONTENT as TEST_STRATEGIES_CONTENT
+from .dependency_guide import GUIDE as DEPENDENCY_GUIDE, CONTENT as DEPENDENCY_CONTENT
+from .compliance_guide import GUIDE as COMPLIANCE_GUIDE, CONTENT as COMPLIANCE_CONTENT
+from .api_standards import GUIDE as API_STANDARDS_GUIDE, CONTENT as API_STANDARDS_CONTENT
+from .troubleshooting import GUIDE as TROUBLESHOOTING_GUIDE, CONTENT as TROUBLESHOOTING_CONTENT
+from .faq import GUIDE as FAQ_GUIDE, CONTENT as FAQ_CONTENT
+from .glossary import GUIDE as GLOSSARY_GUIDE, CONTENT as GLOSSARY_CONTENT
+from .coding_standards import GUIDE as CODING_STANDARDS_GUIDE, CONTENT as CODING_STANDARDS_CONTENT
+from .onboarding import GUIDE as ONBOARDING_GUIDE, CONTENT as ONBOARDING_CONTENT
+
 # Aggregated guides dictionary
 ALL_GUIDES = {
+    # Existing guides (v2.9.0)
     "versioning": VERSIONING_GUIDE,
     "code-review": CODE_REVIEW_GUIDE,
     "release-process": RELEASE_GUIDE,
     "changelog": CHANGELOG_GUIDE,
     "security-disclosure": SECURITY_DISCLOSURE_GUIDE,
     "adr": ADR_GUIDE,
+    # New guides (v3.0.0)
+    "test-strategies": TEST_STRATEGIES_GUIDE,
+    "dependency-guide": DEPENDENCY_GUIDE,
+    "compliance-guide": COMPLIANCE_GUIDE,
+    "api-standards": API_STANDARDS_GUIDE,
+    "troubleshooting": TROUBLESHOOTING_GUIDE,
+    "faq": FAQ_GUIDE,
+    "glossary": GLOSSARY_GUIDE,
+    "coding-standards": CODING_STANDARDS_GUIDE,
+    "onboarding": ONBOARDING_GUIDE,
 }
 
 # Aggregated content dictionary
 ALL_GUIDE_CONTENT = {
+    # Existing guides (v2.9.0)
     "versioning": VERSIONING_CONTENT,
     "code-review": CODE_REVIEW_CONTENT,
     "release-process": RELEASE_CONTENT,
     "changelog": CHANGELOG_CONTENT,
     "security-disclosure": SECURITY_DISCLOSURE_CONTENT,
     "adr": ADR_CONTENT,
+    # New guides (v3.0.0)
+    "test-strategies": TEST_STRATEGIES_CONTENT,
+    "dependency-guide": DEPENDENCY_CONTENT,
+    "compliance-guide": COMPLIANCE_CONTENT,
+    "api-standards": API_STANDARDS_CONTENT,
+    "troubleshooting": TROUBLESHOOTING_CONTENT,
+    "faq": FAQ_CONTENT,
+    "glossary": GLOSSARY_CONTENT,
+    "coding-standards": CODING_STANDARDS_CONTENT,
+    "onboarding": ONBOARDING_CONTENT,
 }
 
 # Guide categories
-GOVERNANCE_GUIDES = ["versioning", "release-process", "changelog"]
-DEVELOPMENT_GUIDES = ["code-review", "adr"]
+GOVERNANCE_GUIDES = ["versioning", "release-process", "changelog", "compliance-guide"]
+DEVELOPMENT_GUIDES = ["code-review", "adr", "test-strategies", "coding-standards", "api-standards"]
 SECURITY_GUIDES = ["security-disclosure"]
+ONBOARDING_GUIDES = ["onboarding", "glossary", "faq", "troubleshooting"]
+OPERATIONS_GUIDES = ["dependency-guide"]
 
 # Complexity levels
 GUIDE_COMPLEXITY = {
+    # Existing guides (v2.9.0)
     "versioning": "beginner",
     "code-review": "intermediate",
     "release-process": "intermediate",
     "changelog": "beginner",
     "security-disclosure": "advanced",
     "adr": "intermediate",
+    # New guides (v3.0.0)
+    "test-strategies": "intermediate",
+    "dependency-guide": "intermediate",
+    "compliance-guide": "advanced",
+    "api-standards": "advanced",
+    "troubleshooting": "intermediate",
+    "faq": "beginner",
+    "glossary": "beginner",
+    "coding-standards": "intermediate",
+    "onboarding": "beginner",
 }
 
 # Version mapping (when each guide was introduced)
 GUIDE_VERSIONS = {
+    # Existing guides (v2.9.0)
     "versioning": "2.9.0",
     "code-review": "2.9.0",
     "release-process": "2.9.0",
     "changelog": "2.9.0",
     "security-disclosure": "2.9.0",
     "adr": "2.9.0",
+    # New guides (v3.0.0)
+    "test-strategies": "3.0.0",
+    "dependency-guide": "3.0.0",
+    "compliance-guide": "3.0.0",
+    "api-standards": "3.0.0",
+    "troubleshooting": "3.0.0",
+    "faq": "3.0.0",
+    "glossary": "3.0.0",
+    "coding-standards": "3.0.0",
+    "onboarding": "3.0.0",
 }
 
 
@@ -98,7 +156,7 @@ def get_guides_by_category(category: str) -> list:
     """Get guide IDs by category.
 
     Args:
-        category: One of 'governance', 'development', 'security'
+        category: One of 'governance', 'development', 'security', 'onboarding', 'operations'
 
     Returns:
         List of guide IDs in that category
@@ -107,6 +165,8 @@ def get_guides_by_category(category: str) -> list:
         "governance": GOVERNANCE_GUIDES,
         "development": DEVELOPMENT_GUIDES,
         "security": SECURITY_GUIDES,
+        "onboarding": ONBOARDING_GUIDES,
+        "operations": OPERATIONS_GUIDES,
     }
     return categories.get(category.lower(), [])
 
@@ -143,6 +203,8 @@ __all__ = [
     "GOVERNANCE_GUIDES",
     "DEVELOPMENT_GUIDES",
     "SECURITY_GUIDES",
+    "ONBOARDING_GUIDES",
+    "OPERATIONS_GUIDES",
     # Mappings
     "GUIDE_COMPLEXITY",
     "GUIDE_VERSIONS",
