@@ -1,6 +1,86 @@
 # Migration Guide
 
-This document helps users understand the transition from the enterprise edition to the lite edition and provides guidance on feature reintroduction.
+This document helps you migrate between versions of Project Foundation Template.
+
+---
+
+## Migrating to v3.0.0 (Breaking Changes)
+
+Version 3.0.0 introduces a **breaking change**: a new entrypoint script.
+
+### Breaking Change: New Entrypoint
+
+**Before (v2.x):**
+```bash
+python setup_foundation_lite.py --project-name "My Project" --author-name "Name"
+```
+
+**After (v3.0.0):**
+```bash
+python setup_foundation.py --project-name "My Project" --author-name "Name"
+```
+
+The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
+
+### New Features in v3.0.0
+
+#### Preset Selection
+
+```bash
+# Minimal (5 principles)
+python setup_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
+
+# Standard (15 principles) - Default
+python setup_foundation.py --preset standard --project-name "My Project" --author-name "Name"
+
+# Enterprise (23 principles)
+python setup_foundation.py --preset enterprise --project-name "My Project" --author-name "Name"
+```
+
+#### Discovery Commands
+
+```bash
+python setup_foundation.py --list-presets      # Show available presets
+python setup_foundation.py --list-principles   # Show available principles
+python setup_foundation.py --list-guides       # Show available guides
+```
+
+#### Plugin Support (v2.11.0+)
+
+```bash
+python setup_foundation.py --plugins-dir ./my-plugins --project-name "My Project" --author-name "Name"
+```
+
+### v3.0.0 Migration Checklist
+
+- [ ] Update scripts: `setup_foundation_lite.py` → `setup_foundation.py`
+- [ ] Review preset options (may simplify your command line)
+- [ ] Update CI/CD pipelines referencing old entrypoint
+- [ ] Test with existing configuration files
+
+### Backward Compatibility
+
+All v2.x command-line arguments remain supported:
+`--project-name`, `--author-name`, `--output-dir`, `--license`, `--all`, `--coc`, `--security`, `--enhanced-security`, `--secrets-detection`, `--changelog`, `--issue-templates`, `--pr-template`, `--adr`, `--ci-workflow`, `--non-interactive`, `--accept-terms`, `--config`, `--export-json`
+
+### Config File Updates
+
+Configuration files now support preset selection:
+
+```json
+{
+  "project_name": "My Project",
+  "author_name": "Author",
+  "preset": "standard",
+  "plugins_dir": "./plugins"
+}
+```
+
+---
+
+## Historical Context
+
+This section documents the original transition from enterprise to lite edition.
 
 ## Understanding the Versions
 
@@ -43,58 +123,30 @@ This created false confidence and enabled potential misuse.
 
 ## Feature Reintroduction Timeline
 
-### 23 Governance Principles
+### 23 Governance Principles (All Available in v2.10.0+)
 
-| # | Principle | Current Status | Target Version |
-|---|-----------|----------------|----------------|
-| 1 | README Documentation | ✅ Available | v2.1.0 |
-| 2 | Contribution Guidelines | ✅ Available | v2.1.0 |
-| 3 | License Selection | ✅ Available | v2.1.0 |
-| 4 | Code of Conduct | ✅ Available | v2.1.0 |
-| 5 | Security Basics | ✅ Available | v2.1.0 |
-| 6 | Quality Assurance | ⏳ Planned | v2.4.0 |
-| 7 | Code Standards | ⏳ Planned | v2.4.0 |
-| 8 | Versioning | ⏳ Planned | v2.4.0 |
-| 9 | Compliance Policy | ⏳ Planned | v2.4.0 |
-| 10 | Security Policy (Advanced) | ⏳ Planned | v2.4.0 |
-| 11 | Issue Templates | ⏳ Planned | v2.3.0 |
-| 12 | Pull Request Templates | ⏳ Planned | v2.3.0 |
-| 13 | Internationalization | ⏳ Planned | v2.5.0 |
-| 14 | Audit Logging | ⏳ Planned | v2.5.0 |
-| 15 | Dependency Scanning | ⏳ Planned | v2.5.0 |
-| 16 | Container Support | ⏳ Planned | v2.5.0 |
-| 17 | Documentation System | ⏳ Planned | v2.5.0 |
-| 18 | CI/CD Pipelines | ⏳ Planned | v2.5.0 |
-| 19 | Branch Protection | ⏳ Planned | v2.5.0 |
-| 20 | Release Management | ⏳ Planned | v2.5.0 |
-| 21 | Deprecation Policy | ⏳ Planned | v3.0.0 |
-| 22 | Accessibility | ⏳ Planned | v3.0.0 |
-| 23 | Performance Standards | ⏳ Planned | v3.0.0 |
+| Category | Principles | Version |
+|----------|------------|---------|
+| Core | readme, contributing, license | v2.1.0 |
+| Governance | code-of-conduct, security | v2.1.0 |
+| Security | enhanced-security, secrets-detection | v2.4.0 |
+| Community | issue-templates, pr-template, changelog | v2.3.0 |
+| Advanced | adr, ci-workflow | v2.5.0 |
+| Quality | quality-assurance, code-standards, performance-standards | v2.10.0 |
+| Compliance | compliance-policy, audit-logging | v2.10.0 |
+| Infrastructure | versioning, dependency-scanning, container-support | v2.10.0 |
+| Inclusivity | internationalization, accessibility | v2.10.0 |
+| Lifecycle | deprecation-policy | v2.10.0 |
 
-### 20 Documentation Modules
+### 15 Implementation Guides (All Available in v2.10.0+)
 
-| # | Module | Target Version |
-|---|--------|----------------|
-| 1 | Test Strategies | v2.5.0 |
-| 2 | Code Review Guide | v2.5.0 |
-| 3 | Versioning Guide | v2.5.0 |
-| 4 | Release Process | v2.5.0 |
-| 5 | Dependency Guide | v2.5.0 |
-| 6 | Compliance Guide | v3.0.0 |
-| 7 | API Standards | v3.0.0 |
-| 8 | Troubleshooting | v3.0.0 |
-| 9 | FAQ | v3.0.0 |
-| 10 | REFS.md | v3.0.0 |
-| 11 | GLOSSARY.md | v2.4.0 |
-| 12 | ROADMAP.md | v2.3.0 |
-| 13 | SCAFFOLD_MANIFEST.md | v2.4.0 |
-| 14 | CONTRIBUTING.md (Enhanced) | v2.3.0 |
-| 15 | CHANGELOG.md | v2.3.0 |
-| 16 | COMPLIANCE.md | v2.4.0 |
-| 17 | Coding Standards | v2.4.0 |
-| 18 | Architecture Decisions | v2.5.0 |
-| 19 | Security Disclosure | v2.4.0 |
-| 20 | Onboarding Guide | v3.0.0 |
+| Category | Guides | Version |
+|----------|--------|---------|
+| Governance | versioning, release-process, changelog, compliance-guide | v2.9.0-v2.10.0 |
+| Development | code-review, adr, test-strategies, coding-standards, api-standards | v2.9.0-v2.10.0 |
+| Security | security-disclosure | v2.9.0 |
+| Onboarding | onboarding, glossary, faq, troubleshooting | v2.10.0 |
+| Operations | dependency-guide | v2.10.0 |
 
 ### Governance Presets
 
