@@ -1,134 +1,324 @@
 # Project Foundation Template
 
-*Educational templates for thoughtful software governance*
+**Educational templates for thoughtful software governance**
 
-## Philosophy
+---
 
-This project believes that good governance starts with understanding, not automation. We generate templates that teach best practices while providing starting points for project governance.
+## What is This?
 
-**Core Principle**: Education First - understand WHY before HOW.
+Project Foundation Template helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
 
-## Features
+**Core Philosophy**: Education First — understand WHY before HOW.
 
-### Core Templates (v2.1.0)
-- **README.md** - Project documentation with educational comments
-- **CONTRIBUTING.md** - Contribution guidelines
-- **LICENSE** - License selection (MIT, Apache, GPL)
-- **CODE_OF_CONDUCT.md** - Community standards (optional)
-- **SECURITY.md** - Basic security policy (optional)
-- **.gitignore** - Standard ignore patterns
+### Who is This For?
 
-### v2.2.0 - Core Infrastructure
-- `--non-interactive` mode for CI/CD pipelines
-- `.foundationrc` configuration file support
-- `--export-json` for machine-readable output
-- `--quiet` mode for minimal output
-- Educational error messages with guidance
+| You Are... | This Helps You... |
+|------------|-------------------|
+| **New Developer** | Learn project governance best practices |
+| **Open Source Maintainer** | Set up professional project structure quickly |
+| **Team Lead** | Establish consistent governance across projects |
+| **Organization** | Scale governance standards while maintaining flexibility |
+| **AI/LLM User** | Generate well-structured project foundations programmatically |
 
-### v2.3.0 - Community Governance
-- `--include-github-templates` - Issue and PR templates
-- `--include-changelog` - Keep a Changelog format
-- `--all` flag for all optional templates
+---
 
-### v2.4.0 - Security Features
-- `--include-enhanced-security` - Comprehensive SECURITY.md
-- `--include-secrets-detection` - Pre-commit hooks for secret scanning
+## Quick Start
 
-### v2.5.0 - Advanced Governance
-- `--include-adr` - Architecture Decision Records
-- `--include-ci` - GitHub Actions CI workflow
+### For New Users (Interactive Learning Mode)
 
-### v2.6.0 - Stabilization & Testability
-- Modular `core/` package structure
-- Extracted config, education, and template modules
-- 83 unit tests for better maintainability
-
-### v2.7.0 - Governance Presets
-- `--preset` flag with 5 governance levels (minimal, light, standard, strict, enterprise)
-- Progressive governance adoption
-- Preset-specific principle selection
-
-### v2.8.0 - Modular Principles
-- Split governance principles into individual modules under `core/principles/`
-- Category groupings (core, governance, security, advanced, community)
-- WHAT/WHY/RISK education pattern per principle
-
-### v2.9.0 - Implementation Guides
-- Added `core/guides/` subpackage with HOW documentation
-- 6 guide modules (versioning, code review, release process, changelog, security disclosure, ADR)
-- Complements principles (WHAT/WHY) with practical implementation (HOW)
-
-### v2.10.0 - Complete Content
-- Complete all content modules
-- Comprehensive governance coverage
-- Finalized documentation structure
-
-### v2.11.0 - Plugin System
-- Added `core/plugins/` for extensibility
-- Custom principles and guides support
-- `--plugins-dir` flag for organization-specific governance
-
-## What Makes This Different
-
-Every template:
-- 📚 Explains WHY it matters before generating
-- ⚠️ Shows risks of not having it
-- 📝 Requires customization (not copy-paste ready)
-- 🎓 Teaches governance principles
-
-## This Is Not
-
-- ❌ A compliance shortcut
-- ❌ Instant security certification
-- ❌ A substitute for professional judgment
-- ❌ Copy-paste governance theater
-
-## Getting Started
-
-### Interactive Mode (Recommended for Learning)
 ```bash
-python setup_foundation_lite.py --project-name "MyProject" --author-name "Your Name"
+python setup_foundation.py --project-name "MyProject" --author-name "Your Name"
 ```
 
-### Non-Interactive Mode (CI/CD)
+This walks you through each decision, explaining what each file does and why it matters.
+
+### For Experienced Users (Preset Selection)
+
 ```bash
-python setup_foundation_lite.py --non-interactive --accept-terms \
-  --project-name "MyProject" --author-name "Your Name" --all
+# Choose your governance level
+python setup_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name"
+python setup_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Default
+python setup_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name"
 ```
 
-### Using Config File
-```json
-// .foundationrc
-{
-  "project_name": "MyProject",
-  "author_name": "Your Name",
-  "license": "mit",
-  "include_coc": true,
-  "include_security": true
-}
-```
+### For CI/CD Pipelines
+
 ```bash
-python setup_foundation_lite.py --non-interactive --accept-terms
+python setup_foundation.py --non-interactive --accept-terms --preset standard \
+  --project-name "MyProject" --author-name "Your Name" --output-dir ./output
 ```
+
+### Discover Available Options
+
+```bash
+python setup_foundation.py --list-presets      # Show all governance presets
+python setup_foundation.py --list-principles   # Show all 23 principles
+python setup_foundation.py --list-guides       # Show all 15 implementation guides
+```
+
+---
+
+## Governance Presets
+
+Choose the level of governance that matches your project's needs:
+
+| Preset | Principles | Best For |
+|--------|------------|----------|
+| **minimal** | 3 | Personal projects, prototypes, learning exercises |
+| **light** | 6 | Small open source projects, basic governance needs |
+| **standard** | 9 | Active open source projects, professional teams (Default) |
+| **strict** | 12 | Security-sensitive projects, compliance requirements |
+| **enterprise** | 23 | Large organizations, regulated industries, maximum governance |
+
+### What Each Preset Includes
+
+```
+minimal (3)     → README + CONTRIBUTING + LICENSE
+    ↓ adds
+light (6)       → Code of Conduct + Security Policy + Changelog
+    ↓ adds
+standard (9)    → Issue Templates + PR Template + CI Workflow
+    ↓ adds
+strict (12)     → Enhanced Security + Secrets Detection + ADR
+    ↓ adds
+enterprise (23) → Quality + Compliance + Infrastructure + Inclusivity + Lifecycle
+```
+
+---
+
+## The 23 Governance Principles
+
+Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK** (what happens without it).
+
+### Core (Always Included)
+| Principle | Purpose |
+|-----------|---------|
+| `readme` | Project overview and getting started |
+| `contributing` | How to contribute to the project |
+| `license` | Legal terms for using the code |
+
+### Governance
+| Principle | Purpose |
+|-----------|---------|
+| `code-of-conduct` | Community behavior standards |
+| `security` | Vulnerability reporting process |
+
+### Security
+| Principle | Purpose |
+|-----------|---------|
+| `enhanced-security` | Comprehensive security policies |
+| `secrets-detection` | Prevent credential leaks via pre-commit hooks |
+
+### Community
+| Principle | Purpose |
+|-----------|---------|
+| `issue-templates` | Structured bug reports and feature requests |
+| `pr-template` | Consistent pull request descriptions |
+| `changelog` | Track changes across versions |
+
+### Advanced
+| Principle | Purpose |
+|-----------|---------|
+| `adr` | Document architectural decisions |
+| `ci-workflow` | Automated testing with GitHub Actions |
+
+### Quality
+| Principle | Purpose |
+|-----------|---------|
+| `quality-assurance` | Testing and quality standards |
+| `code-standards` | Coding style and conventions |
+| `performance-standards` | Performance requirements and monitoring |
+
+### Compliance
+| Principle | Purpose |
+|-----------|---------|
+| `compliance-policy` | Regulatory compliance framework |
+| `audit-logging` | Audit trail requirements |
+
+### Infrastructure
+| Principle | Purpose |
+|-----------|---------|
+| `versioning` | Semantic versioning practices |
+| `dependency-scanning` | Dependency vulnerability monitoring |
+| `container-support` | Docker and containerization standards |
+
+### Inclusivity
+| Principle | Purpose |
+|-----------|---------|
+| `internationalization` | Multi-language support (i18n) |
+| `accessibility` | Accessibility standards (a11y) |
+
+### Lifecycle
+| Principle | Purpose |
+|-----------|---------|
+| `deprecation-policy` | How features are deprecated and removed |
+
+---
+
+## Project Structure
+
+```
+project-foundation-template/
+│
+├── setup_foundation.py          # Main entry point (v3.0.0)
+├── setup_foundation_lite.py     # Legacy entry point (deprecated)
+│
+├── core/                        # Core modules
+│   ├── __init__.py             # Package exports
+│   ├── config.py               # Configuration management
+│   ├── education.py            # Educational content
+│   ├── ethics.py               # Ethical safeguards
+│   ├── generator.py            # File generation engine
+│   ├── utils.py                # Utility functions
+│   │
+│   ├── principles/             # 23 Governance Principles
+│   │   ├── __init__.py         # Principle aggregation
+│   │   ├── readme.py           # README principle
+│   │   ├── contributing.py     # Contributing principle
+│   │   ├── license.py          # License principle
+│   │   └── ...                 # (20 more principles)
+│   │
+│   ├── guides/                 # 15 Implementation Guides
+│   │   ├── __init__.py         # Guide aggregation
+│   │   ├── versioning.py       # Versioning guide
+│   │   ├── code_review.py      # Code review guide
+│   │   └── ...                 # (13 more guides)
+│   │
+│   ├── presets/                # Governance Presets
+│   │   ├── __init__.py         # Preset aggregation
+│   │   ├── minimal.py          # 3 principles
+│   │   ├── light.py            # 6 principles
+│   │   ├── standard.py         # 9 principles (default)
+│   │   ├── strict.py           # 12 principles
+│   │   └── enterprise.py       # 23 principles
+│   │
+│   └── plugins/                # Plugin System
+│       ├── __init__.py         # Plugin API
+│       ├── base.py             # Base classes
+│       ├── loader.py           # Plugin discovery
+│       └── validator.py        # Plugin validation
+│
+├── templates/                   # Generated file templates
+│   ├── markdown/               # Documentation templates
+│   ├── workflows/              # GitHub Actions templates
+│   └── configs/                # Configuration templates
+│
+├── tests/                       # Test suite
+│   ├── test_foundation_*.py    # Core module tests
+│   └── ...
+│
+├── docs/                        # Documentation
+│   ├── adr/                    # Architecture Decision Records
+│   │   └── 0001-education-first.md
+│   └── guides/                 # Implementation guides
+│
+├── CLAUDE.md                    # LLM integration guidance
+├── ETHICS.md                    # Ethical framework
+├── ROADMAP.md                   # Version roadmap
+├── MIGRATION.md                 # Migration guide
+├── CONTRIBUTING.md              # How to contribute
+├── CHANGELOG.md                 # Version history
+├── SECURITY.md                  # Security policy
+├── CODE_OF_CONDUCT.md          # Community standards
+└── LICENSE                      # Apache 2.0
+```
+
+---
+
+## Key Concepts
+
+### Education First
+
+Every template teaches before it generates:
+- **WHAT**: What is this file/principle?
+- **WHY**: Why does it matter?
+- **HOW**: How do you implement it?
+- **RISK**: What happens without it?
+
+### Principle Zero: "Do No Harm, Allow No Harm"
+
+This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. See [ETHICS.md](ETHICS.md) for our complete ethical framework.
+
+### Templates vs. Implementation
+
+Templates are starting points, not finished products. Every generated file requires:
+- Review and customization
+- Understanding of its purpose
+- Ongoing maintenance
+
+---
 
 ## Documentation
 
-- [ETHICS.md](ETHICS.md) - Ethical framework and Principle Zero
-- [CONTRIBUTING.md](CONTRIBUTING.md) - How to contribute
-- [ROADMAP.md](ROADMAP.md) - Version roadmap to v3.0.0
-- [CHANGELOG.md](CHANGELOG.md) - Version history
-- [docs/adr/](docs/adr/) - Architecture Decision Records
+| Document | Purpose |
+|----------|---------|
+| [CLAUDE.md](CLAUDE.md) | LLM/AI integration guidance |
+| [ETHICS.md](ETHICS.md) | Ethical framework and Principle Zero |
+| [ROADMAP.md](ROADMAP.md) | Version roadmap and future plans |
+| [MIGRATION.md](MIGRATION.md) | Upgrading between versions |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
+| [CHANGELOG.md](CHANGELOG.md) | Version history |
+| [SEMANTIC_VERSIONING.md](SEMANTIC_VERSIONING.md) | Versioning policy |
+| [docs/adr/](docs/adr/) | Architecture Decision Records |
+
+---
+
+## Extending with Plugins
+
+Create custom principles and guides for your organization:
+
+```bash
+# Use plugins from a custom directory
+python setup_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
+```
+
+See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
+
+---
+
+## This Is Not
+
+- A compliance shortcut (templates require understanding and customization)
+- Instant security certification (security requires ongoing effort)
+- A substitute for professional judgment (consult experts for legal/security matters)
+- Copy-paste governance theater (files without understanding provide false confidence)
+
+---
+
+## Version History
+
+| Version | Highlights |
+|---------|------------|
+| v3.0.0 | New entrypoint, 23 principles, 15 guides, plugin system |
+| v2.x | Modular architecture, presets, educational content |
+| v1.x | Initial implementation |
+
+See [CHANGELOG.md](CHANGELOG.md) for complete history.
+
+---
+
+## Contributing
+
+We welcome contributions! See [CONTRIBUTING.md](CONTRIBUTING.md) for:
+- Fork-first workflow
+- Branch naming conventions
+- Conventional commits
+- Educational review criteria
+
+---
 
 ## License
 
 Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for details.
 
+---
+
 ## Acknowledgments
 
-This framework emerged from collaborative work between human and AI, embodying the principle of **Mutual Fallibility** - that both parties have cognitive biases and benefit from structured verification protocols.
+This framework emerged from collaborative work between human and AI, embodying the principle of **Mutual Fallibility** — both parties have cognitive biases and benefit from structured verification protocols.
 
 ---
 
-**Version**: 2.11.0
-**Status**: Active development
+**Version**: 3.0.0
+**Status**: Active Development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
