@@ -299,6 +299,28 @@ Config file format (.foundationrc):
         help="Include GitHub Actions CI workflow"
     )
 
+    # v3.1.0: Accessibility features
+    parser.add_argument(
+        "--include-glossary",
+        dest="include_glossary",
+        action="store_true",
+        help="Include GLOSSARY.md with project terminology definitions"
+    )
+
+    parser.add_argument(
+        "--include-maintainers",
+        dest="include_maintainers",
+        action="store_true",
+        help="Include MAINTAINERS.md with maintainer information"
+    )
+
+    parser.add_argument(
+        "--include-manifest",
+        dest="include_manifest",
+        action="store_true",
+        help="Include SCAFFOLD_MANIFEST.md documenting what was generated"
+    )
+
     # v2.2.0: Non-interactive mode
     parser.add_argument(
         "--non-interactive",
