@@ -194,7 +194,7 @@ from core.education import get_principle
 - [ADR 0002: Semantic Versioning Strategy](0002-semantic-versioning-strategy.md) (v2.6.0)
 - [ADR 0003: Advisory Expiration System](0003-advisory-expiration.md) (v2.6.0)
 - [ADR 0005: Governance Preset System](0005-preset-system.md) (v2.7.0)
-- ADR 0006: Plugin Architecture (v2.11.0)
+- [ADR 0006: Plugin Architecture](0006-plugin-architecture.md) (v2.11.0)
 
 ## References
 
