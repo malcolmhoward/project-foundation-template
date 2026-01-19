@@ -38,6 +38,16 @@ This project believes that good governance starts with understanding, not automa
 - `--include-adr` - Architecture Decision Records
 - `--include-ci` - GitHub Actions CI workflow
 
+### v2.6.0 - Stabilization & Testability
+- Modular `core/` package structure
+- Extracted config, education, and template modules
+- 83 unit tests for better maintainability
+
+### v2.7.0 - Governance Presets
+- `--preset` flag with 5 governance levels (minimal, light, standard, strict, enterprise)
+- Progressive governance adoption
+- Preset-specific principle selection
+
 ## What Makes This Different
 
 Every template:
@@ -99,6 +109,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 2.5.0-lite
+**Version**: 2.7.0
 **Status**: Active development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
