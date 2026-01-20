@@ -413,7 +413,12 @@ PFT includes presets: minimal, light, standard, strict, and enterprise.
 
 ### Principle Zero
 PFT's foundational ethical principle: "Do No Harm, Allow No Harm." All decisions
-in PFT flow from this principle, inspired by GAIA from Horizon Zero Dawn.
+in PFT flow from this principle, inspired by GAIA from Horizon Zero Dawn®.
+
+> *Horizon Zero Dawn is a registered trademark of Sony Interactive Entertainment
+> ([Trademark Notice](https://sonyinteractive.com/en/copyright-and-trademark-notice/)).
+> This project is not affiliated with or endorsed by Sony Interactive Entertainment
+> or Guerrilla Games.*
 
 ### Programming Language Configuration
 Language-specific settings in PFT (v3.5.0+) that define tooling, linting,
