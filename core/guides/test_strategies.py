@@ -19,7 +19,9 @@ GUIDE = {
     "complexity": "intermediate",
 }
 
-RELATED_PRINCIPLES = ["code-review", "ci-workflow"]
+RELATED_PRINCIPLES = ["code-review", "ci-workflow", "quality-assurance"]
+
+RELATED_GUIDES = ["user-stories"]
 
 CONTENT = """
 # Test Strategies Guide
@@ -198,6 +200,233 @@ def test_user_can_complete_purchase():
 - Use stable selectors (data-testid, not CSS classes)
 - Handle async operations properly
 - Run in isolated environments
+
+## Acceptance Test-Driven Development (ATDD)
+
+ATDD connects user stories to executable tests, ensuring that development
+is driven by user requirements. See the **User Stories Guide** for writing
+effective user stories and acceptance criteria.
+
+### The ATDD Cycle
+
+```
+User Story → Acceptance Criteria → Executable Tests → Implementation → Refactor
+     ↑                                                                    |
+     └────────────────────────────────────────────────────────────────────┘
+```
+
+### From User Story to Test
+
+**User Story:**
+```
+As a registered customer,
+I want to reset my password,
+So that I can regain access to my account.
+```
+
+**Acceptance Criteria (Given-When-Then):**
+```
+Given I am on the login page
+When I click "Forgot Password" and enter my email
+Then I receive a password reset link within 5 minutes
+```
+
+**Executable Test:**
+```python
+def test_password_reset_sends_email():
+    # Given: User on login page
+    user = create_user(email="alice@example.com")
+
+    # When: Request password reset
+    response = client.post("/forgot-password", {"email": user.email})
+
+    # Then: Email sent within time limit
+    assert response.status_code == 200
+    assert email_service.was_called_with(to=user.email)
+    assert email_contains_reset_link(user.email)
+```
+
+### Behavior-Driven Development (BDD)
+
+BDD extends ATDD with a shared language between developers, testers, and
+business stakeholders. Tests are written in natural language format.
+
+**Gherkin Syntax Example:**
+```gherkin
+Feature: Password Reset
+  As a registered customer
+  I want to reset my password
+  So that I can regain access to my account
+
+  Scenario: Successful password reset request
+    Given I am a registered user with email "alice@example.com"
+    And I am on the login page
+    When I click "Forgot Password"
+    And I enter my email address
+    And I click "Send Reset Link"
+    Then I should see "Check your email for a reset link"
+    And a password reset email should be sent to "alice@example.com"
+
+  Scenario: Password reset with unregistered email
+    Given I am on the login page
+    When I click "Forgot Password"
+    And I enter "unknown@example.com"
+    And I click "Send Reset Link"
+    Then I should see "If this email exists, a reset link will be sent"
+    And no email should be sent
+```
+
+### BDD Frameworks by Language
+
+| Language | Framework | Notes |
+|----------|-----------|-------|
+| Python | Behave, pytest-bdd | Gherkin support |
+| JavaScript | Cucumber.js, Jest-Cucumber | Node.js ecosystem |
+| Ruby | Cucumber | Original BDD framework |
+| Java | Cucumber-JVM | JUnit integration |
+| .NET | SpecFlow | Visual Studio integration |
+| Go | Godog | Gherkin for Go |
+
+### ATDD Best Practices
+
+1. **Write acceptance tests before implementation**
+   - Tests define "done" for the feature
+   - Prevents scope creep
+
+2. **Collaborate on acceptance criteria**
+   - Include product owner, developers, and testers
+   - "Three Amigos" sessions
+
+3. **Keep scenarios focused**
+   - One behavior per scenario
+   - Avoid testing multiple things at once
+
+4. **Use domain language**
+   - Write in terms users understand
+   - Avoid technical implementation details
+
+5. **Maintain living documentation**
+   - Scenarios document system behavior
+   - Keep them updated as features evolve
+
+### When to Use ATDD/BDD
+
+**Good fit:**
+- User-facing features with clear acceptance criteria
+- Complex business rules
+- Cross-functional teams needing shared understanding
+- Regulated environments requiring traceability
+
+**Less suitable:**
+- Low-level technical components
+- Rapid prototyping phases
+
+## Performance Testing
+
+Performance testing validates that your application meets speed, scalability,
+and stability requirements under expected and peak conditions.
+
+### Types of Performance Tests
+
+| Type | Purpose | Key Question |
+|------|---------|--------------|
+| **Load Testing** | Test under expected load | Can we handle normal traffic? |
+| **Stress Testing** | Test beyond capacity | Where does it break? |
+| **Spike Testing** | Test sudden load increases | Can we handle traffic bursts? |
+| **Endurance Testing** | Test over extended periods | Are there memory leaks? |
+| **Scalability Testing** | Test scaling behavior | Does adding resources help? |
+
+### Load Testing Example
+
+```python
+# Using locust framework
+from locust import HttpUser, task, between
+
+class WebsiteUser(HttpUser):
+    wait_time = between(1, 3)  # Wait 1-3 seconds between tasks
+
+    @task(3)  # Weight: 3x more likely than other tasks
+    def view_homepage(self):
+        self.client.get("/")
+
+    @task(2)
+    def view_product(self):
+        self.client.get("/products/123")
+
+    @task(1)
+    def checkout(self):
+        self.client.post("/checkout", json={"product_id": 123})
+```
+
+### Performance Testing Tools
+
+| Tool | Language | Use Case |
+|------|----------|----------|
+| Locust | Python | Scriptable load testing |
+| k6 | JavaScript | Developer-centric load testing |
+| JMeter | Java | Enterprise load testing |
+| Gatling | Scala | High-performance testing |
+| Artillery | JavaScript | Modern load testing |
+| wrk | C | HTTP benchmarking |
+
+### Key Performance Metrics
+
+- **Response Time**: How long requests take (p50, p95, p99)
+- **Throughput**: Requests per second (RPS)
+- **Error Rate**: Percentage of failed requests
+- **Concurrent Users**: Simultaneous active users
+- **Resource Utilization**: CPU, memory, network usage
+
+### Performance Test Example with Metrics
+
+```yaml
+# k6 test configuration
+scenarios:
+  average_load:
+    executor: ramping-vus
+    startVUs: 0
+    stages:
+      - duration: 2m
+        target: 100    # Ramp up to 100 users
+      - duration: 5m
+        target: 100    # Stay at 100 users
+      - duration: 2m
+        target: 0      # Ramp down
+
+thresholds:
+  http_req_duration: ['p(95)<500']  # 95% of requests under 500ms
+  http_req_failed: ['rate<0.01']    # Less than 1% errors
+```
+
+### Performance Testing Best Practices
+
+1. **Test in production-like environments**
+   - Match hardware, data volume, and configuration
+   - Use realistic test data
+
+2. **Establish baselines**
+   - Measure current performance before changes
+   - Track trends over time
+
+3. **Test early and often**
+   - Include in CI/CD pipeline
+   - Catch regressions quickly
+
+4. **Monitor during tests**
+   - Watch server metrics (CPU, memory, I/O)
+   - Identify bottlenecks
+
+5. **Use realistic scenarios**
+   - Model actual user behavior
+   - Include think time between actions
+
+### When to Performance Test
+
+- Before major releases
+- After significant code changes
+- When infrastructure changes
+- During capacity planning
+- After performance incidents
 
 ## Test Doubles
 
