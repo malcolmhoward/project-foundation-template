@@ -7,7 +7,9 @@
 ## Core Philosophy
 
 ### Principle Zero: "Do No Harm, Allow No Harm"
-Inspired by GAIA from Horizon Zero Dawn. Harm prevention is the **primary design constraint**, not an advisory layer. All decisions flow from this principle.
+Inspired by GAIA from [Horizon Zero Dawn®](https://www.playstation.com/games/horizon-zero-dawn/). Harm prevention is the **primary design constraint**, not an advisory layer. All decisions flow from this principle.
+
+> *Horizon Zero Dawn is a registered trademark of Sony Interactive Entertainment ([Trademark Notice](https://sonyinteractive.com/en/copyright-and-trademark-notice/)). This project is not affiliated with or endorsed by Sony Interactive Entertainment or Guerrilla Games.*
 
 ### Educational-First Approach
 - **WHAT** before **WHY** before **HOW**
@@ -21,11 +23,14 @@ This template can generate governance for any project—including instances that
 
 | File | Purpose |
 |------|---------|
-| `generate_foundation.py` | Main entrypoint (v3.0.0) |
-| `setup_foundation_lite.py` | Legacy entrypoint (deprecated) |
-| `core/` | Modular core package |
+| `generate_foundation.py` | Main entrypoint |
+| `core/principles/` | 30 governance principles |
+| `core/guides/` | 25 implementation guides |
+| `core/presets/` | Governance presets (minimal to enterprise) |
+| `core/programming_languages/` | 17 language configurations (v3.5.0) |
+| `core/internationalization/` | 10 locale configurations (v3.6.0) |
 | `ETHICS.md` | Ethical framework and safeguards |
-| `ROADMAP.md` | Version roadmap |
+| `GLOSSARY.md` | PFT terminology definitions |
 | `docs/adr/` | Architecture Decision Records |
 
 ## Working with This Codebase
@@ -53,15 +58,15 @@ Features should have clear educational value and align with Principle Zero.
 4. **Social Engineering** - Professional-looking repos for scams
 5. **Legal Exploitation** - Templates misrepresented as actual compliance
 
-## Governance Presets (Roadmap)
+## Governance Presets
 
-| Preset | Principles | Version |
-|--------|------------|---------|
-| minimal | ~5 core | v2.2.0 (current) |
-| light | ~10 | v2.3.0 |
-| standard | ~15 | v2.4.0 |
-| strict | ~20 | v2.5.0 |
-| enterprise | All 23 | v3.0.0 |
+| Preset | Principles | Best For |
+|--------|------------|----------|
+| minimal | 3 | Personal projects, prototypes |
+| light | 6 | Small open source projects |
+| standard | 9 | Active open source projects (Default) |
+| strict | 12 | Security-sensitive projects |
+| enterprise | 30 | Large organizations, regulated industries |
 
 ## Commands
 
@@ -90,6 +95,10 @@ ls -la ./output/
 
 ## Version Information
 
-- **Current**: v3.0.0
+- **Current**: v3.6.0
 - **Advisory Expiration**: Check `generate_foundation.py` for current date
 - **Architecture**: Modular core with plugin support
+- **Principles**: 30 governance principles
+- **Guides**: 25 implementation guides
+- **Languages**: 17 programming language configurations
+- **Locales**: 10 internationalization configurations
