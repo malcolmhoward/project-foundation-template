@@ -4,7 +4,7 @@ This document establishes the ethical foundation for Project Foundation Template
 
 ## Principle Zero: "Do No Harm, Allow No Harm"
 
-Inspired by GAIA from Horizon Zero Dawn, harm prevention is not an afterthought or optional guideline. It is the **primary design constraint** from which all other decisions flow.
+Inspired by GAIA from [Horizon Zero Dawn®](https://www.playstation.com/games/horizon-zero-dawn/), harm prevention is not an afterthought or optional guideline. It is the **primary design constraint** from which all other decisions flow.
 
 ### What This Means in Practice
 
@@ -17,7 +17,9 @@ If the answer to any question is "yes" without adequate safeguards, the feature 
 
 ### Why GAIA?
 
-In Horizon Zero Dawn, GAIA was designed as a terraforming AI with one unbreakable constraint: preserve and restore life. This constraint couldn't be overridden, negotiated, or bypassed. Our Principle Zero operates the same way—it's not a preference, it's an axiom.
+In Horizon Zero Dawn®, GAIA was designed as a terraforming AI with one unbreakable constraint: preserve and restore life. This constraint couldn't be overridden, negotiated, or bypassed. Our Principle Zero operates the same way—it's not a preference, it's an axiom.
+
+> *Horizon Zero Dawn is a registered trademark of Sony Interactive Entertainment ([Trademark Notice](https://sonyinteractive.com/en/copyright-and-trademark-notice/)). This project is not affiliated with or endorsed by Sony Interactive Entertainment or Guerrilla Games.*
 
 ---
 

@@ -22,7 +22,9 @@ A predefined collection of governance principles bundled for common use cases. P
 A governance concept in PFT that defines WHAT must be done, WHY it matters, and the RISK of not having it. Principles are the building blocks of governance.
 
 ### Principle Zero
-PFT's foundational ethical principle: "Do No Harm, Allow No Harm." All decisions in PFT flow from this principle, inspired by GAIA from Horizon Zero Dawn.
+PFT's foundational ethical principle: "Do No Harm, Allow No Harm." All decisions in PFT flow from this principle, inspired by GAIA from [Horizon Zero Dawn®](https://www.playstation.com/games/horizon-zero-dawn/).
+
+> *Horizon Zero Dawn is a registered trademark of Sony Interactive Entertainment ([Trademark Notice](https://sonyinteractive.com/en/copyright-and-trademark-notice/)). This project is not affiliated with or endorsed by Sony Interactive Entertainment or Guerrilla Games.*
 
 ### Programming Language Configuration
 Language-specific settings in PFT (v3.5.0+) that define tooling, linting, formatting, testing, and CI/CD configurations for a programming language.
