@@ -385,5 +385,67 @@ areas like configuration, dependencies, and processes.
 
 ---
 
+## PFT-Specific Terms
+
+These terms are specific to Project Foundation Template (PFT):
+
+### Governance
+The policies, processes, and documentation that guide how a project is developed,
+maintained, and contributed to. This includes contribution guidelines, security
+policies, codes of conduct, and architectural decision records.
+
+### Governance Theater
+The appearance of having proper governance without the substance - adopting
+templates without understanding or customizing them. PFT is designed to prevent
+this through education-first principles.
+
+### Principle (Governance Principle)
+A governance concept in PFT that defines WHAT must be done, WHY it matters, and
+the RISK of not having it. Principles are the building blocks of governance.
+
+### Guide (Implementation Guide)
+Documentation in PFT explaining HOW to apply a principle. Guides provide
+practical, actionable instructions for implementing governance concepts.
+
+### Preset
+A predefined collection of governance principles bundled for common use cases.
+PFT includes presets: minimal, light, standard, strict, and enterprise.
+
+### Principle Zero
+PFT's foundational ethical principle: "Do No Harm, Allow No Harm." All decisions
+in PFT flow from this principle, inspired by GAIA from Horizon Zero Dawn.
+
+### Programming Language Configuration
+Language-specific settings in PFT (v3.5.0+) that define tooling, linting,
+formatting, testing, and CI/CD configurations for a programming language.
+
+---
+
+## Testing Methodologies
+
+### ATDD (Acceptance Test-Driven Development)
+A development approach where acceptance tests are written before implementation.
+Tests are derived from user stories and acceptance criteria, ensuring the
+software meets business requirements.
+
+### BDD (Behavior-Driven Development)
+An extension of TDD that uses natural language constructs (Given-When-Then)
+to describe software behavior. BDD bridges communication between technical
+and non-technical stakeholders. See also: Gherkin.
+
+### Gherkin
+A domain-specific language used in BDD frameworks like Cucumber. Uses keywords
+like Given, When, Then, And, But to structure test scenarios in plain English.
+
+### Load Testing
+Performance testing that evaluates system behavior under expected and peak load
+conditions. Measures response times, throughput, and resource utilization.
+
+### Stress Testing
+Testing that evaluates system behavior beyond normal capacity to identify
+breaking points and recovery characteristics.
+
+---
+
 *Missing a term? Suggest additions in the project issues!*
 """
