@@ -1,0 +1,187 @@
+name: Ethical Review Check
+
+on:
+  pull_request:
+    types: [opened, edited, synchronize, ready_for_review]
+
+jobs:
+  check-ethical-review:
+    name: Validate Ethical Review Sections
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check PR Description for Ethical Review
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+
+            // Define required sections and their patterns
+            const requiredSections = [
+              {
+                name: 'Ethical Review Section',
+                pattern: /## Ethical Review/i,
+                message: 'PR description must contain an "## Ethical Review" section'
+              },
+              {
+                name: 'Contributor Self-Assessment',
+                pattern: /### Contributor Self-Assessment/i,
+                message: 'PR description must contain a "### Contributor Self-Assessment" section'
+              },
+              {
+                name: 'Reviewer Verification',
+                pattern: /### Reviewer Verification/i,
+                message: 'PR description must contain a "### Reviewer Verification" section'
+              }
+            ];
+
+            // Define required checkboxes in Contributor Self-Assessment
+            const requiredCheckboxes = [
+              {
+                pattern: /- \[[ x]\] Principle Zero test completed/i,
+                message: 'Missing checkbox: "Principle Zero test completed"'
+              },
+              {
+                pattern: /- \[[ x]\] Ethical Pause taken/i,
+                message: 'Missing checkbox: "Ethical Pause taken"'
+              },
+              {
+                pattern: /- \[[ x]\] Identified risks have mitigations/i,
+                message: 'Missing checkbox: "Identified risks have mitigations"'
+              }
+            ];
+
+            // Define required checkboxes in Reviewer Verification
+            const reviewerCheckboxes = [
+              {
+                pattern: /- \[[ x]\] Ethical review documentation exists/i,
+                message: 'Missing reviewer checkbox: "Ethical review documentation exists"'
+              },
+              {
+                pattern: /- \[[ x]\] All Principle Zero questions have documented/i,
+                message: 'Missing reviewer checkbox: "All Principle Zero questions documented"'
+              },
+              {
+                pattern: /- \[[ x]\] All Ethical Pause questions have documented/i,
+                message: 'Missing reviewer checkbox: "All Ethical Pause questions documented"'
+              }
+            ];
+
+            let errors = [];
+            let warnings = [];
+
+            // Check for required sections
+            for (const section of requiredSections) {
+              if (!section.pattern.test(prBody)) {
+                errors.push(section.message);
+              }
+            }
+
+            // Only check checkboxes if the main sections exist
+            if (errors.length === 0) {
+              // Check contributor checkboxes
+              for (const checkbox of requiredCheckboxes) {
+                if (!checkbox.pattern.test(prBody)) {
+                  errors.push(checkbox.message);
+                }
+              }
+
+              // Check reviewer checkboxes exist (they should be unchecked initially)
+              for (const checkbox of reviewerCheckboxes) {
+                if (!checkbox.pattern.test(prBody)) {
+                  errors.push(checkbox.message);
+                }
+              }
+
+              // Check if Summary of Ethical Considerations has content
+              const summaryMatch = prBody.match(/\*\*Summary of Ethical Considerations\*\*:\s*\n([^\n*#-]*)/i);
+              if (summaryMatch && summaryMatch[1].trim().length < 20) {
+                warnings.push('Summary of Ethical Considerations appears incomplete. Please provide a meaningful summary.');
+              }
+            }
+
+            // Output results
+            if (errors.length > 0) {
+              const errorMessage = [
+                '## Ethical Review Validation Failed',
+                '',
+                'This PR is missing required ethical review sections. Please update the PR description.',
+                '',
+                '### Missing Requirements:',
+                ...errors.map(e => `- ${e}`),
+                '',
+                '### How to Fix:',
+                '1. Use the PR template which includes all required sections',
+                '2. Complete the Principle Zero assessment in the linked issue or in the PR',
+                '3. Complete the Ethical Pause questions',
+                '4. Ensure the Reviewer Verification section is present (reviewers will complete it)',
+                '',
+                'See [Ethical Review Process](../docs/ethical-review/README.md) for guidance.',
+                '',
+                '---',
+                '*This check ensures all PRs have documented ethical review per our [Ethical Framework](../ETHICS.md).*'
+              ].join('\n');
+
+              core.setFailed(errorMessage);
+            } else if (warnings.length > 0) {
+              console.log('::warning::' + warnings.join('; '));
+              console.log('Ethical review sections present with warnings.');
+            } else {
+              console.log('Ethical review sections validated successfully.');
+            }
+
+      - name: Add Ethical Review Label
+        if: success()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const prBody = context.payload.pull_request.body || '';
+
+            // Check if contributor checkboxes are checked
+            const principleZeroChecked = /- \[x\] Principle Zero test completed/i.test(prBody);
+            const ethicalPauseChecked = /- \[x\] Ethical Pause taken/i.test(prBody);
+            const risksChecked = /- \[x\] Identified risks have mitigations/i.test(prBody);
+
+            // Check if reviewer verification is complete
+            const reviewerComplete = /- \[x\] Ethical review documentation exists/i.test(prBody) &&
+                                     /- \[x\] All Principle Zero questions have documented/i.test(prBody) &&
+                                     /- \[x\] All Ethical Pause questions have documented/i.test(prBody);
+
+            const labels = context.payload.pull_request.labels.map(l => l.name);
+
+            try {
+              // Add/remove labels based on status
+              if (principleZeroChecked && ethicalPauseChecked && risksChecked) {
+                if (!labels.includes('ethical-review:contributor-complete')) {
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    labels: ['ethical-review:contributor-complete']
+                  });
+                }
+              }
+
+              if (reviewerComplete) {
+                if (!labels.includes('ethical-review:verified')) {
+                  await github.rest.issues.addLabels({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    labels: ['ethical-review:verified']
+                  });
+                }
+                // Remove pending label if exists
+                if (labels.includes('ethical-review:contributor-complete')) {
+                  await github.rest.issues.removeLabel({
+                    owner: context.repo.owner,
+                    repo: context.repo.repo,
+                    issue_number: context.payload.pull_request.number,
+                    name: 'ethical-review:contributor-complete'
+                  }).catch(() => {}); // Ignore if label doesn't exist
+                }
+              }
+            } catch (error) {
+              // Labels might not exist yet, that's okay
+              console.log('Note: Could not add labels. Labels may need to be created first.');
+            }

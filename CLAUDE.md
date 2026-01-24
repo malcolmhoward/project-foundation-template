@@ -37,6 +37,24 @@ This template can generate governance for any project—including instances that
 
 ## Working with This Codebase
 
+### Parallelization Guidance
+
+When working on multi-file tasks, **always consider parallelization**:
+- **Identify independent operations** - File reads, writes, and tool calls that don't depend on each other
+- **Batch parallel operations** - Make multiple tool calls in a single message when operations are independent
+- **Sequential when necessary** - Only serialize operations that have true dependencies
+
+**Examples of parallelizable work:**
+- Reading multiple files simultaneously
+- Creating multiple new files at once
+- Running independent tests or validations
+- Updating unrelated sections of different files
+
+**Examples requiring sequential execution:**
+- Reading a file before editing it
+- Creating a directory before writing files into it
+- Validating output after a build step
+
 ### When Modifying the Generator
 1. Preserve all ethical safeguards (agreement, education, logging, warnings, expiration)
 2. Maintain the WHAT/WHY/HOW educational pattern
