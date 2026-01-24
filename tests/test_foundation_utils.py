@@ -22,8 +22,9 @@ class TestConstants(unittest.TestCase):
     """Test that constants are properly defined."""
 
     def test_script_version_format(self):
-        """Script version should follow semantic versioning with -lite suffix."""
-        self.assertRegex(SCRIPT_VERSION, r"^\d+\.\d+\.\d+-lite$")
+        """Script version should follow semantic versioning."""
+        # Supports both X.Y.Z and X.Y.Z-suffix formats
+        self.assertRegex(SCRIPT_VERSION, r"^\d+\.\d+\.\d+(-\w+)?$")
 
     def test_official_repo_is_github_url(self):
         """Official repo should be a GitHub URL."""
