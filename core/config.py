@@ -84,6 +84,9 @@ CONFIG_KEY_MAPPING = {
     "log_to": "log_to",
     "log-to": "log_to",
     "logTo": "log_to",
+    "force_overwrite": "force_overwrite",
+    "force-overwrite": "force_overwrite",
+    "forceOverwrite": "force_overwrite",
 }
 
 # Default values for arguments
@@ -118,6 +121,7 @@ DEFAULT_VALUES = {
     "include_generation_log": False,
     "log_format": "md",
     "log_to": None,
+    "force_overwrite": False,
 }
 
 
@@ -355,6 +359,13 @@ Config file format (.foundationrc):
         "--log-to",
         dest="log_to",
         help="Append to existing generation log file instead of creating new"
+    )
+
+    parser.add_argument(
+        "--force-overwrite",
+        dest="force_overwrite",
+        action="store_true",
+        help="Force overwrite of existing files without prompting"
     )
 
     # v2.2.0: Non-interactive mode
