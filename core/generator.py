@@ -29,6 +29,8 @@ from core.ethics import (
     show_ethical_agreement,
 )
 
+from core.generation_log import write_generation_log
+
 from core.templates import (
     # Core templates
     generate_readme_content,
@@ -97,6 +99,10 @@ class EthicalFoundationGenerator:
 
         # Log usage
         self.log_usage_locally(success)
+
+        # v3.7.0: Generate generation log if requested
+        if success:
+            self.generate_generation_log()
 
         # Show next steps
         if success:
@@ -427,6 +433,34 @@ Generating template in 3 seconds...
         """Add ethics notice to a summary file."""
         content = generate_ethics_notice_content(self.generated_files)
         self.write_file(output_dir / "FOUNDATION_NOTICE.md", content)
+
+    # v3.7.0: Generation log
+
+    def generate_generation_log(self):
+        """Generate GENERATION_LOG if requested via --include-generation-log."""
+        include_log = getattr(self.args, 'include_generation_log', False)
+
+        if not include_log:
+            return
+
+        output_dir = Path(self.args.output_dir)
+        log_format = getattr(self.args, 'log_format', 'md')
+        log_to = getattr(self.args, 'log_to', None)
+
+        # Filter out the generation log itself from the list
+        files_to_log = [f for f in self.generated_files
+                        if not f.startswith('GENERATION_LOG')]
+
+        created_logs = write_generation_log(
+            output_dir=output_dir,
+            project_name=self.args.project_name,
+            generated_files=files_to_log,
+            log_format=log_format,
+            log_to=log_to
+        )
+
+        for log_file in created_logs:
+            print(f"📋 Generated: {Path(log_file).name}")
 
     def write_file(self, filepath: Path, content: str):
         """Write file and track what was generated."""

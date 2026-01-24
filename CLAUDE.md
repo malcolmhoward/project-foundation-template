@@ -29,7 +29,9 @@ This template can generate governance for any project—including instances that
 | `core/presets/` | Governance presets (minimal to enterprise) |
 | `core/programming_languages/` | 17 language configurations (v3.5.0) |
 | `core/internationalization/` | 10 locale configurations (v3.6.0) |
+| `core/generation_log.py` | Generation log tracking (v3.7.0) |
 | `ETHICS.md` | Ethical framework and safeguards |
+| `ACKNOWLEDGMENTS.md` | Feature inspiration credits (v3.7.0) |
 | `GLOSSARY.md` | PFT terminology definitions |
 | `docs/adr/` | Architecture Decision Records |
 
@@ -71,11 +73,16 @@ Features should have clear educational value and align with Principle Zero.
 ## Commands
 
 ```bash
-# Run the generator (v3.0.0)
+# Run the generator (v3.7.0)
 python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ./output
 
 # With preset selection
 python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Author"
+
+# With generation log tracking (v3.7.0)
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --include-generation-log
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --include-generation-log --log-format both
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --include-generation-log --log-to ./GENERATION_LOG.md
 
 # Discovery commands
 python generate_foundation.py --list-presets
@@ -95,10 +102,11 @@ ls -la ./output/
 
 ## Version Information
 
-- **Current**: v3.6.0
+- **Current**: v3.7.0
 - **Advisory Expiration**: Check `generate_foundation.py` for current date
 - **Architecture**: Modular core with plugin support
 - **Principles**: 30 governance principles
 - **Guides**: 25 implementation guides
 - **Languages**: 17 programming language configurations
 - **Locales**: 10 internationalization configurations
+- **Generation Log**: Tracks file provenance (md/json/both formats)
