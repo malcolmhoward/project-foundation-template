@@ -166,7 +166,7 @@ Local logging (never transmitted) creates accountability:
 - When they were generated
 - What project they were for
 
-This creates a paper trail without surveillance.
+This creates a paper trail without surveillance. See [Generation Log](core/generation_log.py) for implementation.
 
 ### 4. Template Warnings
 Generated files include clear markers:
@@ -179,6 +179,21 @@ Templates have expiration dates that:
 - Warn users of potentially outdated content
 - Encourage checking for updates
 - Prevent indefinite use of stale practices
+
+### 6. Ethical Review Process (v3.7.0)
+
+All features and pull requests require documented ethical review:
+
+| Resource | Purpose |
+|----------|---------|
+| [Ethical Review Process](docs/ethical-review/README.md) | Step-by-step review workflow |
+| [Review Template](docs/ethical-review/TEMPLATE.md) | Reusable template for reviews |
+| [Historical Audits](docs/ethical-review/historical-audits.md) | Retroactive reviews for v2.1.0-v3.7.0 |
+
+The process ensures every change is evaluated for:
+- **Principle Zero compliance** (Direct, Enabling, Passive harm)
+- **Ethical Pause questions** (Who harmed? Misuse? Scale? Headlines?)
+- **Documented mitigations** for identified risks
 
 ---
 
@@ -257,6 +272,7 @@ This ethical framework applies to:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.1.0 | 2026-01-25 | Added Ethical Review Process section with links to documentation |
 | 1.0.0 | 2025-10-29 | Initial ethical framework |
 
 ---
