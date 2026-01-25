@@ -94,7 +94,7 @@ python generate_foundation.py --ethical-tier 2 --project-name "MyProject"
 ### Negative
 
 - **Manual template adoption**: Tier 2/3 projects must copy templates manually (for now)
-- **Tier judgment required**: Projects must self-assess which tier they belong to
+- **Tier judgment required**: Projects must self-assess their appropriate tier
 - **Multiple templates to maintain**: Three templates instead of one
 
 ### Neutral

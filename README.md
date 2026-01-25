@@ -2,7 +2,7 @@
 
 **Educational templates for thoughtful software governance**
 
-> **Governance**: The policies, processes, and documentation that guide how a project is developed, maintained, and contributed to. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records. See [GLOSSARY.md](GLOSSARY.md) for more terms.
+> **Governance**: The policies, processes, and documentation that guide project development, maintenance, and contributions. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records. See [GLOSSARY.md](GLOSSARY.md) for more terms.
 
 ---
 
@@ -314,7 +314,7 @@ See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
 
 | Version | Highlights |
 |---------|------------|
-| v3.7.0 | Generation log and attribution policy |
+| v3.7.0 | Generation log, attribution policy, tiered ethical review |
 | v3.6.0 | Internationalization support (10 locales) |
 | v3.5.0 | Programming language support infrastructure (17 languages) |
 | v3.4.0 | Advanced features - 30 principles, 25 guides |
