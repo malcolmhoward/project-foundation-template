@@ -22,6 +22,41 @@ PFT helps you create well-organized projects with the right governance for your 
 | **Organization** | Scale governance standards while maintaining flexibility |
 | **AI/LLM User** | Generate well-structured project foundations programmatically |
 
+### Key Concepts
+
+#### Education First
+
+Every template teaches before it generates:
+- **WHAT**: What is this file/principle?
+- **WHY**: Why does it matter?
+- **HOW**: How do you implement it?
+- **RISK**: What happens without it?
+
+#### Principle Zero: "Do No Harm, Allow No Harm"
+
+This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully.
+
+Ethical review requirements scale based on a project's relationship to PFT:
+- **Tier 1** (Core components): Full ethical review required
+- **Tier 2** (Generated instances): Simplified review recommended
+- **Tier 3** (Ecosystem coordinators): Inherit principles, lighter process
+
+See [ETHICS.md](ETHICS.md) for the complete ethical framework and review templates.
+
+#### Templates vs. Implementation
+
+Templates are starting points, not finished products. Every generated file requires:
+- Review and customization
+- Understanding of its purpose
+- Ongoing maintenance
+
+### This Is Not
+
+- A compliance shortcut (templates require understanding and customization)
+- Instant security certification (security requires ongoing effort)
+- A substitute for professional judgment (consult experts for legal/security matters)
+- Copy-paste governance theater (files without understanding provide false confidence)
+
 ---
 
 ## Quick Start
@@ -246,29 +281,6 @@ project-foundation-template/
 
 ---
 
-## Key Concepts
-
-### Education First
-
-Every template teaches before it generates:
-- **WHAT**: What is this file/principle?
-- **WHY**: Why does it matter?
-- **HOW**: How do you implement it?
-- **RISK**: What happens without it?
-
-### Principle Zero: "Do No Harm, Allow No Harm"
-
-This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. See [ETHICS.md](ETHICS.md) for our complete ethical framework.
-
-### Templates vs. Implementation
-
-Templates are starting points, not finished products. Every generated file requires:
-- Review and customization
-- Understanding of its purpose
-- Ongoing maintenance
-
----
-
 ## Documentation
 
 | Document | Purpose |
@@ -295,15 +307,6 @@ python setup_foundation.py --plugins-dir ./my-plugins --project-name "MyProject"
 ```
 
 See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
-
----
-
-## This Is Not
-
-- A compliance shortcut (templates require understanding and customization)
-- Instant security certification (security requires ongoing effort)
-- A substitute for professional judgment (consult experts for legal/security matters)
-- Copy-paste governance theater (files without understanding provide false confidence)
 
 ---
 
