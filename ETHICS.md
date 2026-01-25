@@ -156,7 +156,7 @@ Before generating any templates, users must acknowledge:
 
 ### 2. Education First
 Every template generation includes educational content explaining:
-- What the template is for
+- What purpose the template serves
 - Why it matters
 - How to customize it properly
 
@@ -164,7 +164,7 @@ Every template generation includes educational content explaining:
 Local logging (never transmitted) creates accountability:
 - Who generated templates
 - When they were generated
-- What project they were for
+- What project they targeted
 
 This creates a paper trail without surveillance. See [Generation Log](core/generation_log.py) for implementation.
 

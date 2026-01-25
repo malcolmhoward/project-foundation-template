@@ -7,7 +7,7 @@ This glossary defines terms used throughout Project Foundation Template (PFT) an
 ## PFT-Specific Terms
 
 ### Governance
-The policies, processes, and documentation that guide how a project is developed, maintained, and contributed to. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records.
+The policies, processes, and documentation that guide project development, maintenance, and contributions. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records.
 
 ### Governance Theater
 The appearance of having proper governance without the substance—adopting templates without understanding or customizing them. PFT is designed to prevent this through education-first principles.
