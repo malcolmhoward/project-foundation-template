@@ -63,6 +63,11 @@ This project believes that good governance starts with understanding, not automa
 - Comprehensive governance coverage
 - Finalized documentation structure
 
+### v2.11.0 - Plugin System
+- Added `core/plugins/` for extensibility
+- Custom principles and guides support
+- `--plugins-dir` flag for organization-specific governance
+
 ## What Makes This Different
 
 Every template:
@@ -124,6 +129,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 2.10.0
+**Version**: 2.11.0
 **Status**: Active development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
