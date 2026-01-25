@@ -21,6 +21,11 @@ from core.principles import (
     SECURITY_PRINCIPLES,
     ADVANCED_PRINCIPLES,
     COMMUNITY_PRINCIPLES,
+    QUALITY_PRINCIPLES,
+    COMPLIANCE_PRINCIPLES,
+    INFRASTRUCTURE_PRINCIPLES,
+    INCLUSIVITY_PRINCIPLES,
+    LIFECYCLE_PRINCIPLES,
     PRINCIPLE_VERSIONS,
     get_principle,
     get_education,
@@ -42,12 +47,12 @@ class TestPrincipleDefinitions:
         assert isinstance(ALL_EDUCATION, dict)
 
     def test_principle_count(self):
-        """Should have 12 principles defined."""
-        assert len(ALL_PRINCIPLES) == 12
+        """Should have 23 principles defined."""
+        assert len(ALL_PRINCIPLES) == 23
 
     def test_education_count(self):
-        """Should have 12 education entries (one per principle)."""
-        assert len(ALL_EDUCATION) == 12
+        """Should have 23 education entries (one per principle)."""
+        assert len(ALL_EDUCATION) == 23
 
     def test_principles_and_education_keys_match(self):
         """ALL_PRINCIPLES and ALL_EDUCATION should have the same keys."""
@@ -109,7 +114,12 @@ class TestPrincipleCategories:
             GOVERNANCE_PRINCIPLES +
             SECURITY_PRINCIPLES +
             ADVANCED_PRINCIPLES +
-            COMMUNITY_PRINCIPLES
+            COMMUNITY_PRINCIPLES +
+            QUALITY_PRINCIPLES +
+            COMPLIANCE_PRINCIPLES +
+            INFRASTRUCTURE_PRINCIPLES +
+            INCLUSIVITY_PRINCIPLES +
+            LIFECYCLE_PRINCIPLES
         )
         assert all_categorized == set(ALL_PRINCIPLES.keys())
 
@@ -120,7 +130,12 @@ class TestPrincipleCategories:
             GOVERNANCE_PRINCIPLES +
             SECURITY_PRINCIPLES +
             ADVANCED_PRINCIPLES +
-            COMMUNITY_PRINCIPLES
+            COMMUNITY_PRINCIPLES +
+            QUALITY_PRINCIPLES +
+            COMPLIANCE_PRINCIPLES +
+            INFRASTRUCTURE_PRINCIPLES +
+            INCLUSIVITY_PRINCIPLES +
+            LIFECYCLE_PRINCIPLES
         )
         assert len(all_lists) == len(set(all_lists))
 
@@ -260,14 +275,14 @@ class TestGetPrinciplesForVersion:
         for pid in ADVANCED_PRINCIPLES:
             assert pid in result
 
-    def test_version_280_has_all_principles(self):
-        """v2.8.0 should include all principles."""
-        result = get_principles_for_version("2.8.0")
+    def test_version_300_has_all_principles(self):
+        """v3.0.0 should include all principles."""
+        result = get_principles_for_version("3.0.0")
         assert set(result) == set(ALL_PRINCIPLES.keys())
 
     def test_lite_suffix_handled(self):
         """Version with -lite suffix should work."""
-        result = get_principles_for_version("2.8.0-lite")
+        result = get_principles_for_version("3.0.0-lite")
         assert set(result) == set(ALL_PRINCIPLES.keys())
 
     def test_early_version_excludes_later_principles(self):
@@ -290,10 +305,10 @@ class TestListAllPrinciples:
         result = list_all_principles()
         assert set(result) == set(ALL_PRINCIPLES.keys())
 
-    def test_returns_12_principles(self):
-        """Should return 12 principles."""
+    def test_returns_23_principles(self):
+        """Should return 23 principles."""
         result = list_all_principles()
-        assert len(result) == 12
+        assert len(result) == 23
 
 
 class TestIndividualPrincipleModules:
