@@ -36,6 +36,12 @@ from .glossary import GUIDE as GLOSSARY_GUIDE, CONTENT as GLOSSARY_CONTENT
 from .coding_standards import GUIDE as CODING_STANDARDS_GUIDE, CONTENT as CODING_STANDARDS_CONTENT
 from .onboarding import GUIDE as ONBOARDING_GUIDE, CONTENT as ONBOARDING_CONTENT
 
+# v3.2.0 guides
+from .developer_handbook import GUIDE as DEVELOPER_HANDBOOK_GUIDE, CONTENT as DEVELOPER_HANDBOOK_CONTENT
+from .architecture_overview import GUIDE as ARCHITECTURE_GUIDE, CONTENT as ARCHITECTURE_CONTENT
+from .deployment_guide import GUIDE as DEPLOYMENT_GUIDE, CONTENT as DEPLOYMENT_CONTENT
+from .contributor_handbook import GUIDE as CONTRIBUTOR_HANDBOOK_GUIDE, CONTENT as CONTRIBUTOR_HANDBOOK_CONTENT
+
 # Aggregated guides dictionary
 ALL_GUIDES = {
     # Existing guides (v2.9.0)
@@ -55,6 +61,11 @@ ALL_GUIDES = {
     "glossary": GLOSSARY_GUIDE,
     "coding-standards": CODING_STANDARDS_GUIDE,
     "onboarding": ONBOARDING_GUIDE,
+    # v3.2.0 guides
+    "developer-handbook": DEVELOPER_HANDBOOK_GUIDE,
+    "architecture-overview": ARCHITECTURE_GUIDE,
+    "deployment-guide": DEPLOYMENT_GUIDE,
+    "contributor-handbook": CONTRIBUTOR_HANDBOOK_GUIDE,
 }
 
 # Aggregated content dictionary
@@ -76,14 +87,25 @@ ALL_GUIDE_CONTENT = {
     "glossary": GLOSSARY_CONTENT,
     "coding-standards": CODING_STANDARDS_CONTENT,
     "onboarding": ONBOARDING_CONTENT,
+    # v3.2.0 guides
+    "developer-handbook": DEVELOPER_HANDBOOK_CONTENT,
+    "architecture-overview": ARCHITECTURE_CONTENT,
+    "deployment-guide": DEPLOYMENT_CONTENT,
+    "contributor-handbook": CONTRIBUTOR_HANDBOOK_CONTENT,
 }
 
 # Guide categories
 GOVERNANCE_GUIDES = ["versioning", "release-process", "changelog", "compliance-guide"]
-DEVELOPMENT_GUIDES = ["code-review", "adr", "test-strategies", "coding-standards", "api-standards"]
+DEVELOPMENT_GUIDES = [
+    "code-review", "adr", "test-strategies", "coding-standards", "api-standards",
+    "developer-handbook", "architecture-overview",  # v3.2.0
+]
 SECURITY_GUIDES = ["security-disclosure"]
-ONBOARDING_GUIDES = ["onboarding", "glossary", "faq", "troubleshooting"]
-OPERATIONS_GUIDES = ["dependency-guide"]
+ONBOARDING_GUIDES = [
+    "onboarding", "glossary", "faq", "troubleshooting",
+    "contributor-handbook",  # v3.2.0
+]
+OPERATIONS_GUIDES = ["dependency-guide", "deployment-guide"]  # v3.2.0: added deployment-guide
 
 # Complexity levels
 GUIDE_COMPLEXITY = {
@@ -104,6 +126,11 @@ GUIDE_COMPLEXITY = {
     "glossary": "beginner",
     "coding-standards": "intermediate",
     "onboarding": "beginner",
+    # v3.2.0 guides
+    "developer-handbook": "intermediate",
+    "architecture-overview": "intermediate",
+    "deployment-guide": "intermediate",
+    "contributor-handbook": "beginner",
 }
 
 # Version mapping (when each guide was introduced)
@@ -125,6 +152,11 @@ GUIDE_VERSIONS = {
     "glossary": "3.0.0",
     "coding-standards": "3.0.0",
     "onboarding": "3.0.0",
+    # v3.2.0 guides
+    "developer-handbook": "3.2.0",
+    "architecture-overview": "3.2.0",
+    "deployment-guide": "3.2.0",
+    "contributor-handbook": "3.2.0",
 }
 
 
