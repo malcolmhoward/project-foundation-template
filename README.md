@@ -289,6 +289,7 @@ See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
 
 | Version | Highlights |
 |---------|------------|
+| v3.7.0 | Generation log and attribution policy |
 | v3.6.0 | Internationalization support (10 locales) |
 | v3.5.0 | Programming language support infrastructure (17 languages) |
 | v3.4.0 | Advanced features - principles and guides |
@@ -325,6 +326,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 3.6.0
+**Version**: 3.7.0
 **Status**: Active Development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
