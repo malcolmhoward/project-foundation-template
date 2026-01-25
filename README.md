@@ -289,6 +289,7 @@ See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
 
 | Version | Highlights |
 |---------|------------|
+| v3.3.0 | Extended governance principles |
 | v3.2.0 | Developer documentation guides |
 | v3.1.0 | Accessibility & usability features (glossary, maintainers principles) |
 | v3.0.0 | New entrypoint, 23 principles, 15 guides, plugin system |
@@ -321,6 +322,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 3.2.0
+**Version**: 3.3.0
 **Status**: Active Development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
