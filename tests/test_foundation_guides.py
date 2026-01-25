@@ -21,6 +21,8 @@ from core.guides import (
     SECURITY_GUIDES,
     ONBOARDING_GUIDES,
     OPERATIONS_GUIDES,
+    PLANNING_GUIDES,
+    COMMUNITY_GUIDES,
     GUIDE_COMPLEXITY,
     GUIDE_VERSIONS,
     get_guide,
@@ -43,12 +45,12 @@ class TestGuideDefinitions:
         assert isinstance(ALL_GUIDE_CONTENT, dict)
 
     def test_guide_count(self):
-        """Should have 19 guides defined (15 v3.0.0 + 4 v3.2.0)."""
-        assert len(ALL_GUIDES) == 19
+        """Should have 25 guides defined (15 v3.0.0 + 4 v3.2.0 + 6 v3.4.0)."""
+        assert len(ALL_GUIDES) == 25
 
     def test_content_count(self):
-        """Should have 19 content entries (one per guide)."""
-        assert len(ALL_GUIDE_CONTENT) == 19
+        """Should have 25 content entries (one per guide)."""
+        assert len(ALL_GUIDE_CONTENT) == 25
 
     def test_guides_and_content_keys_match(self):
         """ALL_GUIDES and ALL_GUIDE_CONTENT should have the same keys."""
@@ -109,6 +111,16 @@ class TestGuideCategories:
         expected = ["dependency-guide", "deployment-guide"]  # v3.2.0: added deployment-guide
         assert OPERATIONS_GUIDES == expected
 
+    def test_planning_guides_list(self):
+        """PLANNING_GUIDES should contain expected guides (v3.4.0)."""
+        expected = ["user-stories", "personas", "features", "refs", "tree-preview"]
+        assert PLANNING_GUIDES == expected
+
+    def test_community_guides_list(self):
+        """COMMUNITY_GUIDES should contain expected guides (v3.4.0)."""
+        expected = ["contribution-opportunities"]
+        assert COMMUNITY_GUIDES == expected
+
     def test_all_categories_cover_all_guides(self):
         """All category lists together should cover all guides."""
         all_categorized = set(
@@ -116,7 +128,9 @@ class TestGuideCategories:
             DEVELOPMENT_GUIDES +
             SECURITY_GUIDES +
             ONBOARDING_GUIDES +
-            OPERATIONS_GUIDES
+            OPERATIONS_GUIDES +
+            PLANNING_GUIDES +
+            COMMUNITY_GUIDES
         )
         assert all_categorized == set(ALL_GUIDES.keys())
 
@@ -127,7 +141,9 @@ class TestGuideCategories:
             DEVELOPMENT_GUIDES +
             SECURITY_GUIDES +
             ONBOARDING_GUIDES +
-            OPERATIONS_GUIDES
+            OPERATIONS_GUIDES +
+            PLANNING_GUIDES +
+            COMMUNITY_GUIDES
         )
         assert len(all_lists) == len(set(all_lists))
 
@@ -294,10 +310,10 @@ class TestListAllGuides:
         result = list_all_guides()
         assert set(result) == set(ALL_GUIDES.keys())
 
-    def test_returns_19_guides(self):
-        """Should return 19 guides (15 v3.0.0 + 4 v3.2.0)."""
+    def test_returns_25_guides(self):
+        """Should return 25 guides (15 v3.0.0 + 4 v3.2.0 + 6 v3.4.0)."""
         result = list_all_guides()
-        assert len(result) == 19
+        assert len(result) == 25
 
 
 class TestIndividualGuideModules:
@@ -324,6 +340,13 @@ class TestIndividualGuideModules:
         "architecture-overview",
         "deployment-guide",
         "contributor-handbook",
+        # v3.4.0 guides
+        "user-stories",
+        "personas",
+        "features",
+        "contribution-opportunities",
+        "refs",
+        "tree-preview",
     ])
     def test_guide_in_all_guides(self, guide_id):
         """Each guide ID should be in ALL_GUIDES."""
@@ -350,6 +373,13 @@ class TestIndividualGuideModules:
         "architecture-overview",
         "deployment-guide",
         "contributor-handbook",
+        # v3.4.0 guides
+        "user-stories",
+        "personas",
+        "features",
+        "contribution-opportunities",
+        "refs",
+        "tree-preview",
     ])
     def test_guide_in_all_content(self, guide_id):
         """Each guide ID should be in ALL_GUIDE_CONTENT."""
@@ -376,6 +406,13 @@ class TestIndividualGuideModules:
         "architecture-overview",
         "deployment-guide",
         "contributor-handbook",
+        # v3.4.0 guides
+        "user-stories",
+        "personas",
+        "features",
+        "contribution-opportunities",
+        "refs",
+        "tree-preview",
     ])
     def test_guide_in_complexity(self, guide_id):
         """Each guide ID should be in GUIDE_COMPLEXITY."""
@@ -402,6 +439,13 @@ class TestIndividualGuideModules:
         "architecture-overview",
         "deployment-guide",
         "contributor-handbook",
+        # v3.4.0 guides
+        "user-stories",
+        "personas",
+        "features",
+        "contribution-opportunities",
+        "refs",
+        "tree-preview",
     ])
     def test_guide_in_versions(self, guide_id):
         """Each guide ID should be in GUIDE_VERSIONS."""
@@ -432,6 +476,13 @@ class TestGuideContentQuality:
         "architecture-overview",
         "deployment-guide",
         "contributor-handbook",
+        # v3.4.0 guides
+        "user-stories",
+        "personas",
+        "features",
+        "contribution-opportunities",
+        "refs",
+        "tree-preview",
     ])
     def test_content_has_overview(self, guide_id):
         """Each guide content should have an overview section."""
@@ -459,6 +510,13 @@ class TestGuideContentQuality:
         "architecture-overview",
         "deployment-guide",
         "contributor-handbook",
+        # v3.4.0 guides
+        "user-stories",
+        "personas",
+        "features",
+        "contribution-opportunities",
+        "refs",
+        "tree-preview",
     ])
     def test_content_minimum_length(self, guide_id):
         """Each guide content should have substantial content."""
