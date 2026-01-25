@@ -54,8 +54,8 @@ python setup_foundation.py --non-interactive --accept-terms --preset standard \
 
 ```bash
 python setup_foundation.py --list-presets      # Show all governance presets
-python setup_foundation.py --list-principles   # Show all 23 principles
-python setup_foundation.py --list-guides       # Show all 15 implementation guides
+python setup_foundation.py --list-principles   # Show all 30 principles
+python setup_foundation.py --list-guides       # Show all 25 implementation guides
 ```
 
 ---
@@ -70,7 +70,7 @@ Choose the level of governance that matches your project's needs:
 | **light** | 6 | Small open source projects, basic governance needs |
 | **standard** | 9 | Active open source projects, professional teams (Default) |
 | **strict** | 12 | Security-sensitive projects, compliance requirements |
-| **enterprise** | 23 | Large organizations, regulated industries, maximum governance |
+| **enterprise** | 30 | Large organizations, regulated industries, maximum governance |
 
 ### What Each Preset Includes
 
@@ -83,12 +83,12 @@ standard (9)    → Issue Templates + PR Template + CI Workflow
     ↓ adds
 strict (12)     → Enhanced Security + Secrets Detection + ADR
     ↓ adds
-enterprise (23) → Quality + Compliance + Infrastructure + Inclusivity + Lifecycle
+enterprise (30) → Quality + Compliance + Infrastructure + Inclusivity + Lifecycle + Workflow + Tooling
 ```
 
 ---
 
-## The 23 Governance Principles
+## The 30 Governance Principles
 
 Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK** (what happens without it).
 
@@ -155,6 +155,25 @@ Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK
 |-----------|---------|
 | `deprecation-policy` | How features are deprecated and removed |
 
+### Documentation (v3.1.0+)
+| Principle | Purpose |
+|-----------|---------|
+| `glossary` | Project terminology definitions |
+| `maintainers` | Maintainer roles and responsibilities |
+
+### Workflow (v3.3.0+)
+| Principle | Purpose |
+|-----------|---------|
+| `roadmap` | Project direction and planning |
+| `branch-naming` | Consistent branch naming conventions |
+| `conventional-commits` | Structured commit messages |
+
+### Tooling (v3.4.0+)
+| Principle | Purpose |
+|-----------|---------|
+| `pre-commit-hooks` | Automated code quality checks |
+| `error-handling` | Consistent error handling patterns |
+
 ---
 
 ## Project Structure
@@ -173,18 +192,18 @@ project-foundation-template/
 │   ├── generator.py            # File generation engine
 │   ├── utils.py                # Utility functions
 │   │
-│   ├── principles/             # 23 Governance Principles
+│   ├── principles/             # 30 Governance Principles
 │   │   ├── __init__.py         # Principle aggregation
 │   │   ├── readme.py           # README principle
 │   │   ├── contributing.py     # Contributing principle
 │   │   ├── license.py          # License principle
-│   │   └── ...                 # (20 more principles)
+│   │   └── ...                 # (27 more principles)
 │   │
-│   ├── guides/                 # 15 Implementation Guides
+│   ├── guides/                 # 25 Implementation Guides
 │   │   ├── __init__.py         # Guide aggregation
 │   │   ├── versioning.py       # Versioning guide
 │   │   ├── code_review.py      # Code review guide
-│   │   └── ...                 # (13 more guides)
+│   │   └── ...                 # (23 more guides)
 │   │
 │   ├── presets/                # Governance Presets
 │   │   ├── __init__.py         # Preset aggregation
@@ -192,7 +211,7 @@ project-foundation-template/
 │   │   ├── light.py            # 6 principles
 │   │   ├── standard.py         # 9 principles (default)
 │   │   ├── strict.py           # 12 principles
-│   │   └── enterprise.py       # 23 principles
+│   │   └── enterprise.py       # 30 principles
 │   │
 │   └── plugins/                # Plugin System
 │       ├── __init__.py         # Plugin API
@@ -295,10 +314,10 @@ See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
 | v3.7.0 | Generation log and attribution policy |
 | v3.6.0 | Internationalization support (10 locales) |
 | v3.5.0 | Programming language support infrastructure (17 languages) |
-| v3.4.0 | Advanced features - principles and guides |
-| v3.3.0 | Extended governance principles |
+| v3.4.0 | Advanced features - 30 principles, 25 guides |
+| v3.3.0 | Extended governance principles (28 total) |
 | v3.2.0 | Developer documentation guides |
-| v3.1.0 | Accessibility & usability features (glossary, maintainers principles) |
+| v3.1.0 | Accessibility & usability features (25 principles) |
 | v3.0.0 | New entrypoint, 23 principles, 15 guides, plugin system |
 | v2.x | Modular architecture, presets, educational content |
 | v1.x | Initial implementation |
