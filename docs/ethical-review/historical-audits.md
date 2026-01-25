@@ -28,7 +28,7 @@ This document contains retroactive ethical reviews for all Project Foundation Te
 - [v3.4.0 - Advanced Features](#v340---advanced-features)
 - [v3.5.0 - Programming Language Support](#v350---programming-language-support)
 - [v3.6.0 - Internationalization Support](#v360---internationalization-support)
-- [v3.7.0 - Generation Log and Attribution Policy](#v370---generation-log-and-attribution-policy)
+- [v3.7.0 - Generation Log, Attribution Policy, and Tiered Ethical Review](#v370---generation-log-attribution-policy-and-tiered-ethical-review)
 - [Summary of Accepted Residual Risks](#summary-of-accepted-residual-risks)
 - [Future Enhancement Recommendations](#future-enhancement-recommendations)
 
@@ -1141,7 +1141,7 @@ This document contains retroactive ethical reviews for all Project Foundation Te
 
 ---
 
-## v3.7.0 - Generation Log and Attribution Policy
+## v3.7.0 - Generation Log, Attribution Policy, and Tiered Ethical Review
 
 **Review Date**: January 2026
 **Reviewer**: Malcolm Howard
@@ -1152,6 +1152,11 @@ This document contains retroactive ethical reviews for all Project Foundation Te
 - File provenance documentation
 - Attribution policy for generated content
 - Multiple log formats (md/json/both)
+- Tiered ethical review framework (Tier 1/2/3)
+- Simplified review templates (TEMPLATE-TIER2.md, TEMPLATE-TIER3.md)
+- ADR 0010: Tiered Ethical Review Framework
+- README reorganization (Key Concepts/This Is Not moved to What is This)
+- README accuracy fixes (principle count 23→30, guide count 15→25)
 
 ### Principle Zero Assessment
 
@@ -1245,13 +1250,52 @@ python generate_foundation.py --include-generation-log ...
 python generate_foundation.py --include-generation-log --force-overwrite ...
 ```
 
+### Tiered Ethical Review Framework (January 2026)
+
+**Addition**: Three-tier system scaling ethical review rigor to project risk level.
+
+| Tier | Projects | Review Level | Template |
+|------|----------|--------------|----------|
+| **Tier 1** | PFT core, extensions | Full review required | TEMPLATE.md |
+| **Tier 2** | Generated instances | Simplified recommended | TEMPLATE-TIER2.md |
+| **Tier 3** | Coordinators, docs | Inherit principles | TEMPLATE-TIER3.md |
+
+#### Principle Zero Assessment for Tiered Framework
+
+**Direct Harm**: Could tiered system allow harmful changes to slip through?
+- **Risk**: Low - Tier 1 (core components) still requires full review
+- **Mitigation**: Clear criteria in ETHICS.md for tier classification
+
+**Enabling Harm**: Could simplified templates be misused to bypass ethical review?
+- **Risk**: Low - Templates provide guidance, not bypass mechanisms
+- **Mitigation**: Templates include escalation criteria for higher-risk changes
+
+**Passive Harm**: Could lack of guidance cause ecosystem projects to skip ethical review?
+- **Risk**: Previously high, now mitigated
+- **Mitigation**: Providing right-sized templates encourages adoption
+
+#### Deferred Alternative
+
+**`--ethical-tier` CLI flag**: Considered adding generator support for tier-appropriate templates.
+
+**Deferred because**:
+1. Most Tier 2/3 projects may not use PFT generator
+2. Templates are simple enough for manual adoption
+3. Avoids scope creep in v3.7.0
+
+**Documented in**: [ADR 0010](../adr/0010-tiered-ethical-review-framework.md) for future consideration if demand justifies.
+
 ### Conclusion
 
 - [x] Passes Principle Zero
 - [x] Educational value maintained
 - [x] Overwrite protection implemented
+- [x] Tiered ethical review framework provides right-sized guidance for ecosystem
 
-**Accepted Residual Risks**: Privacy concerns addressed through local-only logs. Overwrite risks now addressed through interactive prompts and safe defaults.
+**Accepted Residual Risks**:
+- Privacy concerns addressed through local-only logs
+- Overwrite risks addressed through interactive prompts and safe defaults
+- Tier misclassification risk mitigated by clear criteria in ETHICS.md
 
 ---
 
