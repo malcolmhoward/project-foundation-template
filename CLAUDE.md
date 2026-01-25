@@ -4,6 +4,65 @@
 
 **Project Foundation Template** is an educational template generator for thoughtful software governance. It prioritizes teaching best practices over automation shortcuts.
 
+---
+
+## Critical: Agentic Safety Guidelines
+
+### Command Execution Security Review
+
+**Before executing ANY command**, review for these risks:
+
+1. **Secret Exposure via Terminal Output**
+   - Commands that dump environment variables (`env`, `printenv`, `set`)
+   - Commands that read secret files (`cat ~/.ssh/*`, `cat .env`)
+   - API calls that include tokens in verbose output
+   - Git commands that might expose credentials in remotes
+
+2. **Secret Exposure to the Model**
+   - File reads that might contain credentials
+   - Database queries that return sensitive data
+   - Log files that contain tokens or passwords
+
+3. **Destructive Operations**
+   - `rm -rf`, `git reset --hard`, `git push --force`
+   - Database truncation or deletion
+   - Overwriting files without backup
+
+**Mitigation**: When in doubt, ask the user before executing. Prefer read-only operations for exploration.
+
+### Context Preservation via Orchestrator + Sub-agent Pattern
+
+**Problem**: Long sessions cause "context rot" — accumulated blind spots and lost awareness of earlier details.
+
+**Solution**: Use the root session as an orchestrator; delegate focused tasks to sub-agents:
+
+```
+Root Session (Orchestrator):
+├── Define high-level goal
+├── Launch Sub-agent 1: "Specific focused task"
+├── Launch Sub-agent 2: "Another focused task"
+├── Launch Sub-agent 3: "Verification task"
+└── Synthesize results and report to user
+```
+
+**When to use sub-agents**:
+- Complex multi-step operations (rebases, bulk updates)
+- Tasks requiring fresh context (no accumulated assumptions)
+- Verification after changes (independent check)
+- Parallel exploration of different approaches
+
+**Benefits**:
+| Problem | Solution |
+|---------|----------|
+| Context rot during long sessions | Fresh context per sub-agent |
+| Accumulated blind spots | Each agent focuses on one task |
+| Lost awareness of details | Explicit documentation before changes |
+| Silent regressions | Dedicated verification step |
+
+See `scripts/bulk-operations/safe-pr-chain-rebase.md` for a detailed example pattern.
+
+---
+
 ## Core Philosophy
 
 ### Principle Zero: "Do No Harm, Allow No Harm"

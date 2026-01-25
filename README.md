@@ -1,12 +1,14 @@
-# Project Foundation Template
+# Project Foundation Template (PFT)
 
 **Educational templates for thoughtful software governance**
+
+> **Governance**: The policies, processes, and documentation that guide how a project is developed, maintained, and contributed to. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records. See [GLOSSARY.md](GLOSSARY.md) for more terms.
 
 ---
 
 ## What is This?
 
-Project Foundation Template helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
+PFT helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
 
 **Core Philosophy**: Education First — understand WHY before HOW.
 
@@ -254,6 +256,7 @@ Templates are starting points, not finished products. Every generated file requi
 |----------|---------|
 | [CLAUDE.md](CLAUDE.md) | LLM/AI integration guidance |
 | [ETHICS.md](ETHICS.md) | Ethical framework and Principle Zero |
+| [GLOSSARY.md](GLOSSARY.md) | PFT terminology definitions |
 | [ROADMAP.md](ROADMAP.md) | Version roadmap and future plans |
 | [MIGRATION.md](MIGRATION.md) | Upgrading between versions |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
