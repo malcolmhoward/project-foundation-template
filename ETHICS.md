@@ -272,6 +272,8 @@ Full ethical review process (Principle Zero test + Ethical Pause + documented mi
 
 These projects directly shape what PFT generates. Changes here cascade to all downstream users.
 
+**Template**: [Full Review Template](docs/ethical-review/TEMPLATE.md)
+
 #### Tier 2: Generated Instances (Ethical Review RECOMMENDED)
 
 Ethical review is **strongly recommended** but not enforced for:
@@ -280,6 +282,8 @@ Ethical review is **strongly recommended** but not enforced for:
 - **All projects that adopt these principles** - Projects that adopt PFT governance philosophy
 
 These projects should apply Principle Zero and take Ethical Pauses, but the implementation is their responsibility. PFT provides the framework; they own the application.
+
+**Template**: [Simplified Review Template](docs/ethical-review/TEMPLATE-TIER2.md)
 
 #### Tier 3: Ecosystem Coordinators (Inherit Principles, Lighter Process)
 
@@ -296,6 +300,8 @@ These projects should:
 
 However, they do **not** need the full multi-question ethical review process for every change. Their risk profile (documentation, coordination) differs from code-generating templates.
 
+**Template**: [Minimal Review Template](docs/ethical-review/TEMPLATE-TIER3.md)
+
 #### Why the Distinction?
 
 | Tier | Primary Output | Harm Potential | Review Level |
@@ -305,6 +311,8 @@ However, they do **not** need the full multi-question ethical review process for
 | Ecosystem Coordinators | Documentation, coordination | Low | Inherit principles |
 
 The ethical review process exists to prevent harm. Documentation and coordination projects have lower harm potential than code-generating templates, so they warrant a proportionally lighter process.
+
+**Architecture Decision**: See [ADR 0010: Tiered Ethical Review Framework](docs/adr/0010-tiered-ethical-review-framework.md) for the full rationale behind this design.
 
 ---
 

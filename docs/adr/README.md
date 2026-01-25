@@ -33,6 +33,7 @@ Each ADR follows this structure:
 | [0007](0007-enterprise-feature-parity.md) | Enterprise Feature Parity Strategy (v3.0.0+) | Accepted | 2026-01-19 |
 | [0008](0008-programming-language-support.md) | Programming Language Support (v3.5.0) | Proposed | 2026-01-19 |
 | [0009](0009-internationalization-architecture.md) | Internationalization Architecture (v3.6.0) | Proposed | 2026-01-19 |
+| [0010](0010-tiered-ethical-review-framework.md) | Tiered Ethical Review Framework (v3.7.0) | Accepted | 2026-01-25 |
 
 ## Creating New ADRs
 
