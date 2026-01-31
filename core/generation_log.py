@@ -201,6 +201,20 @@ This log provides transparency about auto-generated files in your project.
 - Re-run the generator with `--log-to GENERATION_LOG.md` to append new entries
 - Review before upgrades to understand what might change
 
+## Before Committing
+
+**Important**: Run the validation script to ensure all placeholder markers have been customized:
+
+```bash
+python validate_customization.py [your-project-directory]
+```
+
+The script checks for `[REPLACE: ...]` markers and other placeholders that indicate
+sections requiring customization. Files with uncustomized placeholders should not
+be committed to version control.
+
+**Workflow**: Generate → Customize → Validate → Commit
+
 ## Relationship to Usage Logging
 
 This generation log complements the **Usage Logging** ethical safeguard

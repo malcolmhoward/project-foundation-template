@@ -136,6 +136,7 @@ This template can generate governance for any project—including instances that
 | `core/programming_languages/` | 17 language configurations (v3.5.0) |
 | `core/internationalization/` | 10 locale configurations (v3.6.0) |
 | `core/generation_log.py` | Generation log tracking (v3.7.0) |
+| `validate_customization.py` | Validates generated files are customized (v3.7.0) |
 | `ETHICS.md` | Ethical framework and safeguards |
 | `ACKNOWLEDGMENTS.md` | Feature inspiration credits (v3.7.0) |
 | `GLOSSARY.md` | PFT terminology definitions |
@@ -222,6 +223,11 @@ python generate_foundation.py --project-name "MyProject" --author-name "Author" 
 python generate_foundation.py --list-presets
 python generate_foundation.py --list-principles
 python generate_foundation.py --list-guides
+
+# Validate customization before committing (v3.7.0)
+python validate_customization.py ./output
+python validate_customization.py --verbose ./output
+python validate_customization.py --strict ./output  # For CI/pre-commit
 
 # Test generated output
 ls -la ./output/
