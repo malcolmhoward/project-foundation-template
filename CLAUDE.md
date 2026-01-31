@@ -130,6 +130,16 @@ Evaluate proposed features using priority assessment:
 
 Features should have clear educational value and align with Principle Zero.
 
+### Script Reusability Evaluation
+
+When creating scripts during implementation work, evaluate whether they could be:
+- Added to PFT as optional generation features (if governance-related)
+- Added to your project's coordination utilities (if ecosystem-related)
+- Documented as reusable patterns in ADRs
+- Generalized for broader applicability
+
+Before committing one-off scripts, ask: "Could this help other projects?"
+
 ### Identified Risks to Avoid
 1. **Governance Theater** - Appearance of compliance without substance
 2. **AI Exploitation** - Mass repo pollution, supply chain attacks
