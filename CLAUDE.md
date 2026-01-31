@@ -30,6 +30,27 @@
 
 **Mitigation**: When in doubt, ask the user before executing. Prefer read-only operations for exploration.
 
+### Personal Information in Public Projects
+
+**Before committing or creating files**, review for personal information exposure:
+
+1. **Filesystem Paths**
+   - Avoid hardcoded paths containing usernames (`C:\Users\<username>\...`, `/home/<username>/...`)
+   - Use generic placeholders (`<project root>`, `./relative/path`) in documentation
+   - Use environment variables or relative paths in scripts
+
+2. **Personal Identifiers**
+   - Email addresses in examples (use `user@example.com`)
+   - Real names in placeholder data (use generic names)
+   - Local machine names or network paths
+
+3. **Before Committing**
+   - Review generated files for personal paths
+   - Check example commands in documentation
+   - Verify test data doesn't contain real user information
+
+**Mitigation**: Use placeholders, relative paths, and generic examples. When creating documentation or scripts, prefer patterns that work regardless of the user's local environment.
+
 ### Context Preservation via Orchestrator + Sub-agent Pattern
 
 **Problem**: Long sessions cause "context rot" — accumulated blind spots and lost awareness of earlier details.
