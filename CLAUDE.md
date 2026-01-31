@@ -51,6 +51,32 @@
 
 **Mitigation**: Use placeholders, relative paths, and generic examples. When creating documentation or scripts, prefer patterns that work regardless of the user's local environment.
 
+### Merge Conflict Resolution
+
+**When resolving merge conflicts**, take care to avoid regressions:
+
+1. **Understand Both Sides**
+   - Read the full context of both versions before resolving
+   - Identify what each side was trying to accomplish
+   - Check if both changes are needed (not mutually exclusive)
+
+2. **Preserve Intent**
+   - Don't blindly accept "ours" or "theirs"
+   - Merge content from both sides when appropriate
+   - Keep all meaningful additions from both branches
+
+3. **Verify After Resolution**
+   - Review the final merged file for completeness
+   - Ensure no content was accidentally dropped
+   - Check that the file still makes sense as a whole
+
+4. **Common Pitfalls**
+   - Dropping newer content when accepting older version
+   - Losing additions that appear in only one branch
+   - Breaking file structure by incomplete merges
+
+**Mitigation**: When in doubt, show the user both versions and ask which content to preserve. For complex conflicts, consider reading the file history to understand the evolution of changes.
+
 ### Context Preservation via Orchestrator + Sub-agent Pattern
 
 **Problem**: Long sessions cause "context rot" — accumulated blind spots and lost awareness of earlier details.
