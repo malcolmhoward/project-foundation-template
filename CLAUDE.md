@@ -51,6 +51,27 @@
 
 **Mitigation**: Use placeholders, relative paths, and generic examples. When creating documentation or scripts, prefer patterns that work regardless of the user's local environment.
 
+### Project Attribution in Public Commits
+
+**Before referencing external projects** in commits, documentation, or code, consider attribution approval:
+
+1. **Unapproved References**
+   - Don't mention specific ecosystem projects by name without their approval
+   - Use generic terms ("ecosystem dogfooding", "external project") instead
+   - Avoid implying endorsement or official relationship
+
+2. **When Attribution is Appropriate**
+   - Project has explicitly approved being mentioned
+   - Referencing public, well-known projects for context (e.g., "inspired by X")
+   - Crediting open source dependencies in acknowledgments
+
+3. **In Commit Messages and Changelogs**
+   - Describe the feature/fix generically
+   - Avoid naming the specific project that prompted the change
+   - Focus on the improvement itself, not its origin
+
+**Mitigation**: When improvements are discovered while working on external projects, describe them in terms of what PFT gains, not where the idea came from. Ask the user if project attribution is approved.
+
 ### Merge Conflict Resolution
 
 **When resolving merge conflicts**, take care to avoid regressions:
