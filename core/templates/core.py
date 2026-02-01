@@ -503,6 +503,9 @@ coverage/
 .coverage
 .pytest_cache/
 
+# PFT usage logging (local accountability trail)
+.project_foundation_logs/
+
 # Project specific
 # [ADD YOUR PROJECT'S SPECIFIC IGNORES HERE]
 """
