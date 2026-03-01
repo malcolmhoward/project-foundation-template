@@ -30,6 +30,9 @@ Each ADR follows this structure:
 | [0004](0004-modular-package-architecture.md) | Modular Package Architecture (v2.6.0) | Accepted | 2026-01-18 |
 | [0005](0005-preset-system.md) | Governance Preset System (v2.7.0) | Accepted | 2026-01-18 |
 | [0006](0006-plugin-architecture.md) | Plugin Architecture (v2.11.0) | Accepted | 2026-01-18 |
+| [0007](0007-enterprise-feature-parity.md) | Enterprise Feature Parity Strategy (v3.0.0+) | Accepted | 2026-01-19 |
+| [0008](0008-programming-language-support.md) | Programming Language Support (v3.5.0) | Proposed | 2026-01-19 |
+| [0009](0009-internationalization-architecture.md) | Internationalization Architecture (v3.6.0) | Proposed | 2026-01-19 |
 
 ## Creating New ADRs
 

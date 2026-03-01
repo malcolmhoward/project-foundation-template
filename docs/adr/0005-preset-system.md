@@ -158,13 +158,13 @@ Users explicitly enable each feature they want.
 
 ```bash
 # Use default preset (standard)
-python setup_foundation_lite.py --project-name "MyProject" --author-name "Me"
+python generate_foundation.py --project-name "MyProject" --author-name "Me"
 
 # Explicitly select preset
-python setup_foundation_lite.py --preset minimal --project-name "MyProject" --author-name "Me"
+python generate_foundation.py --preset minimal --project-name "MyProject" --author-name "Me"
 
 # List available presets
-python setup_foundation_lite.py --list-presets
+python generate_foundation.py --list-presets
 ```
 
 ### Integration with Generator

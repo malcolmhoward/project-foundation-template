@@ -122,7 +122,7 @@ type(scope): description
 
 | Scope | Description |
 |-------|-------------|
-| `generator` | Changes to setup_foundation_lite.py |
+| `generator` | Changes to generate_foundation.py |
 | `core` | Changes to core/ package |
 | `principles` | Changes to governance principles |
 | `guides` | Changes to documentation guides |
