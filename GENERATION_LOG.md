@@ -1,4 +1,4 @@
-# Generation Log
+vl# Generation Log
 
 Tracks file provenance for Project Foundation Template itself.
 

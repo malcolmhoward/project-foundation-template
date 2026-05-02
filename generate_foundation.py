@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """
-Project Foundation Template v3.0.0
+Project Foundation Template v3.7.0
 
 A tool for generating ethical project governance templates.
 
-This is the main entrypoint for v3.0.0, replacing setup_foundation_lite.py.
+This is the main entrypoint for v3.7.0, replacing setup_foundation_lite.py.
 It provides a clean, thin wrapper that delegates to the modular core package.
 
 BREAKING CHANGES from v2.x:
@@ -81,7 +81,7 @@ def show_banner(quiet: bool = False):
 
     print(f"""
 ================================================================================
-     Project Foundation Template v3.0.0
+     Project Foundation Template v{SCRIPT_VERSION}
      A tool for generating ethical project governance templates
 ================================================================================
 """)
@@ -222,14 +222,14 @@ def load_plugins(plugins_dir: str) -> list:
         return []
 
     # Future: Load and validate plugins
-    # For v3.0.0, this is a placeholder for the plugin architecture
+    # For now, this is a placeholder for the plugin architecture
     print(f"Note: Plugin loading from {plugins_dir} (not yet implemented)")
     return []
 
 
 def main() -> int:
     """
-    Main entry point for Project Foundation Template v3.0.0.
+    Main entry point for Project Foundation Template v3.7.0.
 
     This function orchestrates the generation process:
     1. Parse command-line arguments
