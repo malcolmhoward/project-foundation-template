@@ -76,7 +76,7 @@
    - Avoid naming the specific project that prompted the change
    - Focus on the improvement itself, not its origin
 
-**Mitigation**: When improvements are discovered while working on external projects, describe them in terms of what PFT claudcla, not where the idea came from. Ask the user if project attribution is approved.
+**Mitigation**: When improvements are discovered while working on external projects, describe them in terms of what PFT enables, not where the idea came from. Ask the user if project attribution is approved.
 
 ### Merge Conflict Resolution
 
