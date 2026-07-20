@@ -544,6 +544,52 @@ Contributors are recognized in:
 
 We value all contributions, from typo fixes to major features.
 
+## Attribution Policy
+
+When features are inspired by community feedback, project usage, or external suggestions, we follow this attribution approach:
+
+### Default: Anonymous Attribution
+
+By default, inspiration is acknowledged anonymously:
+
+```markdown
+Inspired by community feedback
+```
+
+This protects privacy and does not create implied obligations between projects.
+
+### Opt-In Named Attribution
+
+If you would like to be named for inspiring a feature:
+
+1. Request named attribution when suggesting the feature, or
+2. Request retroactive attribution via issue or PR
+
+Named attribution appears in:
+- Relevant commit messages
+- ACKNOWLEDGMENTS.md (if the project maintains one)
+- Release notes for the version introducing the feature
+
+Example:
+```markdown
+Inspired by feedback from @username on Project XYZ
+```
+
+### Guidelines
+
+- **No implied partnership**: Attribution does not create official relationships between projects
+- **Retroactive attribution**: Can be added after initial release
+- **Maintainer discretion**: Final attribution wording at maintainer discretion
+- **Opt-out**: Previously named attributions can be anonymized upon request
+
+### Why This Matters
+
+This policy ensures:
+- Contributors receive credit when desired
+- Privacy is protected by default
+- Projects remain independent
+- The collaborative spirit of open source is maintained
+
 ---
 
 ## Related Documents

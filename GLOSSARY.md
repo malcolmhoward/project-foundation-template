@@ -7,7 +7,7 @@ This glossary defines terms used throughout Project Foundation Template (PFT) an
 ## PFT-Specific Terms
 
 ### Governance
-The policies, processes, and documentation that guide how a project is developed, maintained, and contributed to. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records.
+The policies, processes, and documentation that guide project development, maintenance, and contributions. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records.
 
 ### Governance Theater
 The appearance of having proper governance without the substance—adopting templates without understanding or customizing them. PFT is designed to prevent this through education-first principles.
@@ -20,6 +20,9 @@ A predefined collection of governance principles bundled for common use cases. P
 
 ### Principle (Governance Principle)
 A governance concept in PFT that defines WHAT must be done, WHY it matters, and the RISK of not having it. Principles are the building blocks of governance.
+
+### Dogfooding
+The practice of using your own product to validate its quality and discover improvements. For PFT, this means running the template generator against itself and comparing output to existing governance files. Dogfooding builds credibility ("practice what you preach") and identifies template improvements through real-world application. See [docs/dogfood/README.md](docs/dogfood/README.md) for procedure and [ADR-0011](docs/adr/0011-pft-self-governance.md) for PFT's self-governance decision.
 
 ### Principle Zero
 PFT's foundational ethical principle: "Do No Harm, Allow No Harm." All decisions in PFT flow from this principle, inspired by GAIA from [Horizon Zero Dawn®](https://www.playstation.com/games/horizon-zero-dawn/).
