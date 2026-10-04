@@ -20,7 +20,7 @@ Usage:
 
 Example:
     $ cp examples/plugins/custom_principle.py ~/.foundation-plugins/
-    $ python setup_foundation_lite.py --list-principles
+    $ python generate_foundation.py --list-principles
     # Your custom principle should appear in the list
 """
 

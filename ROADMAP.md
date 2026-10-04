@@ -270,7 +270,7 @@ The v2.6.0 modularization completed approximately **60% of the v3.0.0 architectu
 
 ```
 project-foundation-template/
-├── setup_foundation.py          # Main entry point
+├── generate_foundation.py       # Main entry point
 ├── core/                        # (renamed from foundation/)
 │   ├── generator.py            # Base generator class (extracted)
 │   ├── config.py               # Configuration management ✅
@@ -378,6 +378,131 @@ tests/
 
 ---
 
+## Post-v3.0.0 Roadmap: Enterprise Feature Parity
+
+Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterprise specification, the following minor versions will address remaining feature gaps while maintaining safety/ethics parity (which is already complete).
+
+### Version 3.1.0 - Accessibility & Usability
+
+**Target**: Address immediate usability gaps identified in audit
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| GLOSSARY.md generation | Generate glossary from existing guide content | High |
+| MAINTAINERS.md generation | Project maintainer documentation | Medium |
+| SCAFFOLD_MANIFEST.md | Document what was generated | Medium |
+| `glossary` principle | Promote guide to full principle with WHAT/WHY/RISK | High |
+
+**Rationale**: These are quick wins that improve accessibility for users of all experience levels.
+
+---
+
+### Version 3.2.0 - Developer Documentation
+
+**Target**: Add missing documentation modules from enterprise spec
+
+| Guide | Description | Priority |
+|-------|-------------|----------|
+| `developer-handbook` | Complete developer reference | High |
+| `architecture-overview` | System architecture documentation | High |
+| `deployment-guide` | Deployment instructions | High |
+| `contributor-handbook` | Extended contributor guide | Medium |
+
+**Rationale**: These guides provide essential HOW documentation that complements the WHAT/WHY principles.
+
+---
+
+### Version 3.3.0 - Extended Governance Principles
+
+**Target**: Add missing governance principles from enterprise spec
+
+| Principle | Description | Priority |
+|-----------|-------------|----------|
+| `maintainers` | Project maintainer documentation | Medium |
+| `roadmap` | Project planning principle (generate ROADMAP.md) | Medium |
+| `branch-naming` | Branch naming conventions | Low |
+| `conventional-commits` | Commit message format standards | Low |
+
+**Rationale**: These principles complete the governance suite for stricter compliance needs.
+
+---
+
+### Version 3.4.0 - Advanced Features
+
+**Target**: Additional principles and guides from enterprise spec
+
+| Feature | Type | Description | Priority |
+|---------|------|-------------|----------|
+| `pre-commit-hooks` | Principle | Enhanced pre-commit automation | Medium |
+| `error-handling` | Principle | Standardized error patterns | Low |
+| `user-stories` | Guide | User story templates | Low |
+| `personas` | Guide | User persona definitions | Low |
+| `features` | Guide | Feature documentation templates | Low |
+| `contribution-opportunities` | Guide | Ways to contribute | Low |
+| `refs` | Guide | External references (REFS.md) | Low |
+| `tree-preview` | Guide | Project structure visualization | Low |
+
+**Rationale**: Lower-priority features that complete the enterprise feature set.
+
+---
+
+### Version 3.5.0 - Programming Language Support
+
+**Target**: Add language-specific configurations (18 languages from spec)
+
+| Language Category | Languages | Features |
+|-------------------|-----------|----------|
+| Top 10 General | Python, JavaScript, TypeScript, Java, C++, C, C#, Go, Rust, PHP | Linter, Formatter, Test Framework |
+| Additional | Ruby, Swift, Kotlin, Bash | Same as above |
+| Game Development | GDScript, Lua, Haxe | Same as above |
+
+**Per-Language Configuration**:
+```python
+{
+    "extensions": [...],
+    "linter": "...",
+    "formatter": "...",
+    "test_framework": "...",
+    "max_line_length": N,
+    "indent": N or "tab"
+}
+```
+
+**Rationale**: Enables language-specific code standards and quality tooling.
+
+---
+
+### Version 3.6.0 - Internationalization
+
+**Target**: Full i18n locale generation
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| Locale structure | Generate `locales/` directory with 10 languages | Medium |
+| RTL support | Right-to-left language support (Arabic) | Low |
+| Translation templates | JSON/YAML templates for each locale | Medium |
+
+**Supported Locales** (from spec):
+- English (en), Spanish (es), French (fr), German (de), Chinese (zh)
+- Japanese (ja), Korean (ko), Portuguese (pt), Arabic (ar, RTL), Hindi (hi)
+
+**Rationale**: Enables global reach and accessibility for international projects.
+
+---
+
+### Gap Analysis Summary
+
+| Category | 6500+ Spec | v3.0.0 | Gap | Target Version |
+|----------|------------|--------|-----|----------------|
+| Safety/Ethics | 6 safeguards | 6 safeguards | 0% | ✅ Complete |
+| Principles | 23 | 23 | Different set | v3.3.0, v3.4.0 |
+| Guides | 20 | 15 | 5 missing | v3.2.0, v3.4.0 |
+| Generated Files | 15+ | 10 | 5 missing | v3.1.0 |
+| Language Support | 18 | 0 | 100% | v3.5.0 |
+| i18n Locales | 10 | 0 | 100% | v3.6.0 |
+
+---
+
 ## Version History
 
 | Version | Status | Key Achievement |
@@ -388,7 +513,13 @@ tests/
 | 2.4.x | ✅ Released | Enhanced security, secrets detection |
 | 2.5.x | ✅ Released | ADR system, CI workflows, smoke tests |
 | 2.6.0 | ✅ Released | Modular package, 83 unit tests |
-| 3.0.0 | 🔄 In Progress | Plugin architecture, all presets |
+| 3.0.0 | ✅ Released | Plugin architecture, 23 principles, 15 guides, 5 presets |
+| 3.1.0 | 📋 Planned | Accessibility (GLOSSARY, MAINTAINERS, SCAFFOLD_MANIFEST) |
+| 3.2.0 | 📋 Planned | Developer documentation guides |
+| 3.3.0 | 📋 Planned | Extended governance principles |
+| 3.4.0 | 📋 Planned | Advanced features |
+| 3.5.0 | 📋 Planned | Programming language support |
+| 3.6.0 | 📋 Planned | Internationalization |
 
 ## Priority Summary
 

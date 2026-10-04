@@ -1,4 +1,4 @@
-# foundation/config.py
+# core/config.py
 # Configuration loading and argument parsing
 
 """
@@ -8,12 +8,13 @@ Contains:
     - Config file loading (.foundationrc)
     - Argument parsing
     - Argument validation
+    - Preset application
 """
 
 import argparse
 import json
 from pathlib import Path
-from typing import Dict, Any
+from typing import Dict, Any, Tuple
 
 from core.utils import SCRIPT_VERSION, CONFIG_FILES
 
@@ -68,6 +69,11 @@ CONFIG_KEY_MAPPING = {
     "accept_terms": "accept_terms",
     "accept-terms": "accept_terms",
     "acceptTerms": "accept_terms",
+    # v3.0.0: Presets and plugins
+    "preset": "preset",
+    "plugins_dir": "plugins_dir",
+    "plugins-dir": "plugins_dir",
+    "pluginsDir": "plugins_dir",
 }
 
 # Default values for arguments
@@ -92,6 +98,12 @@ DEFAULT_VALUES = {
     "verbose": False,
     "non_interactive": False,
     "accept_terms": False,
+    # v3.0.0
+    "preset": None,
+    "plugins_dir": None,
+    "list_principles": False,
+    "list_guides": False,
+    "list_presets": False,
 }
 
 
@@ -166,21 +178,28 @@ Templates must be customized for your specific needs.
 
 Examples:
   Interactive mode:
-    setup_foundation_lite.py --project-name MyProject --author-name "Jane Doe"
+    python generate_foundation.py --project-name MyProject --author-name "Jane Doe"
+
+  Using a preset:
+    python generate_foundation.py --preset enterprise --project-name MyProject --author-name "Jane Doe"
 
   Non-interactive mode (for CI/scripts):
-    setup_foundation_lite.py --non-interactive --accept-terms --project-name MyProject --author-name "Jane Doe"
+    python generate_foundation.py --non-interactive --accept-terms --project-name MyProject --author-name "Jane Doe"
+
+  List available options:
+    python generate_foundation.py --list-presets
+    python generate_foundation.py --list-principles
+    python generate_foundation.py --list-guides
 
   Using config file:
-    setup_foundation_lite.py --config .foundationrc
+    python generate_foundation.py --config .foundationrc
 
 Config file format (.foundationrc):
   {
     "project_name": "MyProject",
     "author_name": "Jane Doe",
     "license": "mit",
-    "include_coc": true,
-    "include_security": true
+    "preset": "standard"
   }
 """,
         formatter_class=argparse.RawDescriptionHelpFormatter
@@ -329,15 +348,99 @@ Config file format (.foundationrc):
         version=f"%(prog)s {SCRIPT_VERSION}"
     )
 
+    # v3.0.0: Preset support
+    parser.add_argument(
+        "--preset",
+        choices=["minimal", "light", "standard", "strict", "enterprise"],
+        help="Governance preset (minimal/light/standard/strict/enterprise). Overrides individual --include-* flags."
+    )
+
+    parser.add_argument(
+        "--plugins-dir",
+        dest="plugins_dir",
+        help="Path to custom plugins directory for extending generator functionality"
+    )
+
+    # v3.0.0: List commands (discovery)
+    parser.add_argument(
+        "--list-principles",
+        dest="list_principles",
+        action="store_true",
+        help="Show available governance principles and exit"
+    )
+
+    parser.add_argument(
+        "--list-guides",
+        dest="list_guides",
+        action="store_true",
+        help="Show available implementation guides and exit"
+    )
+
+    parser.add_argument(
+        "--list-presets",
+        dest="list_presets",
+        action="store_true",
+        help="Show available governance presets and exit"
+    )
+
     return parser.parse_args()
 
 
-def validate_arguments(args) -> tuple:
+def apply_preset_to_args(args, preset_config: Dict[str, Any]):
+    """
+    Apply preset configuration to arguments.
+
+    Preset features override individual --include-* flags.
+
+    Args:
+        args: Parsed arguments namespace
+        preset_config: Preset configuration dict with 'features' key
+
+    Returns:
+        Modified args namespace
+    """
+    if not preset_config or "features" not in preset_config:
+        return args
+
+    features = preset_config["features"]
+
+    # Map preset feature names to argument names
+    feature_to_arg = {
+        "code_of_conduct": "include_coc",
+        "security": "include_security",
+        "changelog": "include_changelog",
+        "issue_templates": "include_github_templates",
+        "pr_template": "include_github_templates",  # Combined with issue templates
+        "enhanced_security": "include_enhanced_security",
+        "secrets_detection": "include_secrets_detection",
+        "adr": "include_adr",
+        "ci_workflow": "include_ci",
+    }
+
+    for feature_name, arg_name in feature_to_arg.items():
+        if feature_name in features:
+            setattr(args, arg_name, features[feature_name])
+
+    return args
+
+
+def validate_arguments(args, skip_required: bool = False) -> Tuple[bool, str]:
     """
     Validate that required arguments are provided.
-    Returns (is_valid, error_message).
+
+    Args:
+        args: Parsed arguments namespace
+        skip_required: If True, skip validation of required fields
+                       (used when running --list-* commands)
+
+    Returns:
+        Tuple of (is_valid, error_message)
     """
     errors = []
+
+    # Skip validation for list commands
+    if skip_required:
+        return True, ""
 
     if not args.project_name:
         errors.append("--project-name is required (or set 'project_name' in config file)")

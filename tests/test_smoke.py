@@ -13,8 +13,10 @@ import tempfile
 import os
 from pathlib import Path
 
-# Path to the main script
-SCRIPT_PATH = Path(__file__).parent.parent / "setup_foundation_lite.py"
+# Path to the main script (v3.0.0 entrypoint)
+SCRIPT_PATH = Path(__file__).parent.parent / "generate_foundation.py"
+# Legacy path for backward compatibility tests
+LEGACY_SCRIPT_PATH = Path(__file__).parent.parent / "setup_foundation_lite.py"
 
 
 def run_script(args):
