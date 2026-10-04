@@ -59,8 +59,16 @@ from core.principles import (
     CORE_PRINCIPLES,
     GOVERNANCE_PRINCIPLES,
     SECURITY_PRINCIPLES,
-    ADVANCED_PRINCIPLES,
     COMMUNITY_PRINCIPLES,
+    ADVANCED_PRINCIPLES,
+    QUALITY_PRINCIPLES,
+    COMPLIANCE_PRINCIPLES,
+    INFRASTRUCTURE_PRINCIPLES,
+    INCLUSIVITY_PRINCIPLES,
+    LIFECYCLE_PRINCIPLES,
+    USABILITY_PRINCIPLES,
+    WORKFLOW_PRINCIPLES,
+    AUTOMATION_PRINCIPLES,
     list_all_principles,
 )
 
@@ -70,6 +78,10 @@ from core.guides import (
     GOVERNANCE_GUIDES,
     DEVELOPMENT_GUIDES,
     SECURITY_GUIDES,
+    COMMUNITY_GUIDES,
+    ONBOARDING_GUIDES,
+    OPERATIONS_GUIDES,
+    PLANNING_GUIDES,
     list_all_guides,
 )
 
@@ -139,7 +151,20 @@ Each principle includes educational content explaining its importance.
         ("SECURITY", SECURITY_PRINCIPLES),
         ("COMMUNITY", COMMUNITY_PRINCIPLES),
         ("ADVANCED", ADVANCED_PRINCIPLES),
+        ("QUALITY", QUALITY_PRINCIPLES),
+        ("COMPLIANCE", COMPLIANCE_PRINCIPLES),
+        ("INFRASTRUCTURE", INFRASTRUCTURE_PRINCIPLES),
+        ("INCLUSIVITY", INCLUSIVITY_PRINCIPLES),
+        ("LIFECYCLE", LIFECYCLE_PRINCIPLES),
+        ("DOCUMENTATION", USABILITY_PRINCIPLES),
+        ("WORKFLOW", WORKFLOW_PRINCIPLES),
+        ("TOOLING", AUTOMATION_PRINCIPLES),
     ]
+    # Anything not in a category above still gets listed, so the output stays complete.
+    listed = {pid for _, ids in categories for pid in ids}
+    other = [pid for pid in ALL_PRINCIPLES if pid not in listed]
+    if other:
+        categories.append(("OTHER", other))
 
     for category_name, principle_ids in categories:
         print(f"  {category_name}")
@@ -180,7 +205,16 @@ They complement principles by offering practical implementation guidance.
         ("GOVERNANCE", GOVERNANCE_GUIDES),
         ("DEVELOPMENT", DEVELOPMENT_GUIDES),
         ("SECURITY", SECURITY_GUIDES),
+        ("COMMUNITY", COMMUNITY_GUIDES),
+        ("ONBOARDING", ONBOARDING_GUIDES),
+        ("OPERATIONS", OPERATIONS_GUIDES),
+        ("PLANNING", PLANNING_GUIDES),
     ]
+    # Anything not in a category above still gets listed, so the output stays complete.
+    listed = {gid for _, ids in categories for gid in ids}
+    other = [gid for gid in ALL_GUIDES if gid not in listed]
+    if other:
+        categories.append(("OTHER", other))
 
     for category_name, guide_ids in categories:
         print(f"  {category_name}")
