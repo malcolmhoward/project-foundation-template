@@ -2360,7 +2360,6 @@ def validate_arguments(args) -> tuple:
 
     return True, ""
 
-
 def main():
     """Main entry point with ethical safeguards."""
     args = parse_arguments()

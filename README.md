@@ -53,6 +53,11 @@ This project believes that good governance starts with understanding, not automa
 - Category groupings (core, governance, security, advanced, community)
 - WHAT/WHY/RISK education pattern per principle
 
+### v2.9.0 - Implementation Guides
+- Added `core/guides/` subpackage with HOW documentation
+- 6 guide modules (versioning, code review, release process, changelog, security disclosure, ADR)
+- Complements principles (WHAT/WHY) with practical implementation (HOW)
+
 ## What Makes This Different
 
 Every template:
@@ -114,6 +119,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 2.8.0
+**Version**: 2.9.0
 **Status**: Active development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)
