@@ -121,6 +121,9 @@ A tool for installing, updating, and managing software dependencies (e.g., npm, 
 ### Pre-commit Hook
 A script that runs automatically before each commit is finalized, acting as a first line of defense against common issues.
 
+### Shim (Compatibility Shim)
+A small stand-in file that keeps an old command or interface working by forwarding to the code that replaced it. PFT's `setup_foundation_lite.py` is a shim: it runs `generate_foundation.py` with the same arguments, so older scripts and CI jobs keep working while users move to the new entry point.
+
 ---
 
 ## Additional Terms

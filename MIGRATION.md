@@ -199,7 +199,7 @@ v2.6.0 refactors the generator from a single self-contained file into a proper P
 **What changed:**
 
 - `setup_foundation_lite.py` is now a thin wrapper that imports from `core/`. It is no longer a standalone file.
-- The primary entrypoint is now `generate_foundation.py` (introduced in v3.0.0; `setup_foundation_lite.py` remains as a compatibility shim).
+- The primary entrypoint is now `generate_foundation.py` (introduced in v3.0.0; `setup_foundation_lite.py` remains as a compatibility shim, a small stand-in file that forwards to `generate_foundation.py`. See [Shim](GLOSSARY.md#shim-compatibility-shim) in the glossary).
 - Installation requires the full repository, not just a single file.
 
 **If you previously downloaded the file directly (gist-style):**
