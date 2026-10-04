@@ -23,8 +23,9 @@ Examples:
     python validate_customization.py --strict
 
 Exit Codes:
-    0 - All files are properly customized (or no generated files found)
-    1 - Uncustomized placeholder markers found
+    0 - All files are properly customized, or placeholders were found without --strict
+        (they are reported, but the run does not fail)
+    1 - Uncustomized placeholder markers found and --strict was given
     2 - Error (invalid arguments, directory not found, etc.)
 """
 

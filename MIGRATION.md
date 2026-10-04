@@ -27,13 +27,13 @@ The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
 #### Preset Selection
 
 ```bash
-# Minimal (5 principles)
+# Minimal (3 principles)
 python generate_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
 
-# Standard (15 principles) - Default
+# Standard (9 principles) - Default
 python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
 
-# Enterprise (23 principles)
+# Enterprise (all 30 principles)
 python generate_foundation.py --preset enterprise --project-name "My Project" --author-name "Name"
 ```
 

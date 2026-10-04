@@ -193,7 +193,7 @@ This template can generate governance for any project—including instances that
 | `core/principles/` | 30 governance principles |
 | `core/guides/` | 25 implementation guides |
 | `core/presets/` | Governance presets (minimal to enterprise) |
-| `core/programming_languages/` | 17 language configurations (v3.5.0) |
+| `core/programming_languages/` | 18 language configurations (v3.5.0) |
 | `core/internationalization/` | 10 locale configurations (v3.6.0) |
 | `core/generation_log.py` | Generation log tracking (v3.7.0) |
 | `validate_customization.py` | Validates generated files are customized (v3.7.0) |
@@ -303,10 +303,10 @@ ls -la ./output/
 ## Version Information
 
 - **Current**: v3.7.0
-- **Advisory Expiration**: Check `generate_foundation.py` for current date
+- **Advisory Expiration**: `EXPIRATION_DATE` in `core/utils.py`; about 6 months after each release (ADR 0003)
 - **Architecture**: Modular core with plugin support
 - **Principles**: 30 governance principles
 - **Guides**: 25 implementation guides
-- **Languages**: 17 programming language configurations
+- **Languages**: 18 programming language configurations
 - **Locales**: 10 internationalization configurations
 - **Generation Log**: Tracks file provenance (md/json/both formats)
