@@ -43,12 +43,12 @@ class TestGuideDefinitions:
         assert isinstance(ALL_GUIDE_CONTENT, dict)
 
     def test_guide_count(self):
-        """Should have 15 guides defined."""
-        assert len(ALL_GUIDES) == 15
+        """Should have 19 guides defined (15 v3.0.0 + 4 v3.2.0)."""
+        assert len(ALL_GUIDES) == 19
 
     def test_content_count(self):
-        """Should have 15 content entries (one per guide)."""
-        assert len(ALL_GUIDE_CONTENT) == 15
+        """Should have 19 content entries (one per guide)."""
+        assert len(ALL_GUIDE_CONTENT) == 19
 
     def test_guides_and_content_keys_match(self):
         """ALL_GUIDES and ALL_GUIDE_CONTENT should have the same keys."""
@@ -85,7 +85,10 @@ class TestGuideCategories:
 
     def test_development_guides_list(self):
         """DEVELOPMENT_GUIDES should contain expected guides."""
-        expected = ["code-review", "adr", "test-strategies", "coding-standards", "api-standards"]
+        expected = [
+            "code-review", "adr", "test-strategies", "coding-standards", "api-standards",
+            "developer-handbook", "architecture-overview",  # v3.2.0
+        ]
         assert DEVELOPMENT_GUIDES == expected
 
     def test_security_guides_list(self):
@@ -95,12 +98,15 @@ class TestGuideCategories:
 
     def test_onboarding_guides_list(self):
         """ONBOARDING_GUIDES should contain expected guides."""
-        expected = ["onboarding", "glossary", "faq", "troubleshooting"]
+        expected = [
+            "onboarding", "glossary", "faq", "troubleshooting",
+            "contributor-handbook",  # v3.2.0
+        ]
         assert ONBOARDING_GUIDES == expected
 
     def test_operations_guides_list(self):
         """OPERATIONS_GUIDES should contain expected guides."""
-        expected = ["dependency-guide"]
+        expected = ["dependency-guide", "deployment-guide"]  # v3.2.0: added deployment-guide
         assert OPERATIONS_GUIDES == expected
 
     def test_all_categories_cover_all_guides(self):
@@ -288,10 +294,10 @@ class TestListAllGuides:
         result = list_all_guides()
         assert set(result) == set(ALL_GUIDES.keys())
 
-    def test_returns_15_guides(self):
-        """Should return 15 guides."""
+    def test_returns_19_guides(self):
+        """Should return 19 guides (15 v3.0.0 + 4 v3.2.0)."""
         result = list_all_guides()
-        assert len(result) == 15
+        assert len(result) == 19
 
 
 class TestIndividualGuideModules:
@@ -313,6 +319,11 @@ class TestIndividualGuideModules:
         "glossary",
         "coding-standards",
         "onboarding",
+        # v3.2.0 guides
+        "developer-handbook",
+        "architecture-overview",
+        "deployment-guide",
+        "contributor-handbook",
     ])
     def test_guide_in_all_guides(self, guide_id):
         """Each guide ID should be in ALL_GUIDES."""
@@ -334,6 +345,11 @@ class TestIndividualGuideModules:
         "glossary",
         "coding-standards",
         "onboarding",
+        # v3.2.0 guides
+        "developer-handbook",
+        "architecture-overview",
+        "deployment-guide",
+        "contributor-handbook",
     ])
     def test_guide_in_all_content(self, guide_id):
         """Each guide ID should be in ALL_GUIDE_CONTENT."""
@@ -355,6 +371,11 @@ class TestIndividualGuideModules:
         "glossary",
         "coding-standards",
         "onboarding",
+        # v3.2.0 guides
+        "developer-handbook",
+        "architecture-overview",
+        "deployment-guide",
+        "contributor-handbook",
     ])
     def test_guide_in_complexity(self, guide_id):
         """Each guide ID should be in GUIDE_COMPLEXITY."""
@@ -376,6 +397,11 @@ class TestIndividualGuideModules:
         "glossary",
         "coding-standards",
         "onboarding",
+        # v3.2.0 guides
+        "developer-handbook",
+        "architecture-overview",
+        "deployment-guide",
+        "contributor-handbook",
     ])
     def test_guide_in_versions(self, guide_id):
         """Each guide ID should be in GUIDE_VERSIONS."""
@@ -401,6 +427,11 @@ class TestGuideContentQuality:
         "glossary",
         "coding-standards",
         "onboarding",
+        # v3.2.0 guides
+        "developer-handbook",
+        "architecture-overview",
+        "deployment-guide",
+        "contributor-handbook",
     ])
     def test_content_has_overview(self, guide_id):
         """Each guide content should have an overview section."""
@@ -423,6 +454,11 @@ class TestGuideContentQuality:
         "glossary",
         "coding-standards",
         "onboarding",
+        # v3.2.0 guides
+        "developer-handbook",
+        "architecture-overview",
+        "deployment-guide",
+        "contributor-handbook",
     ])
     def test_content_minimum_length(self, guide_id):
         """Each guide content should have substantial content."""
