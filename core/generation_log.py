@@ -198,7 +198,8 @@ This log provides transparency about auto-generated files in your project.
 
 **Usage**:
 - Update the Customization column when you modify generated files
-- Re-run the generator with `--log-to GENERATION_LOG.md` to append new entries
+- Re-run the generator with `--include-generation-log` to append new entries
+  (appending is the default when a log already exists)
 - Review before upgrades to understand what might change
 
 ## Before Committing
@@ -209,7 +210,7 @@ This log provides transparency about auto-generated files in your project.
 python validate_customization.py [your-project-directory]
 ```
 
-The script checks for `[REPLACE: ...]` markers and other placeholders that indicate
+The script checks for `REPLACE:` markers in square brackets and other placeholders that indicate
 sections requiring customization. Files with uncustomized placeholders should not
 be committed to version control.
 
@@ -257,15 +258,11 @@ def generate_log_json(
     timestamp = datetime.now().isoformat()
 
     if existing_content:
-        try:
-            existing = json.loads(existing_content)
-            # Append new files to existing log
-            existing['files'].extend(files)
-            existing['last_updated'] = timestamp
-            return json.dumps(existing, indent=2)
-        except json.JSONDecodeError:
-            # If existing content is invalid, create new
-            pass
+        # Raises json.JSONDecodeError for an unreadable log; the caller backs it up first.
+        existing = json.loads(existing_content)
+        existing.setdefault('files', []).extend(files)
+        existing['last_updated'] = timestamp
+        return json.dumps(existing, indent=2)
 
     log_data = {
         "version": "1.0",
@@ -361,11 +358,17 @@ def write_generation_log(
     existing_json = None
 
     if log_to:
+        # --log-to means "append to this log". The other format, if also requested, is
+        # appended to as well rather than silently overwritten at its default location.
         log_path = Path(log_to)
         if log_path.suffix == '.json':
             existing_json = load_existing_log(log_path, "json")
+            if log_format == "both":
+                existing_md = load_existing_log(output_dir / "GENERATION_LOG.md", "md")
         else:
             existing_md = load_existing_log(log_path, "md")
+            if log_format == "both":
+                existing_json = load_existing_log(output_dir / "GENERATION_LOG.json", "json")
     else:
         # No explicit --log-to: check for existing logs in output directory
         existing_logs = detect_existing_logs(output_dir, log_format)
@@ -398,11 +401,19 @@ def write_generation_log(
 
     # Generate JSON log
     if log_format in ("json", "both"):
-        json_content = generate_log_json(project_name, files, existing_json)
         json_path = output_dir / "GENERATION_LOG.json"
 
         if log_to and log_to.endswith('.json'):
             json_path = Path(log_to)
+
+        try:
+            json_content = generate_log_json(project_name, files, existing_json)
+        except json.JSONDecodeError:
+            # Never discard an existing log silently: keep it beside the new one.
+            backup = json_path.with_name(json_path.name + ".bak")
+            json_path.replace(backup)
+            print(f"Warning: {json_path} was not valid JSON; kept it as {backup.name} and started a new log.")
+            json_content = generate_log_json(project_name, files, None)
 
         with open(json_path, 'w', encoding='utf-8') as f:
             f.write(json_content)
