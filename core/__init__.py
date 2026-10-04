@@ -1,5 +1,5 @@
-# foundation - Project Foundation Template Package
-# v2.6.0 - Stabilization & Testability
+# core - Project Foundation Template Package
+# v2.7.0 - Preset System
 
 """
 Project Foundation Template - Modular Package
@@ -12,6 +12,7 @@ Modules:
     education: Educational content and principles
     ethics: Ethical safeguards and version advisory checks
     generator: Main EthicalFoundationGenerator class
+    presets: Governance preset configurations
     utils: Helper utilities
     templates: Template generation subpackage
 """
@@ -54,7 +55,15 @@ from core.ethics import (
 
 from core.generator import EthicalFoundationGenerator
 
-__version__ = "2.6.0-lite"
+from core.presets import (
+    PRESETS,
+    DEFAULT_PRESET,
+    get_preset,
+    list_presets,
+    get_preset_description,
+)
+
+__version__ = "2.7.0-lite"
 __all__ = [
     # Utils
     "SCRIPT_VERSION",
@@ -86,4 +95,10 @@ __all__ = [
     "get_version_status",
     # Generator
     "EthicalFoundationGenerator",
+    # Presets
+    "PRESETS",
+    "DEFAULT_PRESET",
+    "get_preset",
+    "list_presets",
+    "get_preset_description",
 ]
