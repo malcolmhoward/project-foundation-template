@@ -53,6 +53,10 @@ from core.templates import (
     generate_adr_template_content,
     generate_first_adr_content,
     generate_ethics_notice_content,
+    # Accessibility templates (v3.1.0)
+    generate_glossary_content,
+    generate_maintainers_content,
+    generate_scaffold_manifest_content,
 )
 
 
@@ -257,8 +261,21 @@ Generating template in 3 seconds...
                 self.educate_before_generating("ci-workflow")
                 self.generate_ci_workflow(output_dir)
 
+            # v3.1.0: Accessibility features
+            if getattr(self.args, 'include_glossary', False) or include_all:
+                self.educate_before_generating("glossary")
+                self.generate_glossary(output_dir)
+
+            if getattr(self.args, 'include_maintainers', False) or include_all:
+                self.educate_before_generating("maintainers")
+                self.generate_maintainers(output_dir)
+
             # .gitignore
             self.generate_gitignore(output_dir)
+
+            # Scaffold manifest (always generated to document what was created)
+            if getattr(self.args, 'include_manifest', False) or include_all:
+                self.generate_scaffold_manifest(output_dir)
 
             # Ethics notice in each file
             self.add_ethics_notice_to_files(output_dir)
@@ -365,6 +382,46 @@ Generating template in 3 seconds...
 
         self.write_file(workflows_dir / "ci.yml", generate_ci_workflow_content())
         self.write_file(workflows_dir / "pr-validation.yml", generate_pr_validation_workflow_content())
+
+    # v3.1.0: Accessibility features
+
+    def generate_glossary(self, output_dir: Path):
+        """Generate GLOSSARY.md with project terminology definitions."""
+        content = generate_glossary_content()
+        self.write_file(output_dir / "GLOSSARY.md", content)
+
+    def generate_maintainers(self, output_dir: Path):
+        """Generate MAINTAINERS.md with maintainer information."""
+        content = generate_maintainers_content(
+            self.args.project_name,
+            self.args.author_name
+        )
+        self.write_file(output_dir / "MAINTAINERS.md", content)
+
+    def generate_scaffold_manifest(self, output_dir: Path):
+        """Generate SCAFFOLD_MANIFEST.md documenting what was scaffolded."""
+        # Collect configuration info
+        config = {
+            "project_name": self.args.project_name,
+            "author_name": self.args.author_name,
+            "license": getattr(self.args, 'license', 'mit'),
+            "preset": getattr(self.args, 'preset', 'minimal'),
+        }
+
+        # Get principles and guides used (simplified for now)
+        principles_used = list(self.education_shown)
+        guides_used = []  # Will be populated when guide system is connected
+
+        content = generate_scaffold_manifest_content(
+            project_name=self.args.project_name,
+            version=SCRIPT_VERSION,
+            preset=getattr(self.args, 'preset', 'minimal'),
+            generated_files=self.generated_files,
+            principles_used=principles_used,
+            guides_used=guides_used,
+            config=config
+        )
+        self.write_file(output_dir / "SCAFFOLD_MANIFEST.md", content)
 
     def add_ethics_notice_to_files(self, output_dir: Path):
         """Add ethics notice to a summary file."""

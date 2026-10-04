@@ -42,6 +42,10 @@ from .deprecation_policy import PRINCIPLE as DEPRECATION_PRINCIPLE, EDUCATION as
 from .accessibility import PRINCIPLE as A11Y_PRINCIPLE, EDUCATION as A11Y_EDUCATION
 from .performance_standards import PRINCIPLE as PERF_PRINCIPLE, EDUCATION as PERF_EDUCATION
 
+# v3.1.0 principles
+from .glossary import PRINCIPLE as GLOSSARY_PRINCIPLE, EDUCATION as GLOSSARY_EDUCATION
+from .maintainers import PRINCIPLE as MAINTAINERS_PRINCIPLE, EDUCATION as MAINTAINERS_EDUCATION
+
 # Aggregated principles dictionary (backward compatible with LITE_PRINCIPLES)
 ALL_PRINCIPLES = {
     "readme": README_PRINCIPLE,
@@ -68,6 +72,9 @@ ALL_PRINCIPLES = {
     "deprecation-policy": DEPRECATION_PRINCIPLE,
     "accessibility": A11Y_PRINCIPLE,
     "performance-standards": PERF_PRINCIPLE,
+    # v3.1.0 principles
+    "glossary": GLOSSARY_PRINCIPLE,
+    "maintainers": MAINTAINERS_PRINCIPLE,
 }
 
 # Aggregated education content dictionary (backward compatible with EDUCATION_CONTENT)
@@ -96,6 +103,9 @@ ALL_EDUCATION = {
     "deprecation-policy": DEPRECATION_EDUCATION,
     "accessibility": A11Y_EDUCATION,
     "performance-standards": PERF_EDUCATION,
+    # v3.1.0 principles
+    "glossary": GLOSSARY_EDUCATION,
+    "maintainers": MAINTAINERS_EDUCATION,
 }
 
 # Principle categories for organization
@@ -111,6 +121,9 @@ COMPLIANCE_PRINCIPLES = ["compliance-policy", "audit-logging"]
 INFRASTRUCTURE_PRINCIPLES = ["dependency-scanning", "container-support", "versioning"]
 INCLUSIVITY_PRINCIPLES = ["internationalization", "accessibility"]
 LIFECYCLE_PRINCIPLES = ["deprecation-policy"]
+
+# v3.1.0 categories
+USABILITY_PRINCIPLES = ["glossary", "maintainers"]
 
 # Version mapping (when each principle was introduced)
 PRINCIPLE_VERSIONS = {
@@ -138,6 +151,9 @@ PRINCIPLE_VERSIONS = {
     "deprecation-policy": "3.0.0",
     "accessibility": "3.0.0",
     "performance-standards": "3.0.0",
+    # v3.1.0 principles
+    "glossary": "3.1.0",
+    "maintainers": "3.1.0",
 }
 
 
@@ -187,6 +203,8 @@ def get_principles_by_category(category: str) -> list:
         "infrastructure": INFRASTRUCTURE_PRINCIPLES,
         "inclusivity": INCLUSIVITY_PRINCIPLES,
         "lifecycle": LIFECYCLE_PRINCIPLES,
+        # v3.1.0 categories
+        "usability": USABILITY_PRINCIPLES,
     }
     return categories.get(category.lower(), [])
 
@@ -238,6 +256,8 @@ __all__ = [
     "INFRASTRUCTURE_PRINCIPLES",
     "INCLUSIVITY_PRINCIPLES",
     "LIFECYCLE_PRINCIPLES",
+    # v3.1.0 categories
+    "USABILITY_PRINCIPLES",
     # Version mapping
     "PRINCIPLE_VERSIONS",
     # Helper functions
