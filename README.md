@@ -1,12 +1,14 @@
-# Project Foundation Template
+# Project Foundation Template (PFT)
 
 **Educational templates for thoughtful software governance**
+
+> **Governance**: The policies, processes, and documentation that guide project development, maintenance, and contributions. This includes contribution guidelines, security policies, codes of conduct, and architectural decision records. See [GLOSSARY.md](GLOSSARY.md) for more terms.
 
 ---
 
 ## What is This?
 
-Project Foundation Template helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
+PFT helps you create well-organized projects with the right governance for your needs. Whether you're starting a personal project, launching open source software, or establishing enterprise-grade governance, this tool generates the foundational files you need while teaching you *why* each piece matters.
 
 **Core Philosophy**: Education First — understand WHY before HOW.
 
@@ -19,6 +21,41 @@ Project Foundation Template helps you create well-organized projects with the ri
 | **Team Lead** | Establish consistent governance across projects |
 | **Organization** | Scale governance standards while maintaining flexibility |
 | **AI/LLM User** | Generate well-structured project foundations programmatically |
+
+### Key Concepts
+
+#### Education First
+
+Every template teaches before it generates:
+- **WHAT**: What is this file/principle?
+- **WHY**: Why does it matter?
+- **HOW**: How do you implement it?
+- **RISK**: What happens without it?
+
+#### Principle Zero: "Do No Harm, Allow No Harm"
+
+This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully.
+
+Ethical review requirements scale based on a project's relationship to PFT:
+- **Tier 1** (Core components): Full ethical review required
+- **Tier 2** (Generated instances): Simplified review recommended
+- **Tier 3** (Ecosystem coordinators): Inherit principles, lighter process
+
+See [ETHICS.md](ETHICS.md) for the complete ethical framework and review templates.
+
+#### Templates vs. Implementation
+
+Templates are starting points, not finished products. Every generated file requires:
+- Review and customization
+- Understanding of its purpose
+- Ongoing maintenance
+
+### This Is Not
+
+- A compliance shortcut (templates require understanding and customization)
+- Instant security certification (security requires ongoing effort)
+- A substitute for professional judgment (consult experts for legal/security matters)
+- Copy-paste governance theater (files without understanding provide false confidence)
 
 ---
 
@@ -52,8 +89,8 @@ python setup_foundation.py --non-interactive --accept-terms --preset standard \
 
 ```bash
 python setup_foundation.py --list-presets      # Show all governance presets
-python setup_foundation.py --list-principles   # Show all 23 principles
-python setup_foundation.py --list-guides       # Show all 15 implementation guides
+python setup_foundation.py --list-principles   # Show all 30 principles
+python setup_foundation.py --list-guides       # Show all 25 implementation guides
 ```
 
 ---
@@ -68,7 +105,7 @@ Choose the level of governance that matches your project's needs:
 | **light** | 6 | Small open source projects, basic governance needs |
 | **standard** | 9 | Active open source projects, professional teams (Default) |
 | **strict** | 12 | Security-sensitive projects, compliance requirements |
-| **enterprise** | 23 | Large organizations, regulated industries, maximum governance |
+| **enterprise** | 30 | Large organizations, regulated industries, maximum governance |
 
 ### What Each Preset Includes
 
@@ -81,12 +118,12 @@ standard (9)    → Issue Templates + PR Template + CI Workflow
     ↓ adds
 strict (12)     → Enhanced Security + Secrets Detection + ADR
     ↓ adds
-enterprise (23) → Quality + Compliance + Infrastructure + Inclusivity + Lifecycle
+enterprise (30) → Quality + Compliance + Infrastructure + Inclusivity + Lifecycle + Workflow + Tooling
 ```
 
 ---
 
-## The 23 Governance Principles
+## The 30 Governance Principles
 
 Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK** (what happens without it).
 
@@ -153,6 +190,25 @@ Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK
 |-----------|---------|
 | `deprecation-policy` | How features are deprecated and removed |
 
+### Documentation (v3.1.0+)
+| Principle | Purpose |
+|-----------|---------|
+| `glossary` | Project terminology definitions |
+| `maintainers` | Maintainer roles and responsibilities |
+
+### Workflow (v3.3.0+)
+| Principle | Purpose |
+|-----------|---------|
+| `roadmap` | Project direction and planning |
+| `branch-naming` | Consistent branch naming conventions |
+| `conventional-commits` | Structured commit messages |
+
+### Tooling (v3.4.0+)
+| Principle | Purpose |
+|-----------|---------|
+| `pre-commit-hooks` | Automated code quality checks |
+| `error-handling` | Consistent error handling patterns |
+
 ---
 
 ## Project Structure
@@ -171,18 +227,18 @@ project-foundation-template/
 │   ├── generator.py            # File generation engine
 │   ├── utils.py                # Utility functions
 │   │
-│   ├── principles/             # 23 Governance Principles
+│   ├── principles/             # 30 Governance Principles
 │   │   ├── __init__.py         # Principle aggregation
 │   │   ├── readme.py           # README principle
 │   │   ├── contributing.py     # Contributing principle
 │   │   ├── license.py          # License principle
-│   │   └── ...                 # (20 more principles)
+│   │   └── ...                 # (27 more principles)
 │   │
-│   ├── guides/                 # 15 Implementation Guides
+│   ├── guides/                 # 25 Implementation Guides
 │   │   ├── __init__.py         # Guide aggregation
 │   │   ├── versioning.py       # Versioning guide
 │   │   ├── code_review.py      # Code review guide
-│   │   └── ...                 # (13 more guides)
+│   │   └── ...                 # (23 more guides)
 │   │
 │   ├── presets/                # Governance Presets
 │   │   ├── __init__.py         # Preset aggregation
@@ -190,7 +246,7 @@ project-foundation-template/
 │   │   ├── light.py            # 6 principles
 │   │   ├── standard.py         # 9 principles (default)
 │   │   ├── strict.py           # 12 principles
-│   │   └── enterprise.py       # 23 principles
+│   │   └── enterprise.py       # 30 principles
 │   │
 │   └── plugins/                # Plugin System
 │       ├── __init__.py         # Plugin API
@@ -225,35 +281,13 @@ project-foundation-template/
 
 ---
 
-## Key Concepts
-
-### Education First
-
-Every template teaches before it generates:
-- **WHAT**: What is this file/principle?
-- **WHY**: Why does it matter?
-- **HOW**: How do you implement it?
-- **RISK**: What happens without it?
-
-### Principle Zero: "Do No Harm, Allow No Harm"
-
-This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. See [ETHICS.md](ETHICS.md) for our complete ethical framework.
-
-### Templates vs. Implementation
-
-Templates are starting points, not finished products. Every generated file requires:
-- Review and customization
-- Understanding of its purpose
-- Ongoing maintenance
-
----
-
 ## Documentation
 
 | Document | Purpose |
 |----------|---------|
 | [CLAUDE.md](CLAUDE.md) | LLM/AI integration guidance |
 | [ETHICS.md](ETHICS.md) | Ethical framework and Principle Zero |
+| [GLOSSARY.md](GLOSSARY.md) | PFT terminology definitions |
 | [ROADMAP.md](ROADMAP.md) | Version roadmap and future plans |
 | [MIGRATION.md](MIGRATION.md) | Upgrading between versions |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
@@ -276,25 +310,17 @@ See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
 
 ---
 
-## This Is Not
-
-- A compliance shortcut (templates require understanding and customization)
-- Instant security certification (security requires ongoing effort)
-- A substitute for professional judgment (consult experts for legal/security matters)
-- Copy-paste governance theater (files without understanding provide false confidence)
-
----
-
 ## Version History
 
 | Version | Highlights |
 |---------|------------|
+| v3.7.0 | Generation log, attribution policy, tiered ethical review |
 | v3.6.0 | Internationalization support (10 locales) |
 | v3.5.0 | Programming language support infrastructure (17 languages) |
-| v3.4.0 | Advanced features - principles and guides |
-| v3.3.0 | Extended governance principles |
+| v3.4.0 | Advanced features - 30 principles, 25 guides |
+| v3.3.0 | Extended governance principles (28 total) |
 | v3.2.0 | Developer documentation guides |
-| v3.1.0 | Accessibility & usability features (glossary, maintainers principles) |
+| v3.1.0 | Accessibility & usability features (25 principles) |
 | v3.0.0 | New entrypoint, 23 principles, 15 guides, plugin system |
 | v2.x | Modular architecture, presets, educational content |
 | v1.x | Initial implementation |
@@ -325,6 +351,6 @@ This framework emerged from collaborative work between human and AI, embodying t
 
 ---
 
-**Version**: 3.6.0
+**Version**: 3.7.0
 **Status**: Active Development
 **Repository**: [GitHub](https://github.com/malcolmhoward/project-foundation-template)

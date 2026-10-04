@@ -33,16 +33,22 @@ Each ADR follows this structure:
 | [0007](0007-enterprise-feature-parity.md) | Enterprise Feature Parity Strategy (v3.0.0+) | Accepted | 2026-01-19 |
 | [0008](0008-programming-language-support.md) | Programming Language Support (v3.5.0) | Proposed | 2026-01-19 |
 | [0009](0009-internationalization-architecture.md) | Internationalization Architecture (v3.6.0) | Proposed | 2026-01-19 |
+| [0010](0010-tiered-ethical-review-framework.md) | Tiered Ethical Review Framework (v3.7.0) | Accepted | 2026-01-25 |
+| [0011](0011-pft-self-governance.md) | PFT Self-Governance (Dogfooding) | Accepted | 2026-01-30 |
 
 ## Creating New ADRs
 
-1. Copy the template below
-2. Number sequentially (0002, 0003, etc.)
-3. Fill in all sections
+1. Copy [`template.md`](template.md) to a new file named `NNNN-short-title.md`
+2. Number sequentially (0012, 0013, etc.)
+3. Fill in all sections including Principle Alignment
 4. Update this index
 5. Submit via PR with educational context
 
 ## Template
+
+See [`template.md`](template.md) for the full template with all sections.
+
+Minimal inline template
 
 ```markdown
 # ADR NNNN: Title

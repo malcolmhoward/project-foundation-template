@@ -192,6 +192,39 @@ As features are reintroduced:
 3. **Test in isolation**: Generate to a test directory first
 4. **Adopt deliberately**: Add features because you need them, not because they exist
 
+### From Lite v2.5.x to v2.6.0 (Modular Package)
+
+v2.6.0 refactors the generator from a single self-contained file into a proper Python package. The CLI surface is unchanged — every flag you used in v2.1.x through v2.5.x continues to work — but the distribution model changes.
+
+**What changed:**
+
+- `setup_foundation_lite.py` is now a thin wrapper that imports from `core/`. It is no longer a standalone file.
+- The primary entrypoint is now `generate_foundation.py` (introduced in v3.0.0; `setup_foundation_lite.py` remains as a compatibility shim).
+- Installation requires the full repository, not just a single file.
+
+**If you previously downloaded the file directly (gist-style):**
+
+```bash
+# This no longer works — setup_foundation_lite.py now requires core/
+curl -O https://.../setup_foundation_lite.py
+python setup_foundation_lite.py  # ImportError: No module named 'core'
+```
+
+Clone the repository instead:
+
+```bash
+git clone https://github.com/malcolmhoward/project-foundation-template.git
+cd project-foundation-template
+
+# All your existing flags still work via the shim:
+python setup_foundation_lite.py --project-name "MyProject" --author-name "Author"
+
+# Or use the new entrypoint (recommended from v3.0.0 onward):
+python generate_foundation.py --project-name "MyProject" --author-name "Author"
+```
+
+**Your generated output is unaffected.** Files your projects already contain were generated from the content in `core/` — the modular refactor does not change what gets produced, only how the generator is structured internally.
+
 ### Version Upgrade Checklist
 
 - [ ] Read CHANGELOG for the new version
