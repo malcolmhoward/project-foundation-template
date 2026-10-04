@@ -28,6 +28,7 @@ from core.principles import (
     LIFECYCLE_PRINCIPLES,
     USABILITY_PRINCIPLES,
     WORKFLOW_PRINCIPLES,
+    AUTOMATION_PRINCIPLES,
     PRINCIPLE_VERSIONS,
     get_principle,
     get_education,
@@ -49,12 +50,12 @@ class TestPrincipleDefinitions:
         assert isinstance(ALL_EDUCATION, dict)
 
     def test_principle_count(self):
-        """Should have 28 principles defined (23 + 2 v3.1.0 + 3 v3.3.0)."""
-        assert len(ALL_PRINCIPLES) == 28
+        """Should have 30 principles defined (23 + 2 v3.1.0 + 3 v3.3.0 + 2 v3.4.0)."""
+        assert len(ALL_PRINCIPLES) == 30
 
     def test_education_count(self):
-        """Should have 28 education entries (one per principle)."""
-        assert len(ALL_EDUCATION) == 28
+        """Should have 30 education entries (one per principle)."""
+        assert len(ALL_EDUCATION) == 30
 
     def test_principles_and_education_keys_match(self):
         """ALL_PRINCIPLES and ALL_EDUCATION should have the same keys."""
@@ -119,6 +120,11 @@ class TestPrincipleCategories:
         expected = ["roadmap", "branch-naming", "conventional-commits"]
         assert WORKFLOW_PRINCIPLES == expected
 
+    def test_automation_principles_list(self):
+        """AUTOMATION_PRINCIPLES should contain expected principles (v3.4.0)."""
+        expected = ["pre-commit-hooks", "error-handling"]
+        assert AUTOMATION_PRINCIPLES == expected
+
     def test_all_categories_cover_all_principles(self):
         """All category lists together should cover all principles."""
         all_categorized = set(
@@ -133,7 +139,8 @@ class TestPrincipleCategories:
             INCLUSIVITY_PRINCIPLES +
             LIFECYCLE_PRINCIPLES +
             USABILITY_PRINCIPLES +
-            WORKFLOW_PRINCIPLES
+            WORKFLOW_PRINCIPLES +
+            AUTOMATION_PRINCIPLES
         )
         assert all_categorized == set(ALL_PRINCIPLES.keys())
 
@@ -151,7 +158,8 @@ class TestPrincipleCategories:
             INCLUSIVITY_PRINCIPLES +
             LIFECYCLE_PRINCIPLES +
             USABILITY_PRINCIPLES +
-            WORKFLOW_PRINCIPLES
+            WORKFLOW_PRINCIPLES +
+            AUTOMATION_PRINCIPLES
         )
         assert len(all_lists) == len(set(all_lists))
 
@@ -198,6 +206,11 @@ class TestPrincipleVersions:
         """Workflow principles should be introduced in v3.3.0."""
         for pid in WORKFLOW_PRINCIPLES:
             assert PRINCIPLE_VERSIONS[pid] == "3.3.0"
+
+    def test_automation_principles_introduced_v340(self):
+        """Automation principles should be introduced in v3.4.0."""
+        for pid in AUTOMATION_PRINCIPLES:
+            assert PRINCIPLE_VERSIONS[pid] == "3.4.0"
 
 
 class TestGetPrinciple:
@@ -273,6 +286,11 @@ class TestGetPrinciplesByCategory:
         result = get_principles_by_category("workflow")
         assert result == WORKFLOW_PRINCIPLES
 
+    def test_get_automation_category(self):
+        """Should return automation principles list (v3.4.0)."""
+        result = get_principles_by_category("automation")
+        assert result == AUTOMATION_PRINCIPLES
+
     def test_get_nonexistent_category(self):
         """Should return empty list for nonexistent category."""
         result = get_principles_by_category("nonexistent")
@@ -329,14 +347,23 @@ class TestGetPrinciplesForVersion:
         assert "branch-naming" not in result  # Added in 3.3.0
         assert "conventional-commits" not in result  # Added in 3.3.0
 
-    def test_version_330_has_all_principles(self):
-        """v3.3.0 should include all 28 principles."""
+    def test_version_330_has_v330_principles(self):
+        """v3.3.0 should include 28 principles (excludes v3.4.0 automation principles)."""
         result = get_principles_for_version("3.3.0")
-        assert set(result) == set(ALL_PRINCIPLES.keys())
         assert len(result) == 28
         assert "roadmap" in result
         assert "branch-naming" in result
         assert "conventional-commits" in result
+        assert "pre-commit-hooks" not in result  # Added in 3.4.0
+        assert "error-handling" not in result  # Added in 3.4.0
+
+    def test_version_340_has_all_principles(self):
+        """v3.4.0 should include all 30 principles."""
+        result = get_principles_for_version("3.4.0")
+        assert set(result) == set(ALL_PRINCIPLES.keys())
+        assert len(result) == 30
+        assert "pre-commit-hooks" in result
+        assert "error-handling" in result
 
     def test_lite_suffix_handled(self):
         """Version with -lite suffix should work (v2.x legacy compatibility)."""
@@ -364,10 +391,10 @@ class TestListAllPrinciples:
         result = list_all_principles()
         assert set(result) == set(ALL_PRINCIPLES.keys())
 
-    def test_returns_28_principles(self):
-        """Should return 28 principles (23 v3.0.0 + 2 v3.1.0 + 3 v3.3.0)."""
+    def test_returns_30_principles(self):
+        """Should return 30 principles (23 v3.0.0 + 2 v3.1.0 + 3 v3.3.0 + 2 v3.4.0)."""
         result = list_all_principles()
-        assert len(result) == 28
+        assert len(result) == 30
 
 
 class TestIndividualPrincipleModules:
@@ -393,6 +420,9 @@ class TestIndividualPrincipleModules:
         "roadmap",
         "branch-naming",
         "conventional-commits",
+        # v3.4.0 automation principles
+        "pre-commit-hooks",
+        "error-handling",
     ])
     def test_principle_in_all_principles(self, principle_id):
         """Each principle ID should be in ALL_PRINCIPLES."""
@@ -418,6 +448,9 @@ class TestIndividualPrincipleModules:
         "roadmap",
         "branch-naming",
         "conventional-commits",
+        # v3.4.0 automation principles
+        "pre-commit-hooks",
+        "error-handling",
     ])
     def test_principle_in_all_education(self, principle_id):
         """Each principle ID should be in ALL_EDUCATION."""
@@ -443,6 +476,9 @@ class TestIndividualPrincipleModules:
         "roadmap",
         "branch-naming",
         "conventional-commits",
+        # v3.4.0 automation principles
+        "pre-commit-hooks",
+        "error-handling",
     ])
     def test_principle_in_versions(self, principle_id):
         """Each principle ID should be in PRINCIPLE_VERSIONS."""

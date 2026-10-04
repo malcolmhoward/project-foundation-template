@@ -51,6 +51,10 @@ from .roadmap import PRINCIPLE as ROADMAP_PRINCIPLE, EDUCATION as ROADMAP_EDUCAT
 from .branch_naming import PRINCIPLE as BRANCH_NAMING_PRINCIPLE, EDUCATION as BRANCH_NAMING_EDUCATION
 from .conventional_commits import PRINCIPLE as CONVENTIONAL_COMMITS_PRINCIPLE, EDUCATION as CONVENTIONAL_COMMITS_EDUCATION
 
+# v3.4.0 principles
+from .pre_commit_hooks import PRINCIPLE as PRE_COMMIT_PRINCIPLE, EDUCATION as PRE_COMMIT_EDUCATION
+from .error_handling import PRINCIPLE as ERROR_HANDLING_PRINCIPLE, EDUCATION as ERROR_HANDLING_EDUCATION
+
 # Aggregated principles dictionary (backward compatible with LITE_PRINCIPLES)
 ALL_PRINCIPLES = {
     "readme": README_PRINCIPLE,
@@ -84,6 +88,9 @@ ALL_PRINCIPLES = {
     "roadmap": ROADMAP_PRINCIPLE,
     "branch-naming": BRANCH_NAMING_PRINCIPLE,
     "conventional-commits": CONVENTIONAL_COMMITS_PRINCIPLE,
+    # v3.4.0 principles
+    "pre-commit-hooks": PRE_COMMIT_PRINCIPLE,
+    "error-handling": ERROR_HANDLING_PRINCIPLE,
 }
 
 # Aggregated education content dictionary (backward compatible with EDUCATION_CONTENT)
@@ -119,6 +126,9 @@ ALL_EDUCATION = {
     "roadmap": ROADMAP_EDUCATION,
     "branch-naming": BRANCH_NAMING_EDUCATION,
     "conventional-commits": CONVENTIONAL_COMMITS_EDUCATION,
+    # v3.4.0 principles
+    "pre-commit-hooks": PRE_COMMIT_EDUCATION,
+    "error-handling": ERROR_HANDLING_EDUCATION,
 }
 
 # Principle categories for organization
@@ -140,6 +150,9 @@ USABILITY_PRINCIPLES = ["glossary", "maintainers"]
 
 # v3.3.0 categories
 WORKFLOW_PRINCIPLES = ["roadmap", "branch-naming", "conventional-commits"]
+
+# v3.4.0 categories
+AUTOMATION_PRINCIPLES = ["pre-commit-hooks", "error-handling"]
 
 # Version mapping (when each principle was introduced)
 PRINCIPLE_VERSIONS = {
@@ -174,6 +187,9 @@ PRINCIPLE_VERSIONS = {
     "roadmap": "3.3.0",
     "branch-naming": "3.3.0",
     "conventional-commits": "3.3.0",
+    # v3.4.0 principles
+    "pre-commit-hooks": "3.4.0",
+    "error-handling": "3.4.0",
 }
 
 
@@ -207,7 +223,7 @@ def get_principles_by_category(category: str) -> list:
     Args:
         category: One of 'core', 'governance', 'security', 'advanced', 'community',
                   'quality', 'compliance', 'infrastructure', 'inclusivity', 'lifecycle',
-                  'usability', 'workflow'
+                  'usability', 'workflow', 'automation'
 
     Returns:
         List of principle IDs in that category
@@ -228,6 +244,8 @@ def get_principles_by_category(category: str) -> list:
         "usability": USABILITY_PRINCIPLES,
         # v3.3.0 categories
         "workflow": WORKFLOW_PRINCIPLES,
+        # v3.4.0 categories
+        "automation": AUTOMATION_PRINCIPLES,
     }
     return categories.get(category.lower(), [])
 
@@ -283,6 +301,8 @@ __all__ = [
     "USABILITY_PRINCIPLES",
     # v3.3.0 categories
     "WORKFLOW_PRINCIPLES",
+    # v3.4.0 categories
+    "AUTOMATION_PRINCIPLES",
     # Version mapping
     "PRINCIPLE_VERSIONS",
     # Helper functions
