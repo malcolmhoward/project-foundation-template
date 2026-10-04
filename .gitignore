@@ -26,3 +26,6 @@ Thumbs.db
 
 # Personal notes (if you want to keep private)
 PRIVATE_NOTES.md
+
+# Scratch/working files (not for commit)
+docs/claude/scratch/

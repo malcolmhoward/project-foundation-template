@@ -1,0 +1,13 @@
+# CODEOWNERS - Default code ownership
+# These owners will be requested for review when changes are made to matching files
+
+# Default owners for everything
+* @malcolmhoward
+
+# Ethical framework - requires careful review
+ETHICS.md @malcolmhoward
+setup_foundation_lite.py @malcolmhoward
+
+# Documentation
+docs/ @malcolmhoward
+*.md @malcolmhoward
