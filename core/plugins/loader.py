@@ -8,6 +8,7 @@ This module handles discovering, loading, and merging plugins with
 the built-in principles and guides.
 """
 
+import hashlib
 import importlib.util
 import os
 import sys
@@ -179,7 +180,10 @@ class PluginLoader:
         Raises:
             PluginLoadError: If the module cannot be loaded.
         """
-        module_name = f"foundation_plugin_{file_path.stem}"
+        # Include a hash of the full path: two plugin files with the same name in different
+        # directories must not overwrite each other's entry in sys.modules.
+        path_hash = hashlib.sha256(str(file_path.resolve()).encode("utf-8")).hexdigest()[:12]
+        module_name = f"foundation_plugin_{file_path.stem}_{path_hash}"
         spec = importlib.util.spec_from_file_location(module_name, file_path)
         if spec is None or spec.loader is None:
             raise PluginLoadError(str(file_path), "Cannot create module spec")
