@@ -72,6 +72,7 @@
 - [ ] Identified risks have mitigations OR documented acceptable risk justification
 - [ ] Educational value preserved
 - [ ] No unmitigated critical risks
+- [ ] Independently reviewed by someone other than the author: a person, or a different AI model from a fresh context (see CONTRIBUTING.md, Independent Review)
 
 **Reviewer**: @<!-- GitHub username -->
 **Review Date**: <!-- YYYY-MM-DD -->
