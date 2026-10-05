@@ -206,6 +206,31 @@ Reviewers evaluate PRs against these criteria:
 - [ ] Edge cases considered
 - [ ] Tests pass (`pytest`)
 
+### Independent Review
+
+**WHAT**: Every change is reviewed by someone other than its author before it merges. If an AI assistant helped
+write the change, "someone other than the author" means a person, or a different AI model working from a fresh
+context. The same assistant re-reading its own work in the same conversation does not count.
+
+**WHY**: An author, human or AI, shares the assumptions that produced the change, so it tends to miss the same
+things twice. A reviewer who starts fresh, ideally from a different model family, sees different gaps. This is the
+[Mutual Fallibility](ETHICS.md#mutual-fallibility) design implication applied to review: redundant safeguards that
+assume both parties will make mistakes. AI review keeps getting cheaper, so a second opinion is worth asking for
+routinely, not only for large changes.
+
+**HOW**:
+- Match the reviewer to the change:
+  - code: a correctness review
+  - code that handles credentials, personal data or untrusted input: also an adversarial security and privacy
+    pass
+  - documentation: a fact-check of claims, links, numbers and examples
+- Give the reviewer the change and the context it needs, not the author's conclusions about it.
+- Say in the PR description who or what reviewed it, for example "Independent review: a different AI model;
+  findings addressed in the second commit".
+- AI review supplements maintainer review; it does not replace it. A maintainer still approves and merges.
+- The habit is useful beyond pull requests too: ask a different reviewer to challenge a plan, a design or an
+  analysis before you act on it.
+
 ### What We Look For
 
 **Good PR description:**
@@ -284,6 +309,7 @@ git push origin feat/42-your-feature
 - Click "Compare & pull request"
 - Fill out the PR template completely
 - Link related issues
+- Note who or what independently reviewed the change (see [Independent Review](#independent-review))
 
 ### 7. Address Review Feedback
 
