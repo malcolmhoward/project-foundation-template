@@ -5,11 +5,11 @@
 Presets module for Project Foundation Template.
 
 Provides 5 governance presets with different levels of features:
-    - minimal: Core essentials only (5 principles)
-    - light: Basic governance (8 principles)
-    - standard: Recommended default (10 principles)
+    - minimal: Core essentials only (3 principles)
+    - light: Basic governance (6 principles)
+    - standard: Recommended default (9 principles)
     - strict: Comprehensive governance (12 principles)
-    - enterprise: Full governance suite (all principles)
+    - enterprise: Full governance suite (all 30 principles)
 
 Each preset defines which features and principles are included.
 """

@@ -27,13 +27,13 @@ The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
 #### Preset Selection
 
 ```bash
-# Minimal (5 principles)
+# Minimal (3 principles)
 python generate_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
 
-# Standard (15 principles) - Default
+# Standard (9 principles) - Default
 python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
 
-# Enterprise (23 principles)
+# Enterprise (all 30 principles)
 python generate_foundation.py --preset enterprise --project-name "My Project" --author-name "Name"
 ```
 
@@ -199,7 +199,7 @@ v2.6.0 refactors the generator from a single self-contained file into a proper P
 **What changed:**
 
 - `setup_foundation_lite.py` is now a thin wrapper that imports from `core/`. It is no longer a standalone file.
-- The primary entrypoint is now `generate_foundation.py` (introduced in v3.0.0; `setup_foundation_lite.py` remains as a compatibility shim).
+- The primary entrypoint is now `generate_foundation.py` (introduced in v3.0.0; `setup_foundation_lite.py` remains as a compatibility shim, a small stand-in file that forwards to `generate_foundation.py`. See [Shim](GLOSSARY.md#shim-compatibility-shim) in the glossary).
 - Installation requires the full repository, not just a single file.
 
 **If you previously downloaded the file directly (gist-style):**

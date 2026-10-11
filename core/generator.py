@@ -575,9 +575,18 @@ Generating template in 3 seconds...
                 print(f"📋 Generated: {Path(log_file).name}")
 
     def write_file(self, filepath: Path, content: str):
-        """Write file and track what was generated."""
+        """Write file and track what was generated.
+
+        Files are recorded by their path relative to the output directory (for example
+        `.github/workflows/ci.yml`), so nested files are unambiguous in the generation log,
+        the manifest and the ethics notice.
+        """
         filepath.write_text(content, encoding='utf-8')
-        self.generated_files.append(filepath.name)
+        try:
+            recorded = filepath.resolve().relative_to(Path(self.args.output_dir).resolve()).as_posix()
+        except ValueError:
+            recorded = filepath.name
+        self.generated_files.append(recorded)
         print(f"✅ Generated: {filepath.name}")
 
     def log_usage_locally(self, success: bool):
