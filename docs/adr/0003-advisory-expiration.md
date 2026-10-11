@@ -223,9 +223,11 @@ When updating versions:
 
 ## Related Decisions
 
-- ADR 0001: Education-First Approach (expiration supports continuous learning)
-- ADR 0002: Semantic Versioning Strategy (expiration complements versioning)
-- ADR 0004: Modular Package Architecture (v2.6.0)
+- [ADR 0001: Education-First Approach](0001-education-first.md) (v2.1.0) - expiration supports continuous learning
+- [ADR 0002: Semantic Versioning Strategy](0002-semantic-versioning-strategy.md) (v2.6.0) - expiration complements versioning
+- [ADR 0004: Modular Package Architecture](0004-modular-package-architecture.md) (v2.6.0)
+- [ADR 0005: Governance Preset System](0005-preset-system.md) (v2.7.0)
+- ADR 0006: Plugin Architecture (v2.11.0)
 
 ## References
 
