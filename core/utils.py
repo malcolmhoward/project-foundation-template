@@ -14,7 +14,7 @@ from datetime import date
 from pathlib import Path
 
 # Version and expiration
-SCRIPT_VERSION = "2.8.0-lite"
+SCRIPT_VERSION = "2.9.0-lite"
 EXPIRATION_DATE = date(2026, 3, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
