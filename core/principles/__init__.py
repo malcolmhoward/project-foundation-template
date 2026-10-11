@@ -46,6 +46,11 @@ from .performance_standards import PRINCIPLE as PERF_PRINCIPLE, EDUCATION as PER
 from .glossary import PRINCIPLE as GLOSSARY_PRINCIPLE, EDUCATION as GLOSSARY_EDUCATION
 from .maintainers import PRINCIPLE as MAINTAINERS_PRINCIPLE, EDUCATION as MAINTAINERS_EDUCATION
 
+# v3.3.0 principles
+from .roadmap import PRINCIPLE as ROADMAP_PRINCIPLE, EDUCATION as ROADMAP_EDUCATION
+from .branch_naming import PRINCIPLE as BRANCH_NAMING_PRINCIPLE, EDUCATION as BRANCH_NAMING_EDUCATION
+from .conventional_commits import PRINCIPLE as CONVENTIONAL_COMMITS_PRINCIPLE, EDUCATION as CONVENTIONAL_COMMITS_EDUCATION
+
 # Aggregated principles dictionary (backward compatible with LITE_PRINCIPLES)
 ALL_PRINCIPLES = {
     "readme": README_PRINCIPLE,
@@ -75,6 +80,10 @@ ALL_PRINCIPLES = {
     # v3.1.0 principles
     "glossary": GLOSSARY_PRINCIPLE,
     "maintainers": MAINTAINERS_PRINCIPLE,
+    # v3.3.0 principles
+    "roadmap": ROADMAP_PRINCIPLE,
+    "branch-naming": BRANCH_NAMING_PRINCIPLE,
+    "conventional-commits": CONVENTIONAL_COMMITS_PRINCIPLE,
 }
 
 # Aggregated education content dictionary (backward compatible with EDUCATION_CONTENT)
@@ -106,6 +115,10 @@ ALL_EDUCATION = {
     # v3.1.0 principles
     "glossary": GLOSSARY_EDUCATION,
     "maintainers": MAINTAINERS_EDUCATION,
+    # v3.3.0 principles
+    "roadmap": ROADMAP_EDUCATION,
+    "branch-naming": BRANCH_NAMING_EDUCATION,
+    "conventional-commits": CONVENTIONAL_COMMITS_EDUCATION,
 }
 
 # Principle categories for organization
@@ -124,6 +137,9 @@ LIFECYCLE_PRINCIPLES = ["deprecation-policy"]
 
 # v3.1.0 categories
 USABILITY_PRINCIPLES = ["glossary", "maintainers"]
+
+# v3.3.0 categories
+WORKFLOW_PRINCIPLES = ["roadmap", "branch-naming", "conventional-commits"]
 
 # Version mapping (when each principle was introduced)
 PRINCIPLE_VERSIONS = {
@@ -154,6 +170,10 @@ PRINCIPLE_VERSIONS = {
     # v3.1.0 principles
     "glossary": "3.1.0",
     "maintainers": "3.1.0",
+    # v3.3.0 principles
+    "roadmap": "3.3.0",
+    "branch-naming": "3.3.0",
+    "conventional-commits": "3.3.0",
 }
 
 
@@ -186,7 +206,8 @@ def get_principles_by_category(category: str) -> list:
 
     Args:
         category: One of 'core', 'governance', 'security', 'advanced', 'community',
-                  'quality', 'compliance', 'infrastructure', 'inclusivity', 'lifecycle'
+                  'quality', 'compliance', 'infrastructure', 'inclusivity', 'lifecycle',
+                  'usability', 'workflow'
 
     Returns:
         List of principle IDs in that category
@@ -205,6 +226,8 @@ def get_principles_by_category(category: str) -> list:
         "lifecycle": LIFECYCLE_PRINCIPLES,
         # v3.1.0 categories
         "usability": USABILITY_PRINCIPLES,
+        # v3.3.0 categories
+        "workflow": WORKFLOW_PRINCIPLES,
     }
     return categories.get(category.lower(), [])
 
@@ -258,6 +281,8 @@ __all__ = [
     "LIFECYCLE_PRINCIPLES",
     # v3.1.0 categories
     "USABILITY_PRINCIPLES",
+    # v3.3.0 categories
+    "WORKFLOW_PRINCIPLES",
     # Version mapping
     "PRINCIPLE_VERSIONS",
     # Helper functions
