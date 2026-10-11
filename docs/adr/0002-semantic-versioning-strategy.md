@@ -167,7 +167,7 @@ When asked "when will X ship?":
 - [ADR 0003: Advisory Expiration System](0003-advisory-expiration.md) (v2.6.0) - explains date-based expiration vs. version-based updates
 - [ADR 0004: Modular Package Architecture](0004-modular-package-architecture.md) (v2.6.0)
 - [ADR 0005: Governance Preset System](0005-preset-system.md) (v2.7.0)
-- ADR 0006: Plugin Architecture (v2.11.0)
+- [ADR 0006: Plugin Architecture](0006-plugin-architecture.md) (v2.11.0)
 
 ## References
 

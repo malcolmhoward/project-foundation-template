@@ -29,6 +29,7 @@ Each ADR follows this structure:
 | [0003](0003-advisory-expiration.md) | Advisory Expiration System | Accepted | 2026-01-18 |
 | [0004](0004-modular-package-architecture.md) | Modular Package Architecture (v2.6.0) | Accepted | 2026-01-18 |
 | [0005](0005-preset-system.md) | Governance Preset System (v2.7.0) | Accepted | 2026-01-18 |
+| [0006](0006-plugin-architecture.md) | Plugin Architecture (v2.11.0) | Accepted | 2026-01-18 |
 
 ## Creating New ADRs
 
