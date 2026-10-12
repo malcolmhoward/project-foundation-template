@@ -42,6 +42,14 @@ from .architecture_overview import GUIDE as ARCHITECTURE_GUIDE, CONTENT as ARCHI
 from .deployment_guide import GUIDE as DEPLOYMENT_GUIDE, CONTENT as DEPLOYMENT_CONTENT
 from .contributor_handbook import GUIDE as CONTRIBUTOR_HANDBOOK_GUIDE, CONTENT as CONTRIBUTOR_HANDBOOK_CONTENT
 
+# v3.4.0 guides
+from .user_stories import GUIDE as USER_STORIES_GUIDE, CONTENT as USER_STORIES_CONTENT
+from .personas import GUIDE as PERSONAS_GUIDE, CONTENT as PERSONAS_CONTENT
+from .features import GUIDE as FEATURES_GUIDE, CONTENT as FEATURES_CONTENT
+from .contribution_opportunities import GUIDE as CONTRIB_OPPS_GUIDE, CONTENT as CONTRIB_OPPS_CONTENT
+from .refs import GUIDE as REFS_GUIDE, CONTENT as REFS_CONTENT
+from .tree_preview import GUIDE as TREE_PREVIEW_GUIDE, CONTENT as TREE_PREVIEW_CONTENT
+
 # Aggregated guides dictionary
 ALL_GUIDES = {
     # Existing guides (v2.9.0)
@@ -66,6 +74,13 @@ ALL_GUIDES = {
     "architecture-overview": ARCHITECTURE_GUIDE,
     "deployment-guide": DEPLOYMENT_GUIDE,
     "contributor-handbook": CONTRIBUTOR_HANDBOOK_GUIDE,
+    # v3.4.0 guides
+    "user-stories": USER_STORIES_GUIDE,
+    "personas": PERSONAS_GUIDE,
+    "features": FEATURES_GUIDE,
+    "contribution-opportunities": CONTRIB_OPPS_GUIDE,
+    "refs": REFS_GUIDE,
+    "tree-preview": TREE_PREVIEW_GUIDE,
 }
 
 # Aggregated content dictionary
@@ -92,6 +107,13 @@ ALL_GUIDE_CONTENT = {
     "architecture-overview": ARCHITECTURE_CONTENT,
     "deployment-guide": DEPLOYMENT_CONTENT,
     "contributor-handbook": CONTRIBUTOR_HANDBOOK_CONTENT,
+    # v3.4.0 guides
+    "user-stories": USER_STORIES_CONTENT,
+    "personas": PERSONAS_CONTENT,
+    "features": FEATURES_CONTENT,
+    "contribution-opportunities": CONTRIB_OPPS_CONTENT,
+    "refs": REFS_CONTENT,
+    "tree-preview": TREE_PREVIEW_CONTENT,
 }
 
 # Guide categories
@@ -106,6 +128,10 @@ ONBOARDING_GUIDES = [
     "contributor-handbook",  # v3.2.0
 ]
 OPERATIONS_GUIDES = ["dependency-guide", "deployment-guide"]  # v3.2.0: added deployment-guide
+
+# v3.4.0 categories
+PLANNING_GUIDES = ["user-stories", "personas", "features", "refs", "tree-preview"]
+COMMUNITY_GUIDES = ["contribution-opportunities"]
 
 # Complexity levels
 GUIDE_COMPLEXITY = {
@@ -131,6 +157,13 @@ GUIDE_COMPLEXITY = {
     "architecture-overview": "intermediate",
     "deployment-guide": "intermediate",
     "contributor-handbook": "beginner",
+    # v3.4.0 guides
+    "user-stories": "beginner",
+    "personas": "intermediate",
+    "features": "beginner",
+    "contribution-opportunities": "intermediate",
+    "refs": "beginner",
+    "tree-preview": "beginner",
 }
 
 # Version mapping (when each guide was introduced)
@@ -157,6 +190,13 @@ GUIDE_VERSIONS = {
     "architecture-overview": "3.2.0",
     "deployment-guide": "3.2.0",
     "contributor-handbook": "3.2.0",
+    # v3.4.0 guides
+    "user-stories": "3.4.0",
+    "personas": "3.4.0",
+    "features": "3.4.0",
+    "contribution-opportunities": "3.4.0",
+    "refs": "3.4.0",
+    "tree-preview": "3.4.0",
 }
 
 
@@ -188,7 +228,8 @@ def get_guides_by_category(category: str) -> list:
     """Get guide IDs by category.
 
     Args:
-        category: One of 'governance', 'development', 'security', 'onboarding', 'operations'
+        category: One of 'governance', 'development', 'security', 'onboarding',
+                  'operations', 'planning', 'community'
 
     Returns:
         List of guide IDs in that category
@@ -199,6 +240,9 @@ def get_guides_by_category(category: str) -> list:
         "security": SECURITY_GUIDES,
         "onboarding": ONBOARDING_GUIDES,
         "operations": OPERATIONS_GUIDES,
+        # v3.4.0 categories
+        "planning": PLANNING_GUIDES,
+        "community": COMMUNITY_GUIDES,
     }
     return categories.get(category.lower(), [])
 
@@ -237,6 +281,9 @@ __all__ = [
     "SECURITY_GUIDES",
     "ONBOARDING_GUIDES",
     "OPERATIONS_GUIDES",
+    # v3.4.0 categories
+    "PLANNING_GUIDES",
+    "COMMUNITY_GUIDES",
     # Mappings
     "GUIDE_COMPLEXITY",
     "GUIDE_VERSIONS",
