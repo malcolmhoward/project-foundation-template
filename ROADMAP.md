@@ -490,16 +490,186 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 
 ---
 
+### Version 3.7.0 - Generation Log Tracking
+
+**Target**: File provenance documentation and self-governance validation
+
+| Feature | Description | Priority |
+|---------|-------------|----------|
+| `--include-generation-log` | Track generated files with provenance | High |
+| `--log-format` | Support md, json, or both formats | Medium |
+| `--log-to` | Custom log file path | Low |
+| Dogfooding documentation | Self-governance validation procedure | Medium |
+
+**New Files**:
+- `GENERATION_LOG.md` - Markdown provenance tracking
+- `GENERATION_LOG.json` - Machine-readable provenance
+- `docs/dogfood/README.md` - Dogfooding procedure (PFT-internal)
+- `docs/dogfood/DELTA_ANALYSIS.md` - Comparison insights (PFT-internal)
+
+**Rationale**: Enables transparency about auto-generated files and supports template quality validation through self-application.
+
+---
+
+### Version 3.8.0 - Template Improvements (Dogfooding Insights)
+
+**Target**: Template enhancements identified through v3.7.0 dogfooding exercise
+
+| Feature | Type | Description | Priority |
+|---------|------|-------------|----------|
+| `codeowners` principle | New principle | Generate CODEOWNERS file | High |
+| `migration` principle | New principle | Generate MIGRATION.md template | Medium |
+| Audience matrix | README pattern | "Who is This For?" section template | High |
+| Non-goals section | README pattern | "What This Is Not" clarifications | High |
+| Governance section | README pattern | Governance status and adoption roadmap | Medium |
+| Commit scopes | CONTRIBUTING pattern | [CUSTOMIZE] scopes table | Medium |
+| Educational review | CONTRIBUTING pattern | Project values placeholder | Medium |
+| Educational context | PR template pattern | WHY section emphasis | Medium |
+| ADR philosophy | ADR README pattern | Decision reasoning guidance | Low |
+| `dogfooding` principle | New principle | Opt-in self-validation procedure | Medium |
+
+**New Principles**:
+
+| Principle | Generates | Preset Inclusion |
+|-----------|-----------|------------------|
+| `codeowners` | `.github/CODEOWNERS` | enterprise (default), opt-in for others |
+| `migration` | `MIGRATION.md` | strict, enterprise (default), opt-in for others |
+| `dogfooding` | `docs/dogfood/README.md` | opt-in only (for generator/framework projects) |
+
+**Template Pattern Improvements**:
+- README: "Who is This For?" audience matrix
+- README: "What This Is Not" non-goals section
+- README: "Governance" section with adoption status and roadmap
+- CONTRIBUTING: [CUSTOMIZE] commit scopes table
+- CONTRIBUTING: Project values/ethics placeholder
+- PR Template: Educational context (WHY) section
+- ADR README: Philosophy paragraph on decision reasoning
+- ADR Template: Structured "Change History" table (implemented in v3.7.0)
+
+**Rationale**: Improvements emerged from running PFT against itself. See [ADR-0011](docs/adr/0011-pft-self-governance.md) and [DELTA_ANALYSIS.md](docs/dogfood/DELTA_ANALYSIS.md).
+
+---
+
+### Version 3.9.0 - Multi-Platform & Container Support
+
+**Target**: Documentation patterns for multi-platform projects and containerized applications
+
+**Inspiration**: Patterns observed in a Tier 3 ecosystem project (non-anonymous attribution available upon request)
+
+| Feature | Type | Description | Priority |
+|---------|------|-------------|----------|
+| `feature-matrix` | New guide | Platform/browser/version compatibility matrix template | High |
+| `docker-compose` | New principle | Generate docker-compose.yml with service templates | High |
+| `component-readme` | README variant | Component-specific README for monorepo projects | Medium |
+| `acknowledgments` | New principle | Generate ACKNOWLEDGMENTS.md for attribution tracking | Medium |
+
+**New Principles**:
+
+| Principle | Generates | Preset Inclusion |
+|-----------|-----------|------------------|
+| `docker-compose` | `docker-compose.yml`, `DOCKER_README.md` | strict+, opt-in for others |
+| `acknowledgments` | `ACKNOWLEDGMENTS.md` | enterprise (default), opt-in for others |
+
+**New Guides**:
+
+| Guide | Purpose | Use Case |
+|-------|---------|----------|
+| `feature-matrix` | Document feature support across platforms | Multi-platform, cross-browser, API versioning |
+| `component-readme` | README template for monorepo components | Monorepo projects with multiple packages |
+| `governance-roadmap` | Phased governance adoption planning | Projects adopting governance incrementally |
+
+**Rationale**: Multi-platform and containerized projects need structured ways to document compatibility and orchestration. Patterns inspired by real-world Tier 3 ecosystem adoption.
+
+---
+
+### Version 3.10.0 - Ecosystem & Coordination Patterns
+
+**Target**: Documentation patterns for multi-repo ecosystems and complex project coordination
+
+**Inspiration**: Patterns observed in a Tier 3 ecosystem project (non-anonymous attribution available upon request)
+
+| Feature | Type | Description | Priority |
+|---------|------|-------------|----------|
+| `cost-analysis` | New guide | Hardware/infrastructure cost comparison template | Medium |
+| `hardware-tiers` | New guide | Hardware progression paths and tier recommendations | Medium |
+| `monorepo-scripts` | New principle | Cross-repo automation script templates | Medium |
+| `documentation-architecture` | New guide | Three-tier docs pattern (portal/coordination/component) | Low |
+| `communication-patterns` | New guide | Distributed system communication documentation (MQTT, etc.) | Low |
+
+**New Principles**:
+
+| Principle | Generates | Preset Inclusion |
+|-----------|-----------|------------------|
+| `monorepo-scripts` | `scripts/for-each-repo.sh`, `scripts/README.md` | enterprise, opt-in for others |
+
+**New Guides**:
+
+| Guide | Purpose | Use Case |
+|-------|---------|----------|
+| `cost-analysis` | Document build costs, cloud costs, vendor comparisons | Hardware projects, cloud infrastructure |
+| `hardware-tiers` | Document hardware progression paths | IoT, embedded, robotics projects |
+| `documentation-architecture` | Document three-tier architecture | Large projects with portal + coordination layers |
+| `communication-patterns` | Document inter-service communication | Distributed systems, microservices, IoT |
+
+**Rationale**: Complex ecosystems with multiple repositories, hardware platforms, or distributed components need structured coordination documentation. These patterns emerged from observing real-world adoption in sophisticated multi-repo projects.
+
+---
+
+### Version 3.11.0 - Coordination & Research Patterns
+
+**Target**: Documentation patterns for multi-repo coordination, research documentation, and decision frameworks
+
+**Inspiration**: Patterns observed in a Tier 3 ecosystem project (non-anonymous attribution available upon request)
+
+| Feature | Type | Description | Priority |
+|---------|------|-------------|----------|
+| `meta-issue-tracking` | New guide | Two-tier issue system for multi-repo coordination | High |
+| `research-documentation` | New guide | Evaluation criteria, comparison tables, recommendation patterns | Medium |
+| `decision-framework` | ADR enhancement | Options comparison, stakeholder section, deferred decisions | High |
+| `plan-locally-workflow` | CONTRIBUTING pattern | Draft → implement → refine → publish workflow | Medium |
+
+**New Guides**:
+
+| Guide | Purpose | Use Case |
+|-------|---------|----------|
+| `meta-issue-tracking` | Document two-tier issue tracking (meta-issues vs tracking references) | Multi-repo ecosystems, coordination layers |
+| `research-documentation` | Template for evaluating options with criteria tables and recommendations | Technology selection, library evaluation, architectural decisions |
+
+**ADR Template Enhancements**:
+
+| Enhancement | Description |
+|-------------|-------------|
+| Options comparison table | Structured pros/cons for each alternative |
+| Stakeholder considerations | Section for documenting stakeholder-specific concerns |
+| Deferred decisions | Pattern for decisions awaiting stakeholder input |
+| Preliminary recommendation | Section for early recommendations pending validation |
+
+**CONTRIBUTING Pattern Enhancements**:
+
+| Enhancement | Description |
+|-------------|-------------|
+| "Plan Locally First" workflow | Draft issues → local implementation → refine scope → public issue |
+| Two-tier issue ownership | Meta-issues (coordination owns) vs tracking references (component owns) |
+
+**Rationale**: Multi-repo coordination requires clear ownership boundaries for issues, structured research documentation for technology decisions, and workflows that allow implementation details to inform issue scope before public commitment.
+
+---
+
 ### Gap Analysis Summary
 
-| Category | 6500+ Spec | v3.0.0 | Gap | Target Version |
-|----------|------------|--------|-----|----------------|
+| Category | 6500+ Spec | Current | Gap | Status |
+|----------|------------|---------|-----|--------|
 | Safety/Ethics | 6 safeguards | 6 safeguards | 0% | ✅ Complete |
-| Principles | 23 | 23 | Different set | v3.3.0, v3.4.0 |
-| Guides | 20 | 15 | 5 missing | v3.2.0, v3.4.0 |
-| Generated Files | 15+ | 10 | 5 missing | v3.1.0 |
-| Language Support | 18 | 0 | 100% | v3.5.0 |
-| i18n Locales | 10 | 0 | 100% | v3.6.0 |
+| Principles | 23 | 30 | Exceeded | ✅ Complete |
+| Guides | 20 | 25 | Exceeded | ✅ Complete |
+| Generated Files | 15+ | 15+ | 0% | ✅ Complete |
+| Language Support | 18 | 17 | 6% | ✅ v3.5.0 |
+| i18n Locales | 10 | 10 | 0% | ✅ v3.6.0 |
+| Generation Log | N/A | New feature | N/A | 🔄 v3.7.0 |
+| Dogfooding | N/A | New principle | N/A | 📋 v3.8.0 |
+| Multi-Platform Docs | N/A | New guides | N/A | 📋 v3.9.0 |
+| Ecosystem Coordination | N/A | New guides | N/A | 📋 v3.10.0 |
+| Coordination & Research | N/A | New guides + patterns | N/A | 📋 v3.11.0 |
 
 ---
 
@@ -513,13 +683,18 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 2.4.x | ✅ Released | Enhanced security, secrets detection |
 | 2.5.x | ✅ Released | ADR system, CI workflows, smoke tests |
 | 2.6.0 | ✅ Released | Modular package, 83 unit tests |
-| 3.0.0 | ✅ Released | Plugin architecture, 23 principles, 15 guides, 5 presets |
-| 3.1.0 | 📋 Planned | Accessibility (GLOSSARY, MAINTAINERS, SCAFFOLD_MANIFEST) |
-| 3.2.0 | 📋 Planned | Developer documentation guides |
-| 3.3.0 | 📋 Planned | Extended governance principles |
-| 3.4.0 | 📋 Planned | Advanced features |
-| 3.5.0 | 📋 Planned | Programming language support |
-| 3.6.0 | 📋 Planned | Internationalization |
+| 3.0.0 | ✅ Released | Plugin architecture, 30 principles, 25 guides, 5 presets |
+| 3.1.0 | ✅ Released | Accessibility (GLOSSARY generation) |
+| 3.2.0 | ✅ Released | Developer documentation guides |
+| 3.3.0 | ✅ Released | Extended governance principles |
+| 3.4.0 | ✅ Released | Advanced features |
+| 3.5.0 | ✅ Released | Programming language support (17 languages) |
+| 3.6.0 | ✅ Released | Internationalization (10 locales) |
+| 3.7.0 | 🔄 In Progress | Generation log tracking, dogfooding documentation |
+| 3.8.0 | 📋 Planned | Template improvements (dogfooding insights) |
+| 3.9.0 | 📋 Planned | Multi-platform docs, container support |
+| 3.10.0 | 📋 Planned | Ecosystem coordination patterns |
+| 3.11.0 | 📋 Planned | Coordination & research patterns |
 
 ## Priority Summary
 

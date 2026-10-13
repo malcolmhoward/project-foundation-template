@@ -74,6 +74,19 @@ CONFIG_KEY_MAPPING = {
     "plugins_dir": "plugins_dir",
     "plugins-dir": "plugins_dir",
     "pluginsDir": "plugins_dir",
+    # v3.7.0: Generation log
+    "include_generation_log": "include_generation_log",
+    "include-generation-log": "include_generation_log",
+    "includeGenerationLog": "include_generation_log",
+    "log_format": "log_format",
+    "log-format": "log_format",
+    "logFormat": "log_format",
+    "log_to": "log_to",
+    "log-to": "log_to",
+    "logTo": "log_to",
+    "force_overwrite": "force_overwrite",
+    "force-overwrite": "force_overwrite",
+    "forceOverwrite": "force_overwrite",
 }
 
 # Default values for arguments
@@ -104,6 +117,11 @@ DEFAULT_VALUES = {
     "list_principles": False,
     "list_guides": False,
     "list_presets": False,
+    # v3.7.0: Generation log
+    "include_generation_log": False,
+    "log_format": "md",
+    "log_to": None,
+    "force_overwrite": False,
 }
 
 
@@ -319,6 +337,35 @@ Config file format (.foundationrc):
         dest="include_manifest",
         action="store_true",
         help="Include SCAFFOLD_MANIFEST.md documenting what was generated"
+    )
+
+    # v3.7.0: Generation log
+    parser.add_argument(
+        "--include-generation-log",
+        dest="include_generation_log",
+        action="store_true",
+        help="Include GENERATION_LOG tracking generated files with provenance"
+    )
+
+    parser.add_argument(
+        "--log-format",
+        dest="log_format",
+        choices=["md", "json", "both"],
+        default="md",
+        help="Format for generation log: md (default), json, or both"
+    )
+
+    parser.add_argument(
+        "--log-to",
+        dest="log_to",
+        help="Append to existing generation log file instead of creating new"
+    )
+
+    parser.add_argument(
+        "--force-overwrite",
+        dest="force_overwrite",
+        action="store_true",
+        help="Force overwrite of existing files without prompting"
     )
 
     # v2.2.0: Non-interactive mode

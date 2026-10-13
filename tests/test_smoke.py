@@ -53,10 +53,12 @@ class TestScriptBasics:
         assert "author-name" in result.stdout.lower()
 
     def test_version_flag(self):
-        """Verify --version works."""
+        """Verify --version works and shows version number."""
         result = run_script([str(SCRIPT_PATH), "--version"])
         assert result.returncode == 0, f"Version failed: {result.stderr}"
-        assert "lite" in result.stdout.lower()
+        # Check for semantic version pattern (e.g., 3.7.0 or 2.9.0-lite)
+        import re
+        assert re.search(r"\d+\.\d+\.\d+", result.stdout), "Version number not found in output"
 
 
 class TestCoreGeneration:
