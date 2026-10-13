@@ -688,7 +688,7 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 3.2.0 | ✅ Released | Developer documentation guides |
 | 3.3.0 | ✅ Released | Extended governance principles |
 | 3.4.0 | ✅ Released | Advanced features |
-| 3.5.0 | ✅ Released | Programming language support (17 languages) |
+| 3.5.0 | ✅ Released | Programming language support (18 languages) |
 | 3.6.0 | ✅ Released | Internationalization (10 locales) |
 | 3.7.0 | 🔄 In Progress | Generation log tracking, dogfooding documentation |
 | 3.8.0 | 📋 Planned | Template improvements (dogfooding insights) |

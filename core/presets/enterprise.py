@@ -4,7 +4,7 @@
 """
 Enterprise preset for Project Foundation Template.
 
-The complete governance suite with all 23 principles enabled.
+The complete governance suite with all 30 principles enabled.
 This is the maximum governance configuration for organizations
 requiring comprehensive project governance.
 
@@ -17,7 +17,7 @@ This preset is for:
 
 ENTERPRISE_PRESET = {
     "name": "enterprise",
-    "description": "Full governance suite - all 23 principles enabled",
+    "description": "Full governance suite - all 30 principles enabled",
     "principles": [
         # Core (v2.1.0)
         "readme",
@@ -52,6 +52,16 @@ ENTERPRISE_PRESET = {
         "accessibility",
         # Lifecycle (v3.0.0)
         "deprecation-policy",
+        # Documentation (v3.1.0)
+        "glossary",
+        "maintainers",
+        # Workflow (v3.3.0)
+        "roadmap",
+        "branch-naming",
+        "conventional-commits",
+        # Tooling (v3.4.0)
+        "pre-commit-hooks",
+        "error-handling",
     ],
     "features": {
         # Core files

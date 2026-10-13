@@ -63,13 +63,30 @@ _loader: Optional[PluginLoader] = None
 _plugins_loaded: bool = False
 
 
+def _loaded_classes(kind: str) -> dict:
+    """Plugin classes loaded so far, by ID ('principles' or 'guides')."""
+    if not _loader:
+        return {}
+    loaded = _loader.loaded_principles if kind == "principles" else _loader.loaded_guides
+    return {pid: item.plugin_class for pid, item in loaded.items()}
+
+
+def _conflict_mode() -> str:
+    """How plugins may interact with built-in IDs: the loader's mode, or 'skip' (built-ins win)."""
+    return _loader.conflict_mode if _loader else "skip"
+
+
 def get_plugin_dirs() -> List[Path]:
     """Get the list of directories to search for plugins.
 
     The search order is:
     1. Directory from FOUNDATION_PLUGINS_DIR environment variable (if set)
     2. ~/.foundation-plugins/
-    3. ./plugins/ (relative to current working directory)
+
+    Plugins are Python code and run with your permissions. The current working
+    directory is deliberately NOT searched: running the generator inside a cloned,
+    untrusted repository must never execute that repository's plugins/*.py.
+    Pass an explicit directory to discover_plugins() to use another location.
 
     Returns:
         List of Path objects for plugin directories.
@@ -81,11 +98,8 @@ def get_plugin_dirs() -> List[Path]:
     if env_dir:
         dirs.append(Path(env_dir))
 
-    # Default directories
-    dirs.extend([
-        Path.home() / ".foundation-plugins",
-        Path.cwd() / "plugins",
-    ])
+    # Default directory: user-owned only (see docstring for why not ./plugins/)
+    dirs.append(Path.home() / ".foundation-plugins")
 
     return dirs
 
@@ -179,18 +193,11 @@ def get_all_principles(include_builtin: bool = True) -> Dict[str, dict]:
     # Import here to avoid circular imports
     from ..principles import ALL_PRINCIPLES
 
-    plugin_principles = {}
-    if _loader:
-        for pid, loaded in _loader.loaded_principles.items():
-            plugin_principles[pid] = loaded.plugin_class.PRINCIPLE.copy()
-
+    plugins = _loaded_classes("principles")
     if include_builtin:
-        # Merge with plugins taking precedence (if they exist)
-        result = ALL_PRINCIPLES.copy()
-        result.update(plugin_principles)
-        return result
-    else:
-        return plugin_principles
+        # Built-ins are protected unless the loader was created with conflict_mode="override"
+        return merge_principles(ALL_PRINCIPLES, plugins, _conflict_mode())
+    return {pid: cls.PRINCIPLE.copy() for pid, cls in plugins.items()}
 
 
 def get_all_education(include_builtin: bool = True) -> Dict[str, str]:
@@ -204,17 +211,10 @@ def get_all_education(include_builtin: bool = True) -> Dict[str, str]:
     """
     from ..principles import ALL_EDUCATION
 
-    plugin_education = {}
-    if _loader:
-        for pid, loaded in _loader.loaded_principles.items():
-            plugin_education[pid] = loaded.plugin_class.EDUCATION
-
+    plugins = _loaded_classes("principles")
     if include_builtin:
-        result = ALL_EDUCATION.copy()
-        result.update(plugin_education)
-        return result
-    else:
-        return plugin_education
+        return merge_education(ALL_EDUCATION, plugins, _conflict_mode())
+    return {pid: cls.EDUCATION for pid, cls in plugins.items()}
 
 
 def get_all_guides(include_builtin: bool = True) -> Dict[str, dict]:
@@ -228,17 +228,10 @@ def get_all_guides(include_builtin: bool = True) -> Dict[str, dict]:
     """
     from ..guides import ALL_GUIDES
 
-    plugin_guides = {}
-    if _loader:
-        for gid, loaded in _loader.loaded_guides.items():
-            plugin_guides[gid] = loaded.plugin_class.GUIDE.copy()
-
+    plugins = _loaded_classes("guides")
     if include_builtin:
-        result = ALL_GUIDES.copy()
-        result.update(plugin_guides)
-        return result
-    else:
-        return plugin_guides
+        return merge_guides(ALL_GUIDES, plugins, _conflict_mode())
+    return {gid: cls.GUIDE.copy() for gid, cls in plugins.items()}
 
 
 def get_all_guide_content(include_builtin: bool = True) -> Dict[str, str]:
@@ -252,17 +245,10 @@ def get_all_guide_content(include_builtin: bool = True) -> Dict[str, str]:
     """
     from ..guides import ALL_GUIDE_CONTENT
 
-    plugin_content = {}
-    if _loader:
-        for gid, loaded in _loader.loaded_guides.items():
-            plugin_content[gid] = loaded.plugin_class.CONTENT
-
+    plugins = _loaded_classes("guides")
     if include_builtin:
-        result = ALL_GUIDE_CONTENT.copy()
-        result.update(plugin_content)
-        return result
-    else:
-        return plugin_content
+        return merge_guide_content(ALL_GUIDE_CONTENT, plugins, _conflict_mode())
+    return {gid: cls.CONTENT for gid, cls in plugins.items()}
 
 
 def list_plugin_principles() -> List[str]:

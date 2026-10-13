@@ -19,10 +19,17 @@ SCRIPT_PATH = Path(__file__).parent.parent / "generate_foundation.py"
 LEGACY_SCRIPT_PATH = Path(__file__).parent.parent / "setup_foundation_lite.py"
 
 
+# Subprocesses get their own home directory so tests never write to the real
+# ~/.project_foundation_logs (the generator's local usage log).
+_TEST_HOME = tempfile.mkdtemp(prefix="pft-test-home-")
+
+
 def run_script(args):
     """Run the script with proper encoding for Windows compatibility."""
     env = os.environ.copy()
     env['PYTHONIOENCODING'] = 'utf-8'
+    env['HOME'] = _TEST_HOME
+    env['USERPROFILE'] = _TEST_HOME
     return subprocess.run(
         [sys.executable] + args,
         capture_output=True,

@@ -34,7 +34,13 @@ Every template teaches before it generates:
 
 #### Principle Zero: "Do No Harm, Allow No Harm"
 
-This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully.
+This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. Governance templates carry responsibility, so PFT:
+
+- **Teaches before it generates**: every template explains WHAT it is, WHY it matters, and the RISK of not having it
+- **Requires acknowledgment**: you confirm that templates are starting points, not finished products
+- **Prevents misuse**: features that would enable governance theater or mass automation are deliberately limited
+- **Logs usage locally**: a record of what was generated stays on your machine, never sent anywhere
+- **Expires gracefully**: an advisory date prompts you to check for updates instead of running outdated governance (warns, never blocks)
 
 Ethical review requirements scale based on a project's relationship to PFT:
 - **Tier 1** (Core components): Full ethical review required
@@ -64,7 +70,7 @@ Templates are starting points, not finished products. Every generated file requi
 ### For New Users (Interactive Learning Mode)
 
 ```bash
-python setup_foundation.py --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --project-name "MyProject" --author-name "Your Name"
 ```
 
 This walks you through each decision, explaining what each file does and why it matters.
@@ -73,24 +79,48 @@ This walks you through each decision, explaining what each file does and why it 
 
 ```bash
 # Choose your governance level
-python setup_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name"
-python setup_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Default
-python setup_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Default
+python generate_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name"
 ```
 
 ### For CI/CD Pipelines
 
 ```bash
-python setup_foundation.py --non-interactive --accept-terms --preset standard \
+python generate_foundation.py --non-interactive --accept-terms --preset standard \
   --project-name "MyProject" --author-name "Your Name" --output-dir ./output
+```
+
+### Usage Scenarios
+
+**Existing project**: target its directory; existing files are not overwritten without confirmation.
+
+```bash
+python /path/to/project-foundation-template/generate_foundation.py   --project-name "ExistingProject" --author-name "Your Name"   --output-dir /path/to/existing-project --preset standard
+```
+
+**Git submodule**: lock your project to a specific PFT version and update templates by updating the submodule.
+
+```bash
+cd your-project
+git submodule add https://github.com/malcolmhoward/project-foundation-template.git tools/pft
+python tools/pft/generate_foundation.py --project-name "YourProject" --author-name "Your Name"   --output-dir . --preset standard
+```
+
+**Monorepo**: generate governance for several packages from one checkout.
+
+```bash
+for project in frontend backend shared; do
+  python /path/to/pft/generate_foundation.py --non-interactive --accept-terms --preset light     --project-name "$project" --author-name "Team" --output-dir "./packages/$project"
+done
 ```
 
 ### Discover Available Options
 
 ```bash
-python setup_foundation.py --list-presets      # Show all governance presets
-python setup_foundation.py --list-principles   # Show all 30 principles
-python setup_foundation.py --list-guides       # Show all 25 implementation guides
+python generate_foundation.py --list-presets      # Show all governance presets
+python generate_foundation.py --list-principles   # Show all 30 principles
+python generate_foundation.py --list-guides       # Show all 25 implementation guides
 ```
 
 ---
@@ -216,8 +246,9 @@ Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK
 ```
 project-foundation-template/
 │
-├── setup_foundation.py          # Main entry point (v3.0.0)
-├── setup_foundation_lite.py     # Legacy entry point (deprecated)
+├── generate_foundation.py       # Main entry point
+├── setup_foundation_lite.py     # Deprecated shim: forwards to generate_foundation.py
+├── validate_customization.py    # Checks generated files for unfilled placeholders
 │
 ├── core/                        # Core modules
 │   ├── __init__.py             # Package exports
@@ -225,6 +256,7 @@ project-foundation-template/
 │   ├── education.py            # Educational content
 │   ├── ethics.py               # Ethical safeguards
 │   ├── generator.py            # File generation engine
+│   ├── generation_log.py       # Generation log (file provenance)
 │   ├── utils.py                # Utility functions
 │   │
 │   ├── principles/             # 30 Governance Principles
@@ -248,25 +280,24 @@ project-foundation-template/
 │   │   ├── strict.py           # 12 principles
 │   │   └── enterprise.py       # 30 principles
 │   │
+│   ├── programming_languages/  # 18 language configurations
+│   ├── internationalization/   # 10 locale configurations
+│   │
 │   └── plugins/                # Plugin System
 │       ├── __init__.py         # Plugin API
 │       ├── base.py             # Base classes
 │       ├── loader.py           # Plugin discovery
 │       └── validator.py        # Plugin validation
 │
-├── templates/                   # Generated file templates
-│   ├── markdown/               # Documentation templates
-│   ├── workflows/              # GitHub Actions templates
-│   └── configs/                # Configuration templates
+├── examples/plugins/            # Example plugins
+├── scripts/                     # Maintenance scripts
 │
 ├── tests/                       # Test suite
 │   ├── test_foundation_*.py    # Core module tests
 │   └── ...
 │
 ├── docs/                        # Documentation
-│   ├── adr/                    # Architecture Decision Records
-│   │   └── 0001-education-first.md
-│   └── guides/                 # Implementation guides
+│   └── adr/                    # Architecture Decision Records
 │
 ├── CLAUDE.md                    # LLM integration guidance
 ├── ETHICS.md                    # Ethical framework
@@ -297,16 +328,37 @@ project-foundation-template/
 
 ---
 
+## Glossary
+
+Key terms used in this project:
+
+| Term | Definition |
+|------|------------|
+| **ADR** | Architecture Decision Record: a document capturing an important architectural decision |
+| **CI/CD** | Continuous Integration / Continuous Deployment: automated build and release pipelines |
+| **Governance** | The policies, processes, and documentation guiding project development and maintenance |
+| **i18n** | Internationalization: designing software for multiple languages and regions |
+| **a11y** | Accessibility: making software usable by people with disabilities |
+| **Preset** | A predefined collection of governance principles bundled for common use cases |
+| **Principle** | A governance concept that defines WHAT must be done, WHY it matters, and the RISK of omission |
+| **Guide** | Implementation documentation explaining HOW to apply a principle |
+| **SemVer** | Semantic Versioning: version numbers in MAJOR.MINOR.PATCH format |
+| **Shim** | A small stand-in file that keeps an old command working by forwarding to its replacement |
+
+For a comprehensive glossary of software development terms, see [GLOSSARY.md](GLOSSARY.md).
+
+---
+
 ## Extending with Plugins
 
 Create custom principles and guides for your organization:
 
 ```bash
 # Use plugins from a custom directory
-python setup_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
 ```
 
-See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
+`--plugins-dir` is accepted but plugin loading is **not yet wired into the generator**; the plugin API in `core/plugins/` is available for experimentation. Plugins are Python code and run with your permissions, so only load plugins you trust. See [examples/plugins/](examples/plugins/) for examples.
 
 ---
 
@@ -316,7 +368,7 @@ See [core/plugins/examples/](core/plugins/examples/) for plugin examples.
 |---------|------------|
 | v3.7.0 | Generation log, attribution policy, tiered ethical review |
 | v3.6.0 | Internationalization support (10 locales) |
-| v3.5.0 | Programming language support infrastructure (17 languages) |
+| v3.5.0 | Programming language support infrastructure (18 languages) |
 | v3.4.0 | Advanced features - 30 principles, 25 guides |
 | v3.3.0 | Extended governance principles (28 total) |
 | v3.2.0 | Developer documentation guides |
@@ -347,7 +399,7 @@ Licensed under the Apache License, Version 2.0. See [LICENSE](LICENSE) for detai
 
 ## Acknowledgments
 
-This framework emerged from collaborative work between human and AI, embodying the principle of **Mutual Fallibility** — both parties have cognitive biases and benefit from structured verification protocols.
+This framework emerged from collaborative work between a human maintainer and AI assistants. It embodies **Mutual Fallibility** (see [ETHICS.md](ETHICS.md#mutual-fallibility)): both make mistakes, so PFT relies on structured verification (review, validation, and tests) rather than on either party being right.
 
 ---
 
