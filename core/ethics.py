@@ -66,7 +66,12 @@ def check_version_advisory(
         print_func = print
 
     if date.today() > expiration_date:
-        if not is_quiet:
+        if is_quiet:
+            # Quiet mode shortens the warning but never hides it: an outdated
+            # version is a safety concern, not progress output.
+            print_func(f"⚠️  VERSION OUTDATED: this version expired on "
+                       f"{expiration_date.isoformat()}. Get the latest version at: {OFFICIAL_REPO}")
+        else:
             print_func(f"""
 \u26a0\ufe0f  VERSION OUTDATED - SECURITY RISK
 
@@ -87,8 +92,7 @@ Get the latest version at: {OFFICIAL_REPO}
             print_func("\u26a0\ufe0f  Proceeding with outdated version at your own risk.\n")
         else:
             # Non-interactive mode: warn but continue (user accepted terms)
-            if not is_quiet:
-                print_func("\u26a0\ufe0f  Non-interactive mode: Proceeding with outdated version.\n")
+            print_func("\u26a0\ufe0f  Non-interactive mode: Proceeding with outdated version.\n")
 
     return True
 

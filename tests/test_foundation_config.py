@@ -3,10 +3,12 @@
 
 """Unit tests for the foundation.config module."""
 
+import io
 import json
 import os
 import tempfile
 import unittest
+from unittest.mock import patch
 from argparse import Namespace
 from pathlib import Path
 
@@ -130,6 +132,38 @@ class TestMergeConfigWithArgs(unittest.TestCase):
         result = merge_config_with_args(args, config)
         self.assertEqual(result.project_name, "FromCLI")
         self.assertEqual(result.author_name, "Config Author")
+
+
+class TestCommandLineOnlySettings(unittest.TestCase):
+    """Accepting the agreement and overwriting files can't be set in a config file (#93, #113)."""
+
+    def _args(self):
+        return Namespace(project_name=None, author_name=None, license="mit",
+                         non_interactive=False, accept_terms=False, force_overwrite=False)
+
+    def test_accept_terms_in_config_is_ignored(self):
+        for key in ("accept_terms", "accept-terms", "acceptTerms"):
+            with self.subTest(key=key), patch("sys.stderr", new_callable=io.StringIO) as err:
+                result = merge_config_with_args(self._args(), {key: True, "non_interactive": True})
+                self.assertFalse(result.accept_terms)
+                self.assertTrue(result.non_interactive)
+                self.assertIn("--accept-terms", err.getvalue())
+
+    def test_force_overwrite_in_config_is_ignored(self):
+        for key in ("force_overwrite", "force-overwrite", "forceOverwrite"):
+            with self.subTest(key=key), patch("sys.stderr", new_callable=io.StringIO) as err:
+                result = merge_config_with_args(self._args(), {key: True})
+                self.assertFalse(result.force_overwrite)
+                self.assertIn("--force-overwrite", err.getvalue())
+
+    def test_config_alone_cannot_pass_validation_in_non_interactive_mode(self):
+        args = merge_config_with_args(
+            Namespace(project_name=None, author_name=None, license="mit",
+                      non_interactive=False, accept_terms=False, force_overwrite=False),
+            {"project_name": "P", "author_name": "A", "non_interactive": True, "accept_terms": True})
+        is_valid, message = validate_arguments(args)
+        self.assertFalse(is_valid)
+        self.assertIn("--accept-terms", message)
 
 
 class TestValidateArguments(unittest.TestCase):

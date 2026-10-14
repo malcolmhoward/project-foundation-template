@@ -52,6 +52,9 @@ in 3.7.0. Changes are grouped by the version that introduced them.
 - The generation log records files by path relative to the output directory
   (for example `.github/workflows/ci.yml`).
 - The advisory expiration date is now 2027-04-01.
+- Non-interactive runs no longer overwrite existing files: they stop with an error unless
+  `--force-overwrite` is given. Interactive runs still ask first. An existing generation log is
+  still appended to, not replaced, unless `--force-overwrite` is given.
 
 ### Deprecated
 - `setup_foundation_lite.py`; call `generate_foundation.py` instead.
@@ -64,6 +67,8 @@ in 3.7.0. Changes are grouped by the version that introduced them.
 - The enterprise preset enabled 23 of 30 principles; `--list-principles` and `--list-guides`
   showed only part of each catalogue.
 - Smoke tests no longer write to the real `~/.project_foundation_logs`.
+- `--quiet` no longer hides the warning that the version is outdated; it prints a one-line
+  version of it.
 
 ### Removed
 - The stale `foundation/` package, left behind by the rename to `core/`.
@@ -73,6 +78,10 @@ in 3.7.0. Changes are grouped by the version that introduced them.
   running the generator inside an untrusted checkout cannot execute its code. A plugin can no
   longer replace a built-in principle or guide unless the loader is explicitly set to override.
   `--plugins-dir` is accepted but plugin loading is not yet wired into the generator.
+- `accept_terms` and `force_overwrite` in a config file (`.foundationrc` or `--config`) are
+  ignored with a warning; they must be given on the command line, so a config file in a cloned
+  or shared repository cannot accept the ethical use agreement or overwrite files on someone's
+  behalf.
 
 ## [2.3.0-lite] - 2026-01-18
 

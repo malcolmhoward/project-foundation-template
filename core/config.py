@@ -13,6 +13,7 @@ Contains:
 
 import argparse
 import json
+import sys
 from pathlib import Path
 from typing import Dict, Any, Tuple
 
@@ -66,9 +67,6 @@ CONFIG_KEY_MAPPING = {
     "non_interactive": "non_interactive",
     "non-interactive": "non_interactive",
     "nonInteractive": "non_interactive",
-    "accept_terms": "accept_terms",
-    "accept-terms": "accept_terms",
-    "acceptTerms": "accept_terms",
     # v3.0.0: Presets and plugins
     "preset": "preset",
     "plugins_dir": "plugins_dir",
@@ -84,9 +82,19 @@ CONFIG_KEY_MAPPING = {
     "log_to": "log_to",
     "log-to": "log_to",
     "logTo": "log_to",
-    "force_overwrite": "force_overwrite",
-    "force-overwrite": "force_overwrite",
-    "forceOverwrite": "force_overwrite",
+}
+
+# Settings that must be given on the command line, never in a config file.
+# Accepting the ethical use agreement and overwriting existing files are decisions
+# the person running the generator makes each time; a .foundationrc in a cloned or
+# shared repository must not make them on that person's behalf.
+COMMAND_LINE_ONLY_KEYS = {
+    "accept_terms": "--accept-terms",
+    "accept-terms": "--accept-terms",
+    "acceptTerms": "--accept-terms",
+    "force_overwrite": "--force-overwrite",
+    "force-overwrite": "--force-overwrite",
+    "forceOverwrite": "--force-overwrite",
 }
 
 # Default values for arguments
@@ -175,7 +183,15 @@ def merge_config_with_args(args, config: Dict[str, Any]):
     """
     Merge config file settings with command-line arguments.
     Command-line arguments take precedence over config file.
+
+    Settings in COMMAND_LINE_ONLY_KEYS are ignored with a warning: they must be
+    given on the command line.
     """
+    for config_key, flag in COMMAND_LINE_ONLY_KEYS.items():
+        if config_key in config:
+            print(f"⚠️  Ignoring '{config_key}' in the config file: pass {flag} on the "
+                  "command line instead.", file=sys.stderr)
+
     for config_key, arg_name in CONFIG_KEY_MAPPING.items():
         if config_key in config:
             # Only apply config value if arg wasn't explicitly set
@@ -365,7 +381,8 @@ Config file format (.foundationrc):
         "--force-overwrite",
         dest="force_overwrite",
         action="store_true",
-        help="Force overwrite of existing files without prompting"
+        help="Overwrite existing files without prompting (required for non-interactive runs "
+             "into a directory that already has generated files; command line only)"
     )
 
     # v2.2.0: Non-interactive mode
