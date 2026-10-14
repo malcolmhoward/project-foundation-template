@@ -206,6 +206,22 @@ Reviewers evaluate PRs against these criteria:
 - [ ] Edge cases considered
 - [ ] Tests pass (`pytest`)
 
+### Independent Review
+
+**WHAT**: Every change is reviewed by someone other than its author before it merges. If an AI assistant helped write the change, "someone other than the author" means a person, or a different AI model working from a fresh context. The same assistant re-reading its own work, in the same conversation or a new one, does not count.
+
+**WHY**: An author, human or AI, shares the assumptions that produced the change, so it tends to miss the same things twice. A reviewer who starts fresh with a different model, ideally from a different model family, sees different gaps. This is the [Mutual Fallibility](ETHICS.md#mutual-fallibility) design implication applied to review: redundant safeguards that assume both parties will make mistakes. A second opinion costs far less than a missed defect, so ask for it routinely, not only for large changes.
+
+**HOW**:
+- Match the review to the change:
+  - code: a correctness review
+  - code that handles credentials, personal data or untrusted input: also an adversarial security and privacy pass
+  - documentation: a fact-check of claims, links, numbers and examples
+- Give the reviewer the change and the context it needs, not the author's conclusions about it.
+- If the change was reviewed before you opened the PR (for example by a different AI model), say so in the PR description, for example "Independent review: a different AI model; findings addressed in the second commit". Otherwise the maintainer's review is the independent review.
+- AI review supplements maintainer review; it does not replace it. A maintainer still approves and merges.
+- The habit is useful beyond pull requests too: ask a different reviewer to challenge a plan, a design or an analysis before you act on it.
+
 ### What We Look For
 
 **Good PR description:**
@@ -284,6 +300,7 @@ git push origin feat/42-your-feature
 - Click "Compare & pull request"
 - Fill out the PR template completely
 - Link related issues
+- If the change was independently reviewed before you opened the PR, say who or what reviewed it (see [Independent Review](#independent-review))
 
 ### 7. Address Review Feedback
 
