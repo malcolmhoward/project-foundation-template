@@ -121,6 +121,22 @@ class TestCheckVersionAdvisory(unittest.TestCase):
         )
         self.assertTrue(result)
 
+    def test_quiet_mode_still_warns_about_expired_version(self):
+        """Quiet mode shortens the outdated warning but never hides it (#93)."""
+        past_date = date.today() - timedelta(days=1)
+        mock_print = MagicMock()
+        check_version_advisory(expiration_date=past_date, is_interactive=False,
+                               is_quiet=True, print_func=mock_print)
+        printed = " ".join(str(c.args[0]) for c in mock_print.call_args_list)
+        self.assertIn("VERSION OUTDATED", printed)
+        self.assertIn("Proceeding with outdated version", printed)
+
+        full_print = MagicMock()
+        check_version_advisory(expiration_date=past_date, is_interactive=False,
+                               is_quiet=False, print_func=full_print)
+        full = " ".join(str(c.args[0]) for c in full_print.call_args_list)
+        self.assertLess(len(printed), len(full), "quiet output should be the short form")
+
     def test_returns_true_when_user_accepts_risk(self):
         """Should return True when user types 'I understand the risks'."""
         past_date = date.today() - timedelta(days=1)

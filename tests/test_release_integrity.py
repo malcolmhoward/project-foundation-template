@@ -215,3 +215,53 @@ class TestPluginSafety:
         # Each file must get its own module entry; a shared name means the second replaced the first.
         added = {k for k in sys.modules if k.startswith("foundation_plugin_team")} - before
         assert len(added) == 2, f"plugin modules collided: {sorted(added)}"
+
+
+# ---------------------------------------------------------------- command-line-only safeguards (#93, #113)
+
+class TestCommandLineOnlySafeguards:
+    def test_config_file_cannot_accept_the_agreement(self, tmp_path, home):
+        """A .foundationrc that sets accept_terms must not skip the ethical agreement (#93)."""
+        out = tmp_path / "out"
+        config = tmp_path / "foundationrc.json"
+        config.write_text(json.dumps({"project_name": "Demo", "author_name": "Example Author",
+                                      "non_interactive": True, "accept_terms": True}), encoding="utf-8")
+        r = run("generate_foundation.py", "--config", str(config), "--output-dir", str(out), "--quiet", home=home)
+        assert r.returncode == 1
+        assert "--accept-terms" in r.stdout + r.stderr
+        assert not out.exists() or not any(out.iterdir()), "files were generated without accepting the agreement"
+
+    def test_non_interactive_run_does_not_overwrite_without_force(self, tmp_path, home):
+        """Existing files survive a non-interactive rerun unless --force-overwrite is given (#113)."""
+        out = tmp_path / "out"
+        assert generate(out, home, "--quiet").returncode == 0
+        readme = out / "README.md"
+        readme.write_text(readme.read_text(encoding="utf-8") + "\nLOCAL-EDIT\n", encoding="utf-8")
+
+        r = generate(out, home, "--quiet")
+        assert r.returncode == 1
+        assert "--force-overwrite" in r.stdout
+        assert "LOCAL-EDIT" in readme.read_text(encoding="utf-8")
+
+        r = generate(out, home, "--quiet", "--force-overwrite")
+        assert r.returncode == 0, r.stderr
+        assert "LOCAL-EDIT" not in readme.read_text(encoding="utf-8")
+
+    def test_existing_generation_log_alone_does_not_block(self, tmp_path, home):
+        """Logs are appended to, so an existing log must not stop a non-interactive run."""
+        out = tmp_path / "out"
+        out.mkdir()
+        (out / "GENERATION_LOG.md").write_text("# Generation Log" + chr(10), encoding="utf-8")
+        r = generate(out, home, "--quiet", "--include-generation-log")
+        assert r.returncode == 0, r.stdout + r.stderr
+
+    def test_overwrite_check_covers_every_generated_file(self, tmp_path, home):
+        """Every file a full run writes, except the appended logs, is checked before overwriting."""
+        from core.generator import EXISTING_FILE_CHECKS, EXISTING_DIR_CHECKS
+        out = tmp_path / "out"
+        assert generate(out, home, "--quiet", "--preset", "enterprise", "--all").returncode == 0
+        for path in sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()):
+            if path.startswith("GENERATION_LOG"):
+                continue
+            covered = path in EXISTING_FILE_CHECKS or any(path.startswith(d + "/") for d in EXISTING_DIR_CHECKS)
+            assert covered, f"{path} is written but not checked before overwriting"

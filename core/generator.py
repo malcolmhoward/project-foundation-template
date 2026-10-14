@@ -62,6 +62,20 @@ from core.templates import (
 )
 
 
+# Files and directories PFT generates, checked before a run overwrites them.
+# GENERATION_LOG.md/.json are not listed: an existing log is appended to, not
+# replaced (see core/generation_log.prompt_overwrite_action).
+EXISTING_FILE_CHECKS = [
+    "README.md", "CONTRIBUTING.md", "LICENSE", "CODE_OF_CONDUCT.md",
+    "SECURITY.md", "CHANGELOG.md", ".gitignore", "FOUNDATION_NOTICE.md",
+    "SCAFFOLD_MANIFEST.md", "GLOSSARY.md", "MAINTAINERS.md",
+    ".pre-commit-config.yaml", ".github/PULL_REQUEST_TEMPLATE.md",
+]
+EXISTING_DIR_CHECKS = [
+    ".github/ISSUE_TEMPLATE", ".github/workflows", "docs/adr", "scripts", ".hooks",
+]
+
+
 class EthicalFoundationGenerator:
     """Main generator class with ethical safeguards and education."""
 
@@ -151,26 +165,14 @@ class EthicalFoundationGenerator:
         if not output_dir.exists():
             return True  # No existing directory, safe to proceed
 
-        # Files that PFT typically generates
-        pft_files = [
-            "README.md", "CONTRIBUTING.md", "LICENSE", "CODE_OF_CONDUCT.md",
-            "SECURITY.md", "CHANGELOG.md", ".gitignore", "FOUNDATION_NOTICE.md",
-            "SCAFFOLD_MANIFEST.md", "GLOSSARY.md", "MAINTAINERS.md",
-            ".pre-commit-config.yaml", "GENERATION_LOG.md", "GENERATION_LOG.json"
-        ]
-
-        pft_dirs = [
-            ".github/ISSUE_TEMPLATE", ".github/workflows", "docs/adr", "scripts"
-        ]
-
         # Check for existing files
         existing_files = []
-        for fname in pft_files:
+        for fname in EXISTING_FILE_CHECKS:
             fpath = output_dir / fname
             if fpath.exists():
                 existing_files.append(fname)
 
-        for dname in pft_dirs:
+        for dname in EXISTING_DIR_CHECKS:
             dpath = output_dir / dname
             if dpath.exists():
                 existing_files.append(f"{dname}/")
@@ -184,11 +186,17 @@ class EthicalFoundationGenerator:
                 print(f"⚠️  Overwriting {len(existing_files)} existing file(s) (--force-overwrite)")
             return True
 
-        # In non-interactive mode without force flag, warn but proceed
+        # In non-interactive mode without force flag, refuse: nobody is there to
+        # confirm, and overwriting would silently discard customizations.
         if not self.is_interactive:
-            print(f"⚠️  Warning: {len(existing_files)} existing file(s) will be overwritten.")
-            print("   Use --force-overwrite to suppress this warning.")
-            return True
+            print(f"❌ {len(existing_files)} existing file(s) would be overwritten, "
+                  "and non-interactive runs do not overwrite without confirmation:")
+            for f in existing_files[:10]:
+                print(f"  - {f}")
+            if len(existing_files) > 10:
+                print(f"  ... and {len(existing_files) - 10} more")
+            print("   Re-run with --force-overwrite to replace them, or choose another --output-dir.")
+            return False
 
         # Interactive mode: prompt user
         print(f"""
