@@ -22,17 +22,31 @@ OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 # Default config file names (searched in order)
 CONFIG_FILES = [".foundationrc", ".foundationrc.json", "foundationrc.json"]
 
-# v2.4.0: Secrets patterns for detection
-SECRETS_PATTERNS = [
-    r"(api[_-]?key|apikey)['\"]?\s*[:=]\s*['\"]?[A-Za-z0-9+/]{20,}",
-    r"(secret|token|password|passwd|pwd)['\"]?\s*[:=]\s*['\"]?[A-Za-z0-9+/]{8,}",
-    r"(aws[_-]?access[_-]?key[_-]?id|aws[_-]?secret[_-]?access[_-]?key)",
-    r"-----BEGIN (RSA |EC |OPENSSH |DSA |SSH2 |)PRIVATE KEY-----",
-    r"(ghp|gho|ghs|ghu)_[A-Za-z0-9_]{36,}",  # GitHub tokens
-    r"sk-[A-Za-z0-9]{48}",  # OpenAI keys
-    r"(mongodb(\+srv)?|postgres(ql)?|mysql|redis)://[^\\s]+",  # Database URLs
-    r"eyJ[A-Za-z0-9+/]*\\.eyJ[A-Za-z0-9+/]*\\.[A-Za-z0-9+/_-]*"  # JWT tokens
+# Secrets the generated pre-commit hook detects, as (what it catches, pattern) pairs.
+# The generated SECURITY.md lists the descriptions, so its claims cannot drift from the
+# hook. Each pattern must work both as a Python regex and in `grep -iE`: no \s, \d or \b,
+# no backslash escapes inside brackets, and no newlines. Matching is case-insensitive, so
+# patterns that rely on a fixed prefix (AKIA, sk-) also require a boundary before it.
+# The quoted-assignment rule skips values that start with $ or <, such as ${DB_PASSWORD}.
+SECRET_DETECTORS = [
+    ("Private keys (PEM)", r"-----BEGIN ([A-Z0-9]+ )*PRIVATE KEY-----"),
+    ("AWS access key IDs", r"(^|[^A-Za-z0-9])(AKIA|ASIA)[0-9A-Z]{16}([^A-Za-z0-9]|$)"),
+    ("AWS secret access keys assigned in code or config",
+     r'''aws_?secret_?access_?key["']?[ ]*[:=][ ]*["']?[A-Za-z0-9/+]{40}'''),
+    ("Azure storage account keys in connection strings", r"AccountKey=[A-Za-z0-9+/]{40,}"),
+    ("Google API keys", r"AIza[0-9A-Za-z_-]{35}"),
+    ("Google Cloud service account key files", r'"type":[ ]*"service_account"'),
+    ("GitHub tokens", r"(ghp|gho|ghs|ghu|ghr)_[A-Za-z0-9]{36}|github_pat_[A-Za-z0-9_]{22,}"),
+    ("OpenAI-style API keys (sk-...)", r"(^|[^A-Za-z0-9_-])sk-[A-Za-z0-9_-]{20,}"),
+    ("JSON Web Tokens (JWTs)", r"eyJ[A-Za-z0-9_-]+\.eyJ[A-Za-z0-9_-]+\.[A-Za-z0-9_-]+"),
+    ("Database connection strings that include a password",
+     r"(mongodb(\+srv)?|postgres(ql)?|mysql|redis|amqp)://[^:/@ ]+:[^@ ]+@"),
+    ("Quoted API keys, secrets, tokens and passwords assigned in code or config",
+     r'''(api_?key|secret|token|passw(or)?d)["']?[ ]*[:=][ ]*["'][^"' $<][^"' ]{7,}["']'''),
 ]
+
+# The patterns alone, kept for the public API.
+SECRETS_PATTERNS = [pattern for _, pattern in SECRET_DETECTORS]
 
 
 def configure_windows_utf8():

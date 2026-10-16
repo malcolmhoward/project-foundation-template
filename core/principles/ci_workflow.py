@@ -29,4 +29,8 @@ directly with pull requests.
 
 A basic CI workflow runs tests, linting, and builds on every PR, giving
 reviewers confidence that the code works.
+
+The generated workflow fails until you replace its "Run checks" step with
+your project's commands: a green run that checked nothing would give that
+confidence falsely.
 """

@@ -79,17 +79,22 @@ PFT generates governance templates for other projects. Security considerations:
 
 ## Secrets Management
 
-If using the `--preset strict` option, PFT generates pre-commit hooks for secrets detection.
+With `--include-secrets-detection` (included in the strict and enterprise presets and in `--all`), PFT generates a pre-commit hook, `.hooks/detect-secrets.sh`, for secrets detection.
 
-### Protected Patterns
+### What the Generated Hook Detects
 
-The following types of secrets are automatically detected:
-- API keys and access tokens
-- Database credentials and connection strings
-- Private keys and certificates
-- OAuth secrets and JWT tokens
-- Cloud service credentials (AWS, Azure, GCP)
-- GitHub tokens and other VCS credentials
+The hook matches these patterns in staged files (defined in `SECRET_DETECTORS` in `core/utils.py`):
+- Private keys (PEM)
+- AWS access key IDs, and AWS secret access keys assigned in code or config
+- Azure storage account keys in connection strings
+- Google API keys and Google Cloud service account key files
+- GitHub tokens
+- OpenAI-style API keys (`sk-...`)
+- JSON Web Tokens (JWTs)
+- Database connection strings that include a password
+- Quoted API keys, secrets, tokens and passwords assigned in code or config
+
+Pattern matching catches common formats only. It does not find every secret, and it can flag harmless lines. It checks staged files only, and it skips lines containing the word REPLACE (template placeholders). A dedicated scanner gives stronger protection.
 
 ### If You Accidentally Commit a Secret
 
