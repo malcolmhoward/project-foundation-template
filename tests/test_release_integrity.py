@@ -370,7 +370,9 @@ class TestGeneratedSecretsHook:
         sample.write_text(SECRET_SAMPLES["GitHub tokens"] + "\n", encoding="utf-8")
         _git(hook_repo, "add", "settings.txt")
         sample.write_text("cleaned\n", encoding="utf-8")
-        assert _run_hook(hook_repo).returncode == 1
+        r = _run_hook(hook_repo)
+        assert r.returncode == 1
+        assert "settings.txt" in r.stdout
 
     @needs_bash
     def test_hook_scans_renamed_files(self, hook_repo):
