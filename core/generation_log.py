@@ -24,6 +24,21 @@ from typing import List, Dict, Any, Optional, Tuple
 from core.utils import SCRIPT_VERSION
 
 
+def backup_log(log_path: Path) -> Path:
+    """Move an existing log aside before it is replaced, and return the backup's path.
+
+    The backup is `<name>.bak`, or `<name>.bak.1`, `.bak.2`, ... if earlier backups
+    exist, so a backup never replaces another one.
+    """
+    backup = log_path.with_name(log_path.name + ".bak")
+    n = 1
+    while backup.exists():
+        backup = log_path.with_name(f"{log_path.name}.bak.{n}")
+        n += 1
+    log_path.replace(backup)
+    return backup
+
+
 def detect_existing_logs(output_dir: Path, log_format: str = "md") -> Dict[str, Path]:
     """
     Detect existing generation log files in the output directory.
@@ -373,19 +388,23 @@ def write_generation_log(
         # No explicit --log-to: check for existing logs in output directory
         existing_logs = detect_existing_logs(output_dir, log_format)
 
-        if existing_logs and not force_overwrite:
-            action = prompt_overwrite_action(existing_logs, interactive)
+        action = "overwrite" if force_overwrite else prompt_overwrite_action(existing_logs, interactive)
 
-            if action == "cancel":
-                print("Generation log creation cancelled.")
-                return ([], False)
-            elif action == "append":
-                # Load existing content for appending
-                if "md" in existing_logs:
-                    existing_md = load_existing_log(existing_logs["md"], "md")
-                if "json" in existing_logs:
-                    existing_json = load_existing_log(existing_logs["json"], "json")
-            # else: action == "overwrite" or "create" - proceed without loading existing
+        if action == "cancel":
+            print("Generation log creation cancelled.")
+            return ([], False)
+        elif action == "append":
+            # Load existing content for appending
+            if "md" in existing_logs:
+                existing_md = load_existing_log(existing_logs["md"], "md")
+            if "json" in existing_logs:
+                existing_json = load_existing_log(existing_logs["json"], "json")
+        else:
+            # Replacing a log discards its history and any notes added to it,
+            # so keep the old one beside the new one.
+            for log_path in existing_logs.values():
+                backup = backup_log(log_path)
+                print(f"Kept the previous {log_path.name} as {backup.name}.")
 
     # Generate markdown log
     if log_format in ("md", "both"):
@@ -410,8 +429,7 @@ def write_generation_log(
             json_content = generate_log_json(project_name, files, existing_json)
         except json.JSONDecodeError:
             # Never discard an existing log silently: keep it beside the new one.
-            backup = json_path.with_name(json_path.name + ".bak")
-            json_path.replace(backup)
+            backup = backup_log(json_path)
             print(f"Warning: {json_path} was not valid JSON; kept it as {backup.name} and started a new log.")
             json_content = generate_log_json(project_name, files, None)
 

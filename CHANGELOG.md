@@ -53,8 +53,11 @@ in 3.7.0. Changes are grouped by the version that introduced them.
   (for example `.github/workflows/ci.yml`).
 - The advisory expiration date is now 2027-04-01.
 - Non-interactive runs no longer overwrite existing files: they stop with an error unless
-  `--force-overwrite` is given. Interactive runs still ask first. An existing generation log is
-  still appended to, not replaced, unless `--force-overwrite` is given.
+  `--force-overwrite` is given. Interactive runs still ask first. Only files the run would
+  write are checked, so a repository's own files that the run does not generate (for example
+  its CHANGELOG.md, when the changelog is not requested) do not stop it. An existing generation
+  log is still appended to, not replaced, unless `--force-overwrite` is given; the replaced log
+  is then kept as a backup.
 - The generated CI workflow (`ci.yml`) is language-neutral and fails, with a message saying why,
   until its "Run checks" step is replaced with the project's own commands. It no longer runs
   Node.js commands by default or uses `continue-on-error`, which kept runs green when lint,
@@ -86,6 +89,15 @@ in 3.7.0. Changes are grouped by the version that introduced them.
   names contain spaces, skipped renamed files, and scanned the working copy instead of the
   staged version. With nothing staged it now says so instead of reporting no secrets.
 - `--all` wrote SECURITY.md twice, the basic policy and then the enhanced one.
+- Replacing a generation log (with `--force-overwrite`, the interactive "overwrite" choice, or
+  because a JSON log could not be read) discarded the old log, or wrote over an earlier backup.
+  The old log is now kept as `GENERATION_LOG.md.bak` (or `.json.bak`), then `.bak.1`, `.bak.2`.
+- The scaffold manifest suggested `--preset None` for runs without a preset, which the command
+  rejects; it now suggests the options the run used. Its guides section says why it is empty
+  (guides are not generated into projects yet) instead of "None specified".
+- Translation templates written as YAML now load back unchanged: strings are quoted and
+  escaped, and keys such as `yes` and `no` are no longer read as booleans. `generated_by` names
+  the current version instead of v3.6.0.
 
 ### Removed
 - The stale `foundation/` package, left behind by the rename to `core/`.

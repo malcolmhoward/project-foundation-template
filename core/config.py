@@ -472,6 +472,21 @@ Config file format (.foundationrc):
     return parser.parse_args()
 
 
+# Preset feature names and the arguments they set. Other --include-* flags (glossary,
+# maintainers, manifest, generation log) are not set by presets and combine with them.
+PRESET_FEATURE_ARGS = {
+    "code_of_conduct": "include_coc",
+    "security": "include_security",
+    "changelog": "include_changelog",
+    "issue_templates": "include_github_templates",
+    "pr_template": "include_github_templates",  # Combined with issue templates
+    "enhanced_security": "include_enhanced_security",
+    "secrets_detection": "include_secrets_detection",
+    "adr": "include_adr",
+    "ci_workflow": "include_ci",
+}
+
+
 def apply_preset_to_args(args, preset_config: Dict[str, Any]):
     """
     Apply preset configuration to arguments.
@@ -490,20 +505,7 @@ def apply_preset_to_args(args, preset_config: Dict[str, Any]):
 
     features = preset_config["features"]
 
-    # Map preset feature names to argument names
-    feature_to_arg = {
-        "code_of_conduct": "include_coc",
-        "security": "include_security",
-        "changelog": "include_changelog",
-        "issue_templates": "include_github_templates",
-        "pr_template": "include_github_templates",  # Combined with issue templates
-        "enhanced_security": "include_enhanced_security",
-        "secrets_detection": "include_secrets_detection",
-        "adr": "include_adr",
-        "ci_workflow": "include_ci",
-    }
-
-    for feature_name, arg_name in feature_to_arg.items():
+    for feature_name, arg_name in PRESET_FEATURE_ARGS.items():
         if feature_name in features:
             setattr(args, arg_name, features[feature_name])
 
