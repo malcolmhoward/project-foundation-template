@@ -300,7 +300,7 @@ Config file format (.foundationrc):
         "--all",
         dest="include_all",
         action="store_true",
-        help="Include all optional templates (CoC, Security, GitHub, Changelog, Enhanced Security, Secrets Detection, ADR, CI)"
+        help="Include all optional templates (CoC, Security, GitHub, Changelog, Enhanced Security, Secrets Detection, ADR, CI, Glossary, Maintainers, Scaffold Manifest)"
     )
 
     # v2.4.0: Security features

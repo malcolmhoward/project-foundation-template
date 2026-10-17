@@ -1,5 +1,5 @@
 # core/guides/test_strategies.py
-# Test Strategies Guide (v3.0.0)
+# Test Strategies Guide (v2.10.0)
 
 """
 Test Strategies Guide.
@@ -7,7 +7,7 @@ Test Strategies Guide.
 Provides practical guidance on implementing effective testing strategies
 including unit tests, integration tests, and end-to-end tests.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "test-strategies"
@@ -19,7 +19,7 @@ GUIDE = {
     "complexity": "intermediate",
 }
 
-RELATED_PRINCIPLES = ["code-review", "ci-workflow", "quality-assurance"]
+RELATED_PRINCIPLES = ["code-standards", "ci-workflow", "quality-assurance"]
 
 RELATED_GUIDES = ["user-stories"]
 

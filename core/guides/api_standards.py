@@ -1,5 +1,5 @@
 # core/guides/api_standards.py
-# API Standards Guide (v3.0.0)
+# API Standards Guide (v2.10.0)
 
 """
 API Standards Guide.
@@ -7,7 +7,7 @@ API Standards Guide.
 Provides practical guidance on designing, implementing, and documenting
 RESTful APIs following industry best practices.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "api-standards"
@@ -19,7 +19,7 @@ GUIDE = {
     "complexity": "advanced",
 }
 
-RELATED_PRINCIPLES = ["code-review", "versioning"]
+RELATED_PRINCIPLES = ["code-standards", "versioning"]
 
 CONTENT = """
 # API Standards Guide

@@ -19,7 +19,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Codes of Conduct increase diversity by 40%.
+📚 LEARNING: A Code of Conduct tells newcomers what behaviour to expect and how problems are handled.
 
 Research shows that projects with CoCs have more diverse contributors
 and fewer toxic interactions. They're not about policing, but about

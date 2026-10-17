@@ -1,5 +1,5 @@
 # core/guides/onboarding.py
-# Developer Onboarding Guide (v3.0.0)
+# Developer Onboarding Guide (v2.10.0)
 
 """
 Developer Onboarding Guide.
@@ -7,7 +7,7 @@ Developer Onboarding Guide.
 Provides a comprehensive guide for new team members to get started
 with the project, tools, and development workflow.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "onboarding"

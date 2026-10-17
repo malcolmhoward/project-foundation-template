@@ -13,7 +13,7 @@ Accepted
 Software projects need a consistent way to communicate changes to users. The Project Foundation Template faced several versioning challenges:
 
 ### Challenge 1: Version Continuity
-The "lite" edition evolved from v2.0.1 enterprise. Should it:
+The "lite" edition evolved from the v2.1.0 enterprise edition, and reused its version number, as 2.1.0-lite. Should it:
 - Reset to v1.0.0 (fresh start)?
 - Continue as v2.1.0 (evolution)?
 
@@ -52,7 +52,7 @@ The roadmap contains **what** and **why**, never **when**:
 The lite edition continues the v2.x line:
 
 ```
-v2.0.1 (enterprise) → v2.1.0 (lite) → v2.6.0 (modular) → v3.0.0 (plugins)
+v2.1.0 (enterprise) → v2.1.0 (lite) → v2.6.0 (modular) → v3.0.0 (plugins)
 ```
 
 **Rationale**:

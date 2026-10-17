@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: 70% of users check changelogs before upgrading.
+📚 LEARNING: Users check changelogs to decide whether an upgrade is safe.
 
 A changelog is your project's narrative - it tells users what to
 expect from each version. Keep a Changelog format (keepachangelog.com)

@@ -20,7 +20,7 @@ PRINCIPLE = {
 EDUCATION = """
 📚 LEARNING: Contribution guidelines are your quality gateway.
 
-Clear contribution guidelines reduce review time by 50% and increase
+Clear contribution guidelines save review time and improve
 contribution quality. They set expectations and prevent frustration.
 
 Without them, you'll spend more time rejecting or fixing contributions

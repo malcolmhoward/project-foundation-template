@@ -15,6 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 Versions 2.4.0 through 3.6.0 were developed as a chain of pull requests and ship together
 in 3.7.0. Changes are grouped by the version that introduced them.
 
+The implementation guides, and the principles that do not have their own generated files, are
+reference content in 3.7.0: they are available through `--list-principles`, `--list-guides` and
+the Python API, but the generator does not write them into projects, and a preset's principle
+list does not change which files are generated (the strict and enterprise presets generate the
+same files). Connecting them to generated output is planned for 3.8.0
+([#116](https://github.com/malcolmhoward/project-foundation-template/issues/116)).
+
 ### Added
 - **2.4.0**: Comprehensive SECURITY.md generation (`--include-enhanced-security`) and a
   pre-commit secrets-detection setup (`--include-secrets-detection`); principles
@@ -26,11 +33,12 @@ in 3.7.0. Changes are grouped by the version that introduced them.
   `strict` (12) and `enterprise` (all 30).
 - **2.8.0 / 2.9.0**: One module per principle (`core/principles/`) and implementation guides
   (`core/guides/`, 6 at first).
+- **2.10.0**: 11 principles (quality, compliance, infrastructure, inclusivity, lifecycle) and
+  9 guides.
 - **2.11.0**: Plugin API (`core/plugins/`) for custom principles and guides.
 - **3.0.0**: New entry point `generate_foundation.py` with `--preset`, `--list-presets`,
-  `--list-principles` and `--list-guides`; 11 principles (quality, compliance, infrastructure,
-  inclusivity, lifecycle) and 9 guides.
-- **3.1.0**: Accessibility and usability features; principles `glossary` and `maintainers`;
+  `--list-principles` and `--list-guides`.
+- **3.1.0**: Onboarding files (GLOSSARY.md, MAINTAINERS.md); principles `glossary` and `maintainers`;
   scaffold manifest.
 - **3.2.0**: 4 developer documentation guides.
 - **3.3.0**: Principles `roadmap`, `branch-naming` and `conventional-commits`.
@@ -66,6 +74,12 @@ in 3.7.0. Changes are grouped by the version that introduced them.
   generated, the generator says so in its last line of output, `--quiet` included.
 - `SECRETS_PATTERNS` (in `core/utils.py` and the `core` package) now holds the patterns of the
   new `SECRET_DETECTORS` table, which the generated secrets hook uses; its contents changed.
+- `core/templates/accessibility.py` is now `core/templates/onboarding.py`: it holds the
+  glossary, maintainers and scaffold-manifest templates, which support onboarding, while
+  "accessibility" in PFT means access for people with disabilities. Import its functions from
+  `core.templates`, which is unchanged.
+- The principles and guides first added in 2.10.0 are recorded as 2.10.0 instead of 3.0.0, in
+  `PRINCIPLE_VERSIONS`, `GUIDE_VERSIONS` and the modules' headers.
 
 ### Deprecated
 - `setup_foundation_lite.py`; call `generate_foundation.py` instead.
@@ -98,6 +112,19 @@ in 3.7.0. Changes are grouped by the version that introduced them.
 - Translation templates written as YAML now load back unchanged: strings are quoted and
   escaped, and keys such as `yes` and `no` are no longer read as booleans. `generated_by` names
   the current version instead of v3.6.0.
+- The education text cited statistics without sources (for example "Codes of Conduct increase
+  diversity by 40%"); they are replaced with statements that need no figures.
+- The glossary guide, written for generated projects, included PFT's own terms; they are
+  removed, and the general terms "Governance" and "Governance Theater" moved into the list.
+- Six guides listed related principles that do not exist (`code-review`, `release-process`).
+- Documentation corrected to match the code: the README restores the list of ways governance
+  templates can be misused and notes which sections describe generated output; CONTRIBUTING's
+  steps for adding principles and guides match the module structure; ADR 0004, ADR 0005,
+  ROADMAP.md and MIGRATION.md give the measured counts; MIGRATION.md says the v2.6.0 refactor
+  changed the content of six generated files; the enterprise edition is labelled v2.1.0, not
+  v2.0.1, and its specification is dated September 2025; ADR 0006 names the `override` conflict
+  mode; ADRs 0008 and 0009 are marked accepted; `--all`'s help lists every file it adds;
+  Conventional Commits' breaking-change marker is described correctly.
 
 ### Removed
 - The stale `foundation/` package, left behind by the rename to `core/`.

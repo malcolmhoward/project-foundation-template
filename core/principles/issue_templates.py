@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Structured issue templates reduce resolution time by 30%.
+📚 LEARNING: Structured issue templates collect the details maintainers need up front.
 
 When users report bugs without environment info, or request features
 without context, maintainers waste time asking follow-up questions.

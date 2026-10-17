@@ -1,5 +1,5 @@
 # core/guides/faq.py
-# Frequently Asked Questions Guide (v3.0.0)
+# Frequently Asked Questions Guide (v2.10.0)
 
 """
 Frequently Asked Questions Guide.
@@ -7,7 +7,7 @@ Frequently Asked Questions Guide.
 Provides answers to common questions about project setup,
 development workflows, and best practices.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "faq"

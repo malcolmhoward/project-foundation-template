@@ -1,5 +1,5 @@
 # core/principles/dependency_scanning.py
-# Dependency Scanning principle (v3.0.0)
+# Dependency Scanning principle (v2.10.0)
 
 """
 Dependency Scanning Principle.
@@ -7,20 +7,20 @@ Dependency Scanning Principle.
 Dependency scanning identifies vulnerabilities in third-party packages,
 protecting projects from supply chain attacks and known CVEs.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "dependency-scanning"
 
 PRINCIPLE = {
     "name": "Dependency Scanning",
-    "why": "96% of codebases contain open source dependencies, and 84% have at least one known vulnerability",
+    "why": "Codebases often depend on open source packages, and those packages can have known vulnerabilities",
     "what": "Automated scanning of dependencies for known vulnerabilities with update workflows",
     "risk": "Without scanning, projects inherit vulnerabilities from their dependencies",
 }
 
 EDUCATION = """
-📚 LEARNING: Supply chain attacks increased 742% from 2019 to 2022.
+📚 LEARNING: Attackers can reach a project through its dependencies (supply chain attacks).
 
 Modern software is built on a foundation of open source dependencies. Each
 dependency is a potential entry point for attackers. Dependency scanning

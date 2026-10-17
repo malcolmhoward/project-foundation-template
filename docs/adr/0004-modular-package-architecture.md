@@ -10,7 +10,7 @@ Accepted
 
 ## Context
 
-After completing versions 2.1.0 through 2.5.0, the `setup_foundation_lite.py` script had grown to 2,177 lines as a single monolithic file. This made the codebase:
+After completing versions 2.1.0 through 2.5.0, the `setup_foundation_lite.py` script had grown to 2,438 lines as a single monolithic file. This made the codebase:
 
 - **Difficult to test**: Unit testing required running the entire script
 - **Hard to maintain**: Changes risked unintended side effects
@@ -21,7 +21,7 @@ After completing versions 2.1.0 through 2.5.0, the `setup_foundation_lite.py` sc
 
 ```
 project-foundation-template/
-├── setup_foundation_lite.py    # 2,177 lines - everything in one file
+├── setup_foundation_lite.py    # 2,438 lines - everything in one file
 └── tests/
     └── test_smoke.py           # 19 integration tests only
 ```
@@ -80,13 +80,12 @@ project-foundation-template/
 
 | Metric | Before (v2.5.0) | After (v2.6.0) | Change |
 |--------|-----------------|----------------|--------|
-| Main script | 2,177 lines | 594 lines | -73% |
+| Main script | 2,438 lines | 128 lines | -95% |
 | Total modules | 1 | 9 | +800% |
-| Test files | 1 | 5 | +400% |
-| Unit tests | 19 | 83 | +337% |
-| Test coverage* | ~30% (smoke only) | ~75% (estimated) | +150% |
+| Test files | 1 | 7 | +600% |
+| Tests | 19 | 148 | +679% |
 
-*Coverage estimate based on module boundary testing
+Figures are measured at the end of v2.5.0 and v2.6.0. Test coverage was not measured.
 
 ## Consequences
 
@@ -121,7 +120,7 @@ project-foundation-template/
 | Education module | ✅ Complete | `core/education.py` |
 | Template separation | ✅ Complete | `core/templates/` subpackage |
 | Unit test suite | ✅ Complete | 148 tests across 7 files |
-| 13+ principles | ✅ Complete | LITE_PRINCIPLES has 13 principles |
+| 12 principles | ✅ Complete | LITE_PRINCIPLES has 12 principles |
 | Generator class | ✅ Complete | `core/generator.py` - EthicalFoundationGenerator |
 | Ethics module | ✅ Complete | `core/ethics.py` - standalone ethics functions |
 | Package rename | ✅ Complete | `foundation/` → `core/` |

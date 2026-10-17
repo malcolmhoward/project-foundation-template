@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Projects with PR templates have 50% fewer back-and-forth reviews.
+📚 LEARNING: PR templates reduce back-and-forth in review.
 
 A PR checklist reminds contributors to run tests, update docs, and
 describe their changes. It sets quality expectations before review.

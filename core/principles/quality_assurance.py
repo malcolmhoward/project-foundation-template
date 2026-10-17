@@ -1,5 +1,5 @@
 # core/principles/quality_assurance.py
-# Quality Assurance principle (v3.0.0)
+# Quality Assurance principle (v2.10.0)
 
 """
 Quality Assurance Principle.
@@ -7,20 +7,20 @@ Quality Assurance Principle.
 Quality assurance ensures software meets defined standards before release,
 catching defects early and building confidence in the product.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "quality-assurance"
 
 PRINCIPLE = {
     "name": "Quality Assurance",
-    "why": "Defects found late in development cost 10-100x more to fix than those caught early",
+    "why": "Defects found late in development usually cost more to fix than those caught early",
     "what": "Systematic testing, code reviews, and quality gates throughout the development lifecycle",
     "risk": "Without QA processes, bugs reach production, eroding user trust and increasing maintenance costs",
 }
 
 EDUCATION = """
-📚 LEARNING: Projects with formal QA processes have 40% fewer production defects.
+📚 LEARNING: A defined QA process catches defects before they reach users.
 
 Quality Assurance is more than just testing - it's a mindset that permeates the
 entire development process. It includes:

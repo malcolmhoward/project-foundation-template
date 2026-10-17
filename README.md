@@ -34,7 +34,13 @@ Every template teaches before it generates:
 
 #### Principle Zero: "Do No Harm, Allow No Harm"
 
-This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. Governance templates carry responsibility, so PFT:
+This project is built on an ethical foundation. We don't just generate files — we help you understand governance so you can implement it meaningfully. Governance templates can be misused:
+
+- To create false impressions of security
+- To exploit trust through professional-looking facades
+- To claim compliance without implementation
+
+Governance templates carry responsibility, so PFT:
 
 - **Teaches before it generates**: every template explains WHAT it is, WHY it matters, and the RISK of not having it
 - **Requires acknowledgment**: you confirm that templates are starting points, not finished products
@@ -66,6 +72,8 @@ Templates are starting points, not finished products. Every generated file requi
 ---
 
 ## Quick Start
+
+> **Note**: The Quick Start, Governance Presets and principles sections describe what the generator writes into **your project**. For this repository's own documentation (ETHICS.md, ROADMAP.md, etc.), see [Documentation](#documentation).
 
 ### For New Users (Interactive Learning Mode)
 
@@ -148,8 +156,10 @@ standard (9)    → Issue Templates + PR Template + CI Workflow
     ↓ adds
 strict (12)     → Enhanced Security + Secrets Detection + ADR
     ↓ adds
-enterprise (30) → Quality + Compliance + Infrastructure + Inclusivity + Lifecycle + Workflow + Tooling
+enterprise (30) → Lists all 30 principles; generates the same files as strict
 ```
+
+> **Note (v3.7.0)**: A preset's count is the number of principles it lists. Presets choose which files are generated, and only some principles have files of their own: strict and enterprise generate the same files, and `glossary` and `maintainers` need `--include-glossary` and `--include-maintainers`. The other principles and the 25 implementation guides are reference content, available through `--list-principles`, `--list-guides` and the Python API but not yet written into generated projects. Connecting them is planned for v3.8.0 ([#116](https://github.com/malcolmhoward/project-foundation-template/issues/116)).
 
 ---
 
@@ -372,7 +382,7 @@ python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProje
 | v3.4.0 | Advanced features - 30 principles, 25 guides |
 | v3.3.0 | Extended governance principles (28 total) |
 | v3.2.0 | Developer documentation guides |
-| v3.1.0 | Accessibility & usability features (25 principles) |
+| v3.1.0 | Onboarding files: glossary, maintainers, scaffold manifest (25 principles) |
 | v3.0.0 | New entrypoint, 23 principles, 15 guides, plugin system |
 | v2.x | Modular architecture, presets, educational content |
 | v1.x | Initial implementation |

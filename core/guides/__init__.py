@@ -25,7 +25,7 @@ from .changelog import GUIDE as CHANGELOG_GUIDE, CONTENT as CHANGELOG_CONTENT
 from .security_disclosure import GUIDE as SECURITY_DISCLOSURE_GUIDE, CONTENT as SECURITY_DISCLOSURE_CONTENT
 from .adr import GUIDE as ADR_GUIDE, CONTENT as ADR_CONTENT
 
-# New guides (v3.0.0)
+# New guides (v2.10.0)
 from .test_strategies import GUIDE as TEST_STRATEGIES_GUIDE, CONTENT as TEST_STRATEGIES_CONTENT
 from .dependency_guide import GUIDE as DEPENDENCY_GUIDE, CONTENT as DEPENDENCY_CONTENT
 from .compliance_guide import GUIDE as COMPLIANCE_GUIDE, CONTENT as COMPLIANCE_CONTENT
@@ -59,7 +59,7 @@ ALL_GUIDES = {
     "changelog": CHANGELOG_GUIDE,
     "security-disclosure": SECURITY_DISCLOSURE_GUIDE,
     "adr": ADR_GUIDE,
-    # New guides (v3.0.0)
+    # New guides (v2.10.0)
     "test-strategies": TEST_STRATEGIES_GUIDE,
     "dependency-guide": DEPENDENCY_GUIDE,
     "compliance-guide": COMPLIANCE_GUIDE,
@@ -92,7 +92,7 @@ ALL_GUIDE_CONTENT = {
     "changelog": CHANGELOG_CONTENT,
     "security-disclosure": SECURITY_DISCLOSURE_CONTENT,
     "adr": ADR_CONTENT,
-    # New guides (v3.0.0)
+    # New guides (v2.10.0)
     "test-strategies": TEST_STRATEGIES_CONTENT,
     "dependency-guide": DEPENDENCY_CONTENT,
     "compliance-guide": COMPLIANCE_CONTENT,
@@ -142,7 +142,7 @@ GUIDE_COMPLEXITY = {
     "changelog": "beginner",
     "security-disclosure": "advanced",
     "adr": "intermediate",
-    # New guides (v3.0.0)
+    # New guides (v2.10.0)
     "test-strategies": "intermediate",
     "dependency-guide": "intermediate",
     "compliance-guide": "advanced",
@@ -175,16 +175,16 @@ GUIDE_VERSIONS = {
     "changelog": "2.9.0",
     "security-disclosure": "2.9.0",
     "adr": "2.9.0",
-    # New guides (v3.0.0)
-    "test-strategies": "3.0.0",
-    "dependency-guide": "3.0.0",
-    "compliance-guide": "3.0.0",
-    "api-standards": "3.0.0",
-    "troubleshooting": "3.0.0",
-    "faq": "3.0.0",
-    "glossary": "3.0.0",
-    "coding-standards": "3.0.0",
-    "onboarding": "3.0.0",
+    # New guides (v2.10.0)
+    "test-strategies": "2.10.0",
+    "dependency-guide": "2.10.0",
+    "compliance-guide": "2.10.0",
+    "api-standards": "2.10.0",
+    "troubleshooting": "2.10.0",
+    "faq": "2.10.0",
+    "glossary": "2.10.0",
+    "coding-standards": "2.10.0",
+    "onboarding": "2.10.0",
     # v3.2.0 guides
     "developer-handbook": "3.2.0",
     "architecture-overview": "3.2.0",

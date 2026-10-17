@@ -91,7 +91,7 @@ Enterprise features will be reintroduced over versions 2.2.x through 3.0.0, each
 ### The Lite Edition Philosophy
 
 ```
-Enterprise (v2.0.1)          -->    Lite (v2.1.0)
+Enterprise (v2.1.0)          -->    Lite (v2.1.0)
 -------------------------------------------------
 6,500 lines                  -->    ~820 lines
 23 principles                -->    5 principles
@@ -100,6 +100,8 @@ Enterprise (v2.0.1)          -->    Lite (v2.1.0)
 Automation-focused           -->    Education-focused
 Speed optimized              -->    Understanding optimized
 ```
+
+Both editions carry the v2.1.0 label: the lite edition reused the enterprise edition's version number, as 2.1.0-lite.
 
 ## Consequences
 
@@ -183,20 +185,19 @@ Start with educational lite, add features over time with context.
 - Added Issue templates (bug, feature request)
 - Added PR template
 - Added CHANGELOG.md generation
-- Principles 6-10 added with education
+- Principles 6-8 (issue templates, PR template, changelog) added with education
 
 ### Phase 4: Security Features (v2.4.0) - COMPLETED
 
 - Added enhanced SECURITY.md option
 - Added secrets detection pre-commit hooks
-- Principles 11-15 added with education
+- Principles 9-10 (enhanced security, secrets detection) added with education
 
 ### Phase 5: Advanced Governance (v2.5.0) - COMPLETED
 
 - Added ADR system
 - Added CI workflow generation
-- Principles 16-20 added with education
-- Documentation guides system added
+- Principles 11-12 (ADR, CI workflow) added with education
 
 ### Phase 6: Modular Architecture (v2.6.0 - v2.9.0) - IN PROGRESS
 

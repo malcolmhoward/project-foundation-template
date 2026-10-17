@@ -1,5 +1,5 @@
 # core/principles/code_standards.py
-# Code Standards principle (v3.0.0)
+# Code Standards principle (v2.10.0)
 
 """
 Code Standards Principle.
@@ -7,7 +7,7 @@ Code Standards Principle.
 Consistent code standards reduce cognitive load and enable teams to
 focus on solving problems rather than deciphering formatting.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "code-standards"
@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Teams with enforced code standards spend 15% less time on code reviews.
+📚 LEARNING: Enforced code standards let reviewers focus on design instead of style.
 
 Code standards are about more than aesthetics - they're about communication.
 When code follows consistent patterns, developers can:

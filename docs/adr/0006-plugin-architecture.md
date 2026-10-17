@@ -108,14 +108,15 @@ All plugins are validated for:
 - Required attributes present
 - Correct types (PRINCIPLE_ID is string, PRINCIPLE is dict)
 - WHAT/WHY/HOW educational pattern compliance
-- No conflicts with built-in IDs (unless conflict_mode allows)
+
+Conflicts with built-in IDs are handled when plugins are merged with the built-ins, not by the validator (see Conflict Resolution).
 
 ### Conflict Resolution
 
 ```python
 discover_plugins(
     conflict_mode="skip"      # Ignore plugins with conflicting IDs (default)
-    # conflict_mode="replace" # Plugin overrides built-in
+    # conflict_mode="override" # Plugin overrides built-in
     # conflict_mode="error"   # Raise PluginConflictError
 )
 ```

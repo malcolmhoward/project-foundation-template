@@ -35,7 +35,9 @@ Types:
 - refactor: Code restructuring
 - test: Adding or fixing tests
 - chore: Maintenance tasks
-- BREAKING CHANGE: Major version bump
+
+Breaking changes are not a type: mark them with `!` before the colon
+(feat!: ...) or a `BREAKING CHANGE:` footer. Either triggers a major version bump.
 
 Benefits:
 - Automated changelog generation

@@ -1,5 +1,5 @@
 # core/principles/compliance_policy.py
-# Compliance Policy principle (v3.0.0)
+# Compliance Policy principle (v2.10.0)
 
 """
 Compliance Policy Principle.
@@ -7,7 +7,7 @@ Compliance Policy Principle.
 Compliance policies ensure software meets regulatory requirements,
 protecting both users and the organization from legal and financial risks.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "compliance-policy"
@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: GDPR fines have exceeded $4 billion since 2018, with individual fines reaching hundreds of millions.
+📚 LEARNING: Data protection regulators can, and do, impose large fines for non-compliance.
 
 Compliance isn't optional when handling user data or operating in regulated industries.
 Key regulations include:

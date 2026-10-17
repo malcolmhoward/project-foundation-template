@@ -1,8 +1,9 @@
-# core/templates/accessibility.py
-# Accessibility Templates (v3.1.0)
+# core/templates/onboarding.py
+# Onboarding Templates (v3.1.0)
 
 """
-Accessibility-focused templates for Project Foundation Template.
+Onboarding templates for Project Foundation Template: files that help newcomers
+understand a project and who looks after it.
 
 Includes:
     - GLOSSARY.md: Project terminology definitions

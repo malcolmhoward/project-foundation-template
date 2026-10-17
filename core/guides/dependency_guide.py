@@ -1,5 +1,5 @@
 # core/guides/dependency_guide.py
-# Dependency Management Guide (v3.0.0)
+# Dependency Management Guide (v2.10.0)
 
 """
 Dependency Management Guide.
@@ -7,7 +7,7 @@ Dependency Management Guide.
 Provides practical guidance on managing project dependencies
 including versioning, security, and update strategies.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "dependency-guide"

@@ -8,6 +8,7 @@ Modules:
     governance: CoC, SECURITY, CHANGELOG
     github: Issue templates, PR template, workflows
     advanced: ADR, CI, secrets detection, enhanced security
+    onboarding: GLOSSARY, MAINTAINERS, SCAFFOLD_MANIFEST
 """
 
 from core.templates.core import (
@@ -42,7 +43,7 @@ from core.templates.advanced import (
     generate_ethics_notice_content,
 )
 
-from core.templates.accessibility import (
+from core.templates.onboarding import (
     generate_glossary_content,
     generate_maintainers_content,
     generate_scaffold_manifest_content,
@@ -73,7 +74,7 @@ __all__ = [
     "generate_adr_template_content",
     "generate_first_adr_content",
     "generate_ethics_notice_content",
-    # Accessibility (v3.1.0)
+    # Onboarding (v3.1.0)
     "generate_glossary_content",
     "generate_maintainers_content",
     "generate_scaffold_manifest_content",

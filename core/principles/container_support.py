@@ -1,5 +1,5 @@
 # core/principles/container_support.py
-# Container Support principle (v3.0.0)
+# Container Support principle (v2.10.0)
 
 """
 Container Support Principle.
@@ -7,7 +7,7 @@ Container Support Principle.
 Container support enables consistent deployment across environments,
 improving development workflows and production reliability.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "container-support"
@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: 92% of organizations use containers in production, up from 23% in 2016.
+📚 LEARNING: Containers are now a common way to build, test and deploy software.
 
 Containers package applications with their dependencies, ensuring consistent
 behavior from development laptop to production cluster. Best practices include:

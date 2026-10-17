@@ -49,11 +49,11 @@ We implement a **modular preset system** with the following architecture:
 core/
 └── presets/
     ├── __init__.py      # Registry and helper functions
-    ├── minimal.py       # 5 principles
-    ├── light.py         # 8 principles
-    ├── standard.py      # 10 principles (default)
+    ├── minimal.py       # 3 principles
+    ├── light.py         # 6 principles
+    ├── standard.py      # 9 principles (default)
     ├── strict.py        # 12 principles
-    └── enterprise.py    # All principles
+    └── enterprise.py    # All 30 principles
 ```
 
 ### Preset Definition
@@ -91,11 +91,11 @@ STANDARD_PRESET = {
 
 | Preset | Principles | Target Audience |
 |--------|------------|-----------------|
-| minimal | 5 | Personal projects, learning |
-| light | 8 | Small libraries, utilities |
-| standard | 10 | Active open source (default) |
+| minimal | 3 | Personal projects, learning |
+| light | 6 | Small libraries, utilities |
+| standard | 9 | Active open source (default) |
 | strict | 12 | Enterprise, security-focused |
-| enterprise | 13+ | Regulated industries, large orgs |
+| enterprise | 30 | Regulated industries, large orgs |
 
 ### API
 

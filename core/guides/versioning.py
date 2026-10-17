@@ -19,7 +19,7 @@ GUIDE = {
     "complexity": "beginner",
 }
 
-RELATED_PRINCIPLES = ["changelog", "release-process"]
+RELATED_PRINCIPLES = ["changelog", "versioning"]
 
 CONTENT = """
 # Semantic Versioning Guide

@@ -1,5 +1,5 @@
 # core/guides/glossary.py
-# Glossary Guide (v3.0.0)
+# Glossary Guide (v2.10.0)
 
 """
 Glossary Guide.
@@ -7,7 +7,7 @@ Glossary Guide.
 Provides definitions of common terms, abbreviations, and concepts
 used throughout the project and software development.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "glossary"
@@ -149,6 +149,15 @@ features like issues, pull requests, and CI/CD.
 ### Gitflow
 A branching model that uses feature, develop, release, and hotfix branches
 to manage development workflow.
+
+### Governance
+The policies, processes, and documentation that guide how a project is developed,
+maintained, and contributed to. This includes contribution guidelines, security
+policies, codes of conduct, and architectural decision records.
+
+### Governance Theater
+The appearance of having proper governance without the substance: adopting
+templates without understanding, customizing, or following them.
 
 ## H
 
@@ -382,47 +391,6 @@ such as a password and a code from a mobile app.
 ### 12-Factor App
 A methodology for building software-as-a-service applications, covering
 areas like configuration, dependencies, and processes.
-
----
-
-## PFT-Specific Terms
-
-These terms are specific to Project Foundation Template (PFT):
-
-### Governance
-The policies, processes, and documentation that guide how a project is developed,
-maintained, and contributed to. This includes contribution guidelines, security
-policies, codes of conduct, and architectural decision records.
-
-### Governance Theater
-The appearance of having proper governance without the substance - adopting
-templates without understanding or customizing them. PFT is designed to prevent
-this through education-first principles.
-
-### Principle (Governance Principle)
-A governance concept in PFT that defines WHAT must be done, WHY it matters, and
-the RISK of not having it. Principles are the building blocks of governance.
-
-### Guide (Implementation Guide)
-Documentation in PFT explaining HOW to apply a principle. Guides provide
-practical, actionable instructions for implementing governance concepts.
-
-### Preset
-A predefined collection of governance principles bundled for common use cases.
-PFT includes presets: minimal, light, standard, strict, and enterprise.
-
-### Principle Zero
-PFT's foundational ethical principle: "Do No Harm, Allow No Harm." All decisions
-in PFT flow from this principle, inspired by GAIA from Horizon Zero Dawn®.
-
-> *Horizon Zero Dawn is a registered trademark of Sony Interactive Entertainment
-> ([Trademark Notice](https://sonyinteractive.com/en/copyright-and-trademark-notice/)).
-> This project is not affiliated with or endorsed by Sony Interactive Entertainment
-> or Guerrilla Games.*
-
-### Programming Language Configuration
-Language-specific settings in PFT (v3.5.0+) that define tooling, linting,
-formatting, testing, and CI/CD configurations for a programming language.
 
 ---
 

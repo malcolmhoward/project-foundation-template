@@ -1,5 +1,5 @@
 # core/principles/audit_logging.py
-# Audit Logging principle (v3.0.0)
+# Audit Logging principle (v2.10.0)
 
 """
 Audit Logging Principle.
@@ -7,7 +7,7 @@ Audit Logging Principle.
 Audit logs provide an immutable record of system activities,
 enabling security analysis, compliance verification, and incident investigation.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "audit-logging"
@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Organizations with mature logging detect breaches 74% faster than those without.
+📚 LEARNING: Without logs, you cannot tell what happened during an incident.
 
 Audit logging is different from application logging - it's specifically designed
 for security, compliance, and forensics. Key principles include:

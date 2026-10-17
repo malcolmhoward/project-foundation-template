@@ -10,7 +10,7 @@ Accepted
 
 ## Context
 
-Following the v3.0.0 release with plugin architecture, 23 principles, 15 guides, and 5 presets, a gap analysis was conducted comparing the current implementation against the original ~6,500 line enterprise specification from November 2025.
+Following the v3.0.0 release with plugin architecture, 23 principles, 15 guides, and 5 presets, a gap analysis was conducted comparing the current implementation against the original ~6,500 line enterprise specification from September 2025.
 
 ### Audit Findings
 
