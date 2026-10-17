@@ -125,8 +125,19 @@ class EthicalFoundationGenerator:
         # Show next steps
         if success:
             self.show_next_steps()
+            self.show_ci_notice()
 
         return success
+
+    def show_ci_notice(self):
+        """Warn that the generated CI workflow fails until configured.
+
+        Printed in every mode, --quiet included: otherwise the first sign is a failing
+        check after the first push.
+        """
+        if ".github/workflows/ci.yml" in self.generated_files:
+            print("⚠️  .github/workflows/ci.yml fails until you replace its 'Run checks' step "
+                  "with your build and test commands.")
 
     def check_version_advisory(self):
         """Advisory version check - warns but doesn't block.
@@ -338,8 +349,10 @@ Generating template in 3 seconds...
                 self.educate_before_generating("code-of-conduct")
                 self.generate_code_of_conduct(output_dir)
 
-            # SECURITY
-            if self.args.include_security or include_all:
+            # SECURITY: the enhanced policy replaces the basic one, so write only one of them
+            include_enhanced_security = (
+                getattr(self.args, 'include_enhanced_security', False) or include_all)
+            if self.args.include_security and not include_enhanced_security:
                 self.educate_before_generating("security")
                 self.generate_security(output_dir)
 
@@ -356,7 +369,7 @@ Generating template in 3 seconds...
                 self.generate_changelog(output_dir)
 
             # v2.4.0: Enhanced security
-            if getattr(self.args, 'include_enhanced_security', False) or include_all:
+            if include_enhanced_security:
                 self.educate_before_generating("enhanced-security")
                 self.generate_enhanced_security(output_dir)
 
@@ -456,7 +469,11 @@ Generating template in 3 seconds...
 
     def generate_enhanced_security(self, output_dir: Path):
         """Generate comprehensive SECURITY.md with vulnerability reporting process."""
-        content = generate_enhanced_security_content(self.args.project_name)
+        # Claim automatic secrets detection only if the hook is generated in the same run
+        include_secrets_detection = (getattr(self.args, 'include_secrets_detection', False)
+                                     or getattr(self.args, 'include_all', False))
+        content = generate_enhanced_security_content(self.args.project_name,
+                                                     include_secrets_detection)
         self.write_file(output_dir / "SECURITY.md", content)
 
     def generate_pre_commit_config(self, output_dir: Path):
