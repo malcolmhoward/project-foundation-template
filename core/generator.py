@@ -403,7 +403,7 @@ Generating template in 3 seconds...
             # .gitignore
             self.generate_gitignore(output_dir)
 
-            # Scaffold manifest (always generated to document what was created)
+            # Scaffold manifest (with --include-manifest or --all) documents what was created
             if getattr(self.args, 'include_manifest', False) or include_all:
                 self.generate_scaffold_manifest(output_dir)
 

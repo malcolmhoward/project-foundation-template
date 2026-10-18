@@ -84,7 +84,7 @@ This section documents the original transition from enterprise to lite edition.
 
 ## Understanding the Versions
 
-### Enterprise Edition (v2.0.1)
+### Enterprise Edition (v2.1.0)
 - **Size**: ~6,500 lines
 - **Principles**: 23 governance principles
 - **Modules**: 20 documentation modules
@@ -150,17 +150,17 @@ This created false confidence and enabled potential misuse.
 
 ### Governance Presets
 
-| Preset | Principles Included | Target Version |
-|--------|---------------------|----------------|
-| minimal | 5 core | ✅ v2.1.0 (current) |
-| light | ~10 | v2.3.0 |
-| standard | ~15 (default) | v2.4.0 |
-| strict | ~20 | v2.5.0 |
-| enterprise | All 23 | v3.0.0 |
+| Preset | Principles Included | Added In |
+|--------|---------------------|----------|
+| minimal | 3 | v2.7.0 |
+| light | 6 | v2.7.0 |
+| standard | 9 (default) | v2.7.0 |
+| strict | 12 | v2.7.0 |
+| enterprise | All (30 since v3.4.0) | v2.7.0 |
 
 ## How to Upgrade Safely
 
-### From Enterprise (v2.0.1) to Lite (v2.1.x)
+### From Enterprise (v2.1.0) to Lite (v2.1.x)
 
 If you have existing projects generated with the enterprise edition:
 
@@ -223,7 +223,7 @@ python setup_foundation_lite.py --project-name "MyProject" --author-name "Author
 python generate_foundation.py --project-name "MyProject" --author-name "Author"
 ```
 
-**Your generated output is unaffected.** Files your projects already contain were generated from the content in `core/` — the modular refactor does not change what gets produced, only how the generator is structured internally.
+**Your generated output changes slightly.** The refactor kept the same templates, but six generated files differ in content from v2.5.0 (CODE_OF_CONDUCT.md, CONTRIBUTING.md, FOUNDATION_NOTICE.md, LICENSE, README.md and SECURITY.md): emoji were removed from headings, lists and a table, `≠` became `!=`, a Markdown line break was dropped, and README code blocks are no longer written with escaped backticks. Generated files also carry the new version number. Generate into a separate directory and compare before replacing files you have customized.
 
 ### Version Upgrade Checklist
 

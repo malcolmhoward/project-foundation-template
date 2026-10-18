@@ -1,5 +1,5 @@
 # core/guides/compliance_guide.py
-# Compliance Guide (v3.0.0)
+# Compliance Guide (v2.10.0)
 
 """
 Compliance Guide.
@@ -7,7 +7,7 @@ Compliance Guide.
 Provides practical guidance on ensuring software compliance
 with regulatory requirements, standards, and organizational policies.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "compliance-guide"
@@ -19,7 +19,7 @@ GUIDE = {
     "complexity": "advanced",
 }
 
-RELATED_PRINCIPLES = ["security", "adr", "code-review"]
+RELATED_PRINCIPLES = ["security", "adr", "compliance-policy"]
 
 CONTENT = """
 # Compliance Guide

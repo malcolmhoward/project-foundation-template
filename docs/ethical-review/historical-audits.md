@@ -354,7 +354,7 @@ This document contains retroactive ethical reviews for all Project Foundation Te
 **Mitigations**:
 - Comprehensive test coverage
 - Backward compatibility maintained
-- No changes to generated output format
+- No changes to generated output format (corrected in v3.7.0: six generated files changed in content; see MIGRATION.md)
 
 #### Enabling Harm
 

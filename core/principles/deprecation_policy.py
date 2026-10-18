@@ -1,5 +1,5 @@
 # core/principles/deprecation_policy.py
-# Deprecation Policy principle (v3.0.0)
+# Deprecation Policy principle (v2.10.0)
 
 """
 Deprecation Policy Principle.
@@ -7,7 +7,7 @@ Deprecation Policy Principle.
 A deprecation policy provides users with advance notice and migration paths
 when features or APIs are being removed.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "deprecation-policy"
@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Projects with clear deprecation policies have 3x better upgrade adoption rates.
+📚 LEARNING: A clear deprecation policy gives users time to migrate before features are removed.
 
 Deprecation policies help users plan for change. They transform breaking changes
 from unpleasant surprises into manageable migrations. Key elements include:

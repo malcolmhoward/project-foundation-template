@@ -36,7 +36,7 @@ Instead, we communicate:
 #### Why v2.x Instead of v1.0?
 
 The "lite" edition continues the v2.x line because:
-- It is an evolution of v2.0.1, not a fresh start
+- It is an evolution of the v2.1.0 enterprise edition, not a fresh start
 - Users expect v2.x to be compatible with v2.0.x patterns
 - Starting at v1.0 would suggest less maturity than exists
 - The ethical pivot was a scope change, not a rewrite

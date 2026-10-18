@@ -18,7 +18,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: 83% of projects have at least one vulnerability.
+📚 LEARNING: Any project can have vulnerabilities; a security policy tells people how to report them.
 
 Security isn't optional - it's a responsibility to your users.
 Basic practices like dependency scanning and security policies

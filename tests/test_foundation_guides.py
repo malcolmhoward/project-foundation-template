@@ -541,3 +541,24 @@ class TestCorePackageExports:
         """core package should export list_all_guides."""
         from core import list_all_guides as core_list_guides
         assert core_list_guides() == list_all_guides()
+
+
+class TestRelatedPrinciples:
+    """Every guide's related principles must exist (#102)."""
+
+    def test_related_principles_are_real_principle_ids(self):
+        import importlib
+        import pkgutil
+        import core.guides
+        from core.principles import ALL_PRINCIPLES
+
+        checked = 0
+        for module in pkgutil.iter_modules(core.guides.__path__):
+            guide = importlib.import_module(f"core.guides.{module.name}")
+            related = getattr(guide, "RELATED_PRINCIPLES", None)
+            if related is None:
+                continue
+            checked += 1
+            unknown = [p for p in related if p not in ALL_PRINCIPLES]
+            assert not unknown, f"{module.name}: unknown related principles {unknown}"
+        assert checked >= 25

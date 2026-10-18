@@ -1,5 +1,5 @@
 # core/guides/coding_standards.py
-# Coding Standards Guide (v3.0.0)
+# Coding Standards Guide (v2.10.0)
 
 """
 Coding Standards Guide.
@@ -7,7 +7,7 @@ Coding Standards Guide.
 Provides practical guidance on writing clean, maintainable, and
 consistent code following established best practices.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "coding-standards"
@@ -19,7 +19,7 @@ GUIDE = {
     "complexity": "intermediate",
 }
 
-RELATED_PRINCIPLES = ["code-review", "contributing"]
+RELATED_PRINCIPLES = ["code-standards", "contributing"]
 
 CONTENT = """
 # Coding Standards Guide

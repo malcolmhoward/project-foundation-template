@@ -21,7 +21,7 @@ PRINCIPLE = {
 EDUCATION = """
 📚 LEARNING: The README is your project's front door.
 
-Studies show that projects with clear READMEs get 5x more contributions.
+A clear README makes it easier for people to use and contribute to a project.
 A good README answers: What? Why? How? Who? When?
 
 Without a README, even excellent code goes unused because people

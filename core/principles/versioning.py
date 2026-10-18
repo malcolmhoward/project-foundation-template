@@ -1,5 +1,5 @@
 # core/principles/versioning.py
-# Versioning principle (v3.0.0)
+# Versioning principle (v2.10.0)
 
 """
 Versioning Principle.
@@ -7,7 +7,7 @@ Versioning Principle.
 Semantic versioning communicates the impact of changes to users,
 enabling them to update dependencies with confidence.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "versioning"
@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: 92% of package ecosystems use Semantic Versioning as their standard.
+📚 LEARNING: Semantic Versioning is widely used by package ecosystems to signal the impact of a release.
 
 Semantic Versioning (semver.org) uses MAJOR.MINOR.PATCH format:
 - **MAJOR**: Breaking changes that require user action to upgrade

@@ -36,21 +36,21 @@ ENTERPRISE_PRESET = {
         # Advanced (v2.5.0)
         "adr",
         "ci-workflow",
-        # Quality (v3.0.0)
+        # Quality (v2.10.0)
         "quality-assurance",
         "code-standards",
         "performance-standards",
-        # Compliance (v3.0.0)
+        # Compliance (v2.10.0)
         "compliance-policy",
         "audit-logging",
-        # Infrastructure (v3.0.0)
+        # Infrastructure (v2.10.0)
         "versioning",
         "dependency-scanning",
         "container-support",
-        # Inclusivity (v3.0.0)
+        # Inclusivity (v2.10.0)
         "internationalization",
         "accessibility",
-        # Lifecycle (v3.0.0)
+        # Lifecycle (v2.10.0)
         "deprecation-policy",
         # Documentation (v3.1.0)
         "glossary",

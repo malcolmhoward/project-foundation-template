@@ -1,5 +1,5 @@
 # core/principles/accessibility.py
-# Accessibility principle (v3.0.0)
+# Accessibility principle (v2.10.0)
 
 """
 Accessibility Principle.
@@ -7,20 +7,20 @@ Accessibility Principle.
 Accessibility ensures software is usable by people with disabilities,
 expanding reach and often improving usability for everyone.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "accessibility"
 
 PRINCIPLE = {
     "name": "Accessibility",
-    "why": "1 billion people worldwide have disabilities; excluding them limits your reach and may violate laws",
+    "why": "Many people live with disabilities; excluding them limits your reach and may violate laws",
     "what": "WCAG compliance, assistive technology support, and inclusive design practices",
     "risk": "Without accessibility, projects exclude users and face legal liability",
 }
 
 EDUCATION = """
-📚 LEARNING: Accessible websites reach 15% more users and often rank higher in search engines.
+📚 LEARNING: Accessible software reaches more people, and accessible markup also helps search engines.
 
 Accessibility (a11y) ensures everyone can use your software regardless of ability.
 It's both an ethical imperative and increasingly a legal requirement.

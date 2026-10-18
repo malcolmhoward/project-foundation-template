@@ -1,5 +1,5 @@
 # core/principles/performance_standards.py
-# Performance Standards principle (v3.0.0)
+# Performance Standards principle (v2.10.0)
 
 """
 Performance Standards Principle.
@@ -7,20 +7,20 @@ Performance Standards Principle.
 Performance standards define measurable benchmarks that ensure
 software meets user expectations for speed and responsiveness.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 PRINCIPLE_ID = "performance-standards"
 
 PRINCIPLE = {
     "name": "Performance Standards",
-    "why": "53% of mobile users abandon sites that take over 3 seconds to load",
+    "why": "Users abandon software that feels slow",
     "what": "Documented performance budgets, benchmarks, and monitoring practices",
     "risk": "Without performance standards, gradual degradation goes unnoticed until users leave",
 }
 
 EDUCATION = """
-📚 LEARNING: A 100ms delay in load time can decrease conversion rates by 7%.
+📚 LEARNING: Small delays add up; agreed performance budgets catch regressions early.
 
 Performance standards make speed a first-class requirement, not an afterthought.
 They include:

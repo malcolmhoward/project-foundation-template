@@ -29,7 +29,7 @@ from .issue_templates import PRINCIPLE as ISSUE_PRINCIPLE, EDUCATION as ISSUE_ED
 from .pr_template import PRINCIPLE as PR_PRINCIPLE, EDUCATION as PR_EDUCATION
 from .changelog import PRINCIPLE as CHANGELOG_PRINCIPLE, EDUCATION as CHANGELOG_EDUCATION
 
-# v3.0.0 principles
+# v2.10.0 principles
 from .quality_assurance import PRINCIPLE as QA_PRINCIPLE, EDUCATION as QA_EDUCATION
 from .code_standards import PRINCIPLE as CODE_STANDARDS_PRINCIPLE, EDUCATION as CODE_STANDARDS_EDUCATION
 from .versioning import PRINCIPLE as VERSIONING_PRINCIPLE, EDUCATION as VERSIONING_EDUCATION
@@ -69,7 +69,7 @@ ALL_PRINCIPLES = {
     "issue-templates": ISSUE_PRINCIPLE,
     "pr-template": PR_PRINCIPLE,
     "changelog": CHANGELOG_PRINCIPLE,
-    # v3.0.0 principles
+    # v2.10.0 principles
     "quality-assurance": QA_PRINCIPLE,
     "code-standards": CODE_STANDARDS_PRINCIPLE,
     "versioning": VERSIONING_PRINCIPLE,
@@ -107,7 +107,7 @@ ALL_EDUCATION = {
     "issue-templates": ISSUE_EDUCATION,
     "pr-template": PR_EDUCATION,
     "changelog": CHANGELOG_EDUCATION,
-    # v3.0.0 principles
+    # v2.10.0 principles
     "quality-assurance": QA_EDUCATION,
     "code-standards": CODE_STANDARDS_EDUCATION,
     "versioning": VERSIONING_EDUCATION,
@@ -138,7 +138,7 @@ SECURITY_PRINCIPLES = ["enhanced-security", "secrets-detection"]
 ADVANCED_PRINCIPLES = ["adr", "ci-workflow"]
 COMMUNITY_PRINCIPLES = ["issue-templates", "pr-template", "changelog"]
 
-# v3.0.0 categories
+# v2.10.0 categories
 QUALITY_PRINCIPLES = ["quality-assurance", "code-standards", "performance-standards"]
 COMPLIANCE_PRINCIPLES = ["compliance-policy", "audit-logging"]
 INFRASTRUCTURE_PRINCIPLES = ["dependency-scanning", "container-support", "versioning"]
@@ -168,18 +168,18 @@ PRINCIPLE_VERSIONS = {
     "issue-templates": "2.3.0",
     "pr-template": "2.3.0",
     "changelog": "2.3.0",
-    # v3.0.0 principles
-    "quality-assurance": "3.0.0",
-    "code-standards": "3.0.0",
-    "versioning": "3.0.0",
-    "compliance-policy": "3.0.0",
-    "internationalization": "3.0.0",
-    "audit-logging": "3.0.0",
-    "dependency-scanning": "3.0.0",
-    "container-support": "3.0.0",
-    "deprecation-policy": "3.0.0",
-    "accessibility": "3.0.0",
-    "performance-standards": "3.0.0",
+    # v2.10.0 principles
+    "quality-assurance": "2.10.0",
+    "code-standards": "2.10.0",
+    "versioning": "2.10.0",
+    "compliance-policy": "2.10.0",
+    "internationalization": "2.10.0",
+    "audit-logging": "2.10.0",
+    "dependency-scanning": "2.10.0",
+    "container-support": "2.10.0",
+    "deprecation-policy": "2.10.0",
+    "accessibility": "2.10.0",
+    "performance-standards": "2.10.0",
     # v3.1.0 principles
     "glossary": "3.1.0",
     "maintainers": "3.1.0",
@@ -234,7 +234,7 @@ def get_principles_by_category(category: str) -> list:
         "security": SECURITY_PRINCIPLES,
         "advanced": ADVANCED_PRINCIPLES,
         "community": COMMUNITY_PRINCIPLES,
-        # v3.0.0 categories
+        # v2.10.0 categories
         "quality": QUALITY_PRINCIPLES,
         "compliance": COMPLIANCE_PRINCIPLES,
         "infrastructure": INFRASTRUCTURE_PRINCIPLES,
@@ -291,7 +291,7 @@ __all__ = [
     "SECURITY_PRINCIPLES",
     "ADVANCED_PRINCIPLES",
     "COMMUNITY_PRINCIPLES",
-    # v3.0.0 categories
+    # v2.10.0 categories
     "QUALITY_PRINCIPLES",
     "COMPLIANCE_PRINCIPLES",
     "INFRASTRUCTURE_PRINCIPLES",

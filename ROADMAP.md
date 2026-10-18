@@ -15,10 +15,10 @@ Features are reintroduced gradually with:
 **Milestone Achievement**: Modular package architecture with comprehensive test suite.
 
 **Available Features:**
-- 13 governance principles (core + community + security + advanced)
+- 12 governance principles (core + community + security + advanced)
 - Ethical safeguards (agreement, education, logging, warnings, expiration)
-- Modular `foundation` package with 9 modules
-- 83 unit tests across 5 test files
+- Modular `core` package with 9 modules
+- 148 tests across 7 test files
 - Non-interactive mode with config file support
 - GitHub templates (issues, PRs, workflows)
 - ADR system
@@ -30,7 +30,7 @@ core/
 ├── __init__.py             # Package exports
 ├── utils.py                # Constants and helpers
 ├── config.py               # Configuration and argument parsing
-├── education.py            # 13 principles and educational content
+├── education.py            # 12 principles and educational content
 └── templates/
     ├── core.py             # README, CONTRIBUTING, LICENSE, .gitignore
     ├── governance.py       # CoC, SECURITY, CHANGELOG
@@ -38,7 +38,7 @@ core/
     └── advanced.py         # ADR, secrets detection, enhanced security
 ```
 
-**Principles Included (13):**
+**Principles Included (12):**
 1. README Documentation
 2. Contribution Guidelines
 3. License Selection
@@ -51,7 +51,6 @@ core/
 10. Secrets Detection (v2.4.0)
 11. ADR System (v2.5.0)
 12. CI Workflow (v2.5.0)
-13. PR Validation (v2.5.0)
 
 **Test Coverage:**
 | Test File | Tests | Coverage |
@@ -60,8 +59,10 @@ core/
 | test_foundation_utils.py | 8 | Utils module |
 | test_foundation_config.py | 16 | Config module |
 | test_foundation_education.py | 16 | Education module |
+| test_foundation_ethics.py | 26 | Ethics module |
+| test_foundation_generator.py | 39 | Generator |
 | test_foundation_templates.py | 24 | Templates package |
-| **Total** | **83** | ~75% estimated |
+| **Total** | **148** | Not measured |
 
 ---
 
@@ -239,7 +240,7 @@ The v2.6.0 modularization completed approximately **60% of the v3.0.0 architectu
 | Config module | ✅ Complete | Minor refactoring |
 | Education module | ✅ Complete | Add 10 more principles |
 | Template separation | ✅ Complete | Reorganize into `templates/` tree |
-| Unit test suite | ✅ Complete (83 tests) | Add integration tests |
+| Unit test suite | ✅ Complete (148 tests) | Add integration tests |
 | Generator class | 🔄 Partial | Extract from main script |
 | Ethics module | ❌ Not started | Extract ethics logic |
 | Preset system | ❌ Not started | Create 5 presets |
@@ -373,7 +374,7 @@ tests/
 - [ ] Performance acceptable
 - [x] All ethical safeguards maintained
 - [x] Education-first philosophy preserved
-- [x] Comprehensive test suite with >80% coverage (83 tests in v2.6.0)
+- [x] Comprehensive test suite (148 tests in v2.6.0)
 - [x] All tests passing in CI
 
 ---
@@ -382,7 +383,7 @@ tests/
 
 Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterprise specification, the following minor versions will address remaining feature gaps while maintaining safety/ethics parity (which is already complete).
 
-### Version 3.1.0 - Accessibility & Usability
+### Version 3.1.0 - Onboarding & Usability
 
 **Target**: Address immediate usability gaps identified in audit
 
@@ -682,9 +683,9 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 2.3.x | ✅ Released | Issue/PR templates, CHANGELOG |
 | 2.4.x | ✅ Released | Enhanced security, secrets detection |
 | 2.5.x | ✅ Released | ADR system, CI workflows, smoke tests |
-| 2.6.0 | ✅ Released | Modular package, 83 unit tests |
+| 2.6.0 | ✅ Released | Modular package, 148 tests |
 | 3.0.0 | ✅ Released | Plugin architecture, 30 principles, 25 guides, 5 presets |
-| 3.1.0 | ✅ Released | Accessibility (GLOSSARY generation) |
+| 3.1.0 | ✅ Released | Onboarding files (GLOSSARY, MAINTAINERS generation) |
 | 3.2.0 | ✅ Released | Developer documentation guides |
 | 3.3.0 | ✅ Released | Extended governance principles |
 | 3.4.0 | ✅ Released | Advanced features |

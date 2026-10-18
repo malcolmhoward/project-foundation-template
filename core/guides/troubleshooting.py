@@ -1,5 +1,5 @@
 # core/guides/troubleshooting.py
-# Troubleshooting Guide (v3.0.0)
+# Troubleshooting Guide (v2.10.0)
 
 """
 Troubleshooting Guide.
@@ -7,7 +7,7 @@ Troubleshooting Guide.
 Provides practical guidance on diagnosing and resolving common
 development issues and system problems.
 
-Introduced in v3.0.0.
+Introduced in v2.10.0.
 """
 
 GUIDE_ID = "troubleshooting"
@@ -19,7 +19,7 @@ GUIDE = {
     "complexity": "intermediate",
 }
 
-RELATED_PRINCIPLES = ["contributing", "code-review"]
+RELATED_PRINCIPLES = ["contributing", "error-handling"]
 
 CONTENT = """
 # Troubleshooting Guide
