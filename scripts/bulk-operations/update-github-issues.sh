@@ -75,7 +75,7 @@ update_issue() {
 
     # Remove an existing section, from "## Retroactive Ethical Review" to the end
     local cleaned_body
-    cleaned_body=$(printf '%s\n' "$current_body" | awk '/^## Retroactive Ethical Review/{found=1} !found' | sed '$ { /^---$/d }')
+    cleaned_body=$(printf '%s\n' "$current_body" | awk '/^## Retroactive Ethical Review/{found=1} !found' | sed '${ /^---$/d; }')
 
     local new_section="
 ---
