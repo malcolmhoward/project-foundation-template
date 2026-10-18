@@ -94,7 +94,7 @@ The hook matches these patterns in staged files (defined in `SECRET_DETECTORS` i
 - Database connection strings that include a password
 - Quoted API keys, secrets, tokens and passwords assigned in code or config
 
-Pattern matching catches common formats only. It does not find every secret, and it can flag harmless lines. It checks staged files only, and it skips lines containing the word REPLACE (template placeholders). A dedicated scanner gives stronger protection.
+Pattern matching catches common formats only. It does not find every secret, and it can flag harmless lines. It checks staged files only, and it ignores the text of template placeholders (`[REPLACE: ...]`). When it finds a match, it reports the file, the line numbers and the kind of secret, not the secret itself. A dedicated scanner gives stronger protection.
 
 ### If You Accidentally Commit a Secret
 

@@ -18,16 +18,16 @@
 ## Ethical Review
 
 ### Contributor Self-Assessment
-*Required: Check all boxes and provide documentation below*
+*Required: Check each box that is fully true and provide documentation below*
 
 - [ ] Principle Zero test completed with documented considerations (in linked issue or below)
 - [ ] Ethical Pause taken with documented analysis (in linked issue or below)
 - [ ] Identified risks have mitigations OR documented acceptable risk justification
-- [ ] No new ethical concerns discovered during implementation
+
+**New concerns found during implementation**: <!-- "None", or list each one with its tracking issue -->
 
 **Summary of Ethical Considerations**:
 <!-- Briefly summarize key ethical considerations from the linked issue -->
-<!-- If new concerns were discovered during implementation, document them here -->
 
 **Link to Ethical Review**: <!-- Link to issue with completed Principle Zero and Ethical Pause sections, OR complete sections below for PRs without issues -->
 
@@ -64,14 +64,11 @@
 ---
 
 ### Reviewer Verification
-*Required: A maintainer must complete this section before merge*
+*Required: A maintainer completes this section before merge. These boxes record the reviewer's judgement; the ethical-review check confirms only that the sections are present, because the PR's author can edit this description. Merging into `main` requires an approving review; when an administrator merges without one, these boxes are the record of the review.*
 
-- [ ] Ethical review documentation exists and is complete
-- [ ] All Principle Zero questions have documented considerations
-- [ ] All Ethical Pause questions have documented answers
-- [ ] Identified risks have mitigations OR documented acceptable risk justification
+- [ ] The Principle Zero and Ethical Pause sections are complete
+- [ ] Every identified risk has a mitigation or a documented justification, and no critical risk is accepted without a mitigation
 - [ ] Educational value preserved
-- [ ] No unmitigated critical risks
 - [ ] Independently reviewed by someone other than the author: a person, or a different AI model from a fresh context (see CONTRIBUTING.md, Independent Review)
 
 **Reviewer**: @<!-- GitHub username -->

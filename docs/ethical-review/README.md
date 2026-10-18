@@ -69,13 +69,15 @@ When submitting a PR, the contributor must:
 
 1. **Self-assess** that ethical considerations were addressed
 2. **Summarize** key findings from the linked issue's ethical review
-3. **Document** any new ethical considerations discovered during implementation
+3. **Document** any new ethical concerns found during implementation, or write "None"
 
 A **reviewer must verify**:
-- Ethical review documentation exists and is complete
-- All Principle Zero questions have documented considerations
-- All Ethical Pause questions have documented answers
-- Identified risks have mitigations OR documented acceptable risk justification
+- The Principle Zero and Ethical Pause sections are complete
+- Every identified risk has a mitigation or a documented justification, and no critical risk is accepted without a mitigation
+- Educational value is preserved
+- The change was independently reviewed by someone other than its author (see CONTRIBUTING.md, Independent Review)
+
+The Ethical Review Check workflow confirms only that these sections are present in the PR description: the PR's author can edit the description, so a ticked box there proves nothing. The reviewer's sign-off is the approving review that branch protection requires for `main`; when an administrator merges without one, the Reviewer Verification boxes are the record of the review.
 
 ---
 

@@ -295,13 +295,13 @@ class TestGenerateFoundation(unittest.TestCase):
 
     def test_returns_false_on_error(self):
         """Should return False when an error occurs."""
-        args = create_mock_args(output_dir="/nonexistent/readonly/path")
-        generator = EthicalFoundationGenerator(args)
-
-        # This should fail because the path doesn't exist
-        with patch.object(generator, 'generate_readme', side_effect=Exception("Test error")):
-            result = generator.generate_foundation()
-            self.assertFalse(result)
+        # A real temporary directory: the error comes from the patched step, and the test
+        # must not create directories elsewhere on disk or depend on root's permissions
+        with tempfile.TemporaryDirectory() as tmpdir:
+            generator = EthicalFoundationGenerator(create_mock_args(output_dir=tmpdir))
+            with patch.object(generator, 'generate_readme', side_effect=Exception("Test error")):
+                result = generator.generate_foundation()
+                self.assertFalse(result)
 
 
 class TestGenerateSpecificFiles(unittest.TestCase):

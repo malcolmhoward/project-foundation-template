@@ -48,16 +48,17 @@ gh pr edit $pr_num --body "$new_body"
 
 | File | Purpose |
 |------|---------|
-| `update-github-issues.sh` | Template for bulk issue updates with version-specific content |
+| `update-github-issues.sh` | Template for bulk issue updates with version-specific content. Dry run unless `--apply`; needs `--repo OWNER/NAME`; will not apply while any `[REPLACE: ...]` placeholder (such as the review outcome) is unfilled |
 | `safe-pr-chain-rebase.md` | Pattern for safely rebasing dependent branch chains without content loss |
 
 ## Best Practices
 
 1. **Test on one issue first** before running bulk operations
-2. **Use dry-run mode** when available (add `echo` before actual commands)
-3. **Log progress** so you can resume if interrupted
-4. **Handle rate limits** - GitHub API has rate limits, add delays if needed
-5. **Verify results** - spot-check a few items after bulk update
+2. **Use dry-run mode**: make it the default, and require an explicit flag (such as `--apply`) to change anything
+3. **Never pre-fill a review result**: a script can record the outcome of a review, but someone has to do the review
+4. **Log progress** so you can resume if interrupted
+5. **Handle rate limits** - GitHub API has rate limits, add delays if needed
+6. **Verify results** - spot-check a few items after bulk update
 
 ## Context Health Note
 
