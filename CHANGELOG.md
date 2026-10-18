@@ -50,7 +50,7 @@ same files). Connecting them to generated output is planned for 3.8.0
   Python API; not yet selectable from the command line.
 - **3.7.0**: Generation log (`--include-generation-log`, `--log-format md|json|both`,
   `--log-to`), `validate_customization.py`, ACKNOWLEDGMENTS.md and a tiered ethical review
-  process.
+  process. A Tests workflow runs the test suite on Linux and macOS for pull requests.
 
 ### Changed
 - `setup_foundation_lite.py` is now a compatibility shim: it runs `generate_foundation.py` with
@@ -80,6 +80,21 @@ same files). Connecting them to generated output is planned for 3.8.0
   `core.templates`, which is unchanged.
 - The principles and guides first added in 2.10.0 are recorded as 2.10.0 instead of 3.0.0, in
   `PRINCIPLE_VERSIONS`, `GUIDE_VERSIONS` and the modules' headers.
+- The generated secrets hook reports the file, the line numbers and the kind of secret it
+  found, not the matching line, so the secret does not end up in terminal history or CI logs.
+  It ignores the text of `[REPLACE: ...]` placeholders instead of skipping every line that
+  contains "REPLACE". It starts with `#!/usr/bin/env bash`, so it also runs where bash is not at
+  `/bin/bash`, including under pre-commit on Windows.
+- PFT's own PR template and Ethical Review Check: the reviewer's checklist is four items (the
+  three overlapping documentation items are merged, and "no unmitigated critical risks" is part
+  of the risk item); "No new ethical concerns discovered during implementation" is replaced by a
+  required "New concerns found during implementation" line. The check now confirms only that the
+  sections are present, since the PR's author can edit the description, and its label step,
+  which never ran with the workflow's read-only token, is removed.
+- `scripts/bulk-operations/update-github-issues.sh` is a dry run unless `--apply` is given,
+  needs `--repo`, and will not apply while any `[REPLACE: ...]` placeholder is unfilled. Run
+  as-is, it used to edit issues 1-10 of this repository and record "Principle Zero: ✅ Passes"
+  on them.
 
 ### Deprecated
 - `setup_foundation_lite.py`; call `generate_foundation.py` instead.
@@ -125,6 +140,8 @@ same files). Connecting them to generated output is planned for 3.8.0
   v2.0.1, and its specification is dated September 2025; ADR 0006 names the `override` conflict
   mode; ADRs 0008 and 0009 are marked accepted; `--all`'s help lists every file it adds;
   Conventional Commits' breaking-change marker is described correctly.
+- The generated MAINTAINERS.md listed a GitHub username guessed from the author's name, which
+  could belong to someone else; it is now a placeholder, and the file has a template notice.
 
 ### Removed
 - The stale `foundation/` package, left behind by the rename to `core/`.

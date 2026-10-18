@@ -198,7 +198,14 @@ An automated process triggered by events (like pushing code), typically running 
 
 def generate_maintainers_content(project_name: str, author_name: str) -> str:
     """Generate MAINTAINERS.md with project maintainer information."""
+    # The GitHub username is left as a placeholder: a handle guessed from the author's
+    # name could belong to someone else, who would then be named as a maintainer.
     return f"""# Maintainers
+
+<!--
+TEMPLATE NOTICE: Replace the placeholders with your project's real maintainers
+and process before publishing this file.
+-->
 
 This document lists the maintainers of **{project_name}** and describes how to become one.
 
@@ -210,7 +217,7 @@ This document lists the maintainers of **{project_name}** and describes how to b
 
 | Name | GitHub | Role | Since |
 |------|--------|------|-------|
-| {author_name} | @{author_name.lower().replace(' ', '')} | Lead Maintainer | {datetime.now().strftime('%Y-%m')} |
+| {author_name} | [REPLACE: @GitHub username] | Lead Maintainer | {datetime.now().strftime('%Y-%m')} |
 
 ### Component Maintainers
 

@@ -290,6 +290,8 @@ class TestCommandLineOnlySafeguards:
 
 def _find_bash():
     """Git's bash, or any bash that is not the WSL launcher (which cannot see Windows temp paths)."""
+    if os.environ.get("PFT_TEST_BASH"):  # e.g. /bin/bash on macOS, to test bash 3.2
+        return os.environ["PFT_TEST_BASH"]
     import shutil
     bash = shutil.which("bash")
     if bash and sys.platform == "win32" and ("system32" in bash.lower() or "windowsapps" in bash.lower()):

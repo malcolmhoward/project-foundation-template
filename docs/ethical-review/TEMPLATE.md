@@ -109,9 +109,8 @@ Could inaction or negligence in implementing this cause harm?
 
 - [ ] Passes Principle Zero (all three harm types addressed)
 - [ ] All Ethical Pause questions answered with documented reasoning
-- [ ] Identified risks have mitigations OR documented acceptable risk justification
+- [ ] Every identified risk has a mitigation or a documented justification, and no critical risk is accepted without a mitigation
 - [ ] Educational value maintained
-- [ ] No unmitigated critical risks
 
 **Reviewer Signature**: ________________________
 **Date**: YYYY-MM-DD

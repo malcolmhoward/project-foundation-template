@@ -166,7 +166,7 @@ class TestAdvancedTemplates(unittest.TestCase):
     def test_detect_secrets_script(self):
         """Secrets detection script should be bash script."""
         content = generate_detect_secrets_script()
-        self.assertIn("#!/bin/bash", content)
+        self.assertTrue(content.startswith("#!/usr/bin/env bash"))
         self.assertIn("PATTERNS", content)
         self.assertIn("SECRETS_FOUND", content)
 
