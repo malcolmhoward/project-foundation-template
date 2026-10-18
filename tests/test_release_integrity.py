@@ -255,16 +255,35 @@ class TestCommandLineOnlySafeguards:
         r = generate(out, home, "--quiet", "--include-generation-log")
         assert r.returncode == 0, r.stdout + r.stderr
 
-    def test_overwrite_check_covers_every_generated_file(self, tmp_path, home):
-        """Every file a full run writes, except the appended logs, is checked before overwriting."""
-        from core.generator import EXISTING_FILE_CHECKS, EXISTING_DIR_CHECKS
+    @pytest.mark.parametrize("flags", [[], ["--all"], ["--include-ci", "--include-adr"]])
+    def test_overwrite_check_covers_every_generated_file(self, tmp_path, monkeypatch, flags):
+        """The files checked before overwriting are exactly the files the run writes (#114)."""
+        from core.config import parse_arguments
+        from core.generator import EthicalFoundationGenerator
         out = tmp_path / "out"
-        assert generate(out, home, "--quiet", "--preset", "enterprise", "--all").returncode == 0
-        for path in sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()):
-            if path.startswith("GENERATION_LOG"):
-                continue
-            covered = path in EXISTING_FILE_CHECKS or any(path.startswith(d + "/") for d in EXISTING_DIR_CHECKS)
-            assert covered, f"{path} is written but not checked before overwriting"
+        monkeypatch.setattr(sys, "argv", ["generate_foundation.py", "--project-name", "Demo",
+                                          "--author-name", "Example Author", "--non-interactive",
+                                          "--accept-terms", "--quiet", "--output-dir", str(out), *flags])
+        generator = EthicalFoundationGenerator(parse_arguments())
+        planned = generator.planned_files()
+        assert not out.exists(), "planning wrote to the output directory"
+        assert generator.generate_foundation()
+        assert set(planned) == set(generator.generated_files)
+        written = {p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file()}
+        assert set(planned) == written
+
+    def test_files_the_run_will_not_write_do_not_block_it(self, tmp_path, home):
+        """A repository's own CHANGELOG.md must not stop a run that does not generate one (#114)."""
+        out = tmp_path / "out"
+        out.mkdir()
+        (out / "CHANGELOG.md").write_text("# Our own changelog\n", encoding="utf-8")
+        r = generate(out, home, "--quiet")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert (out / "CHANGELOG.md").read_text(encoding="utf-8") == "# Our own changelog\n"
+
+        r = generate(out, home, "--quiet", "--include-changelog")
+        assert r.returncode == 1
+        assert "CHANGELOG.md" in r.stdout and "README.md" in r.stdout
 
 
 # ---------------------------------------------------------------- generated security and CI files (#94, #95, #96)
@@ -487,3 +506,133 @@ class TestGeneratedCiWorkflow:
         from core.templates.github import generate_ci_workflow_content
         steps = yaml.safe_load(generate_ci_workflow_content())["jobs"]["build"]["steps"]
         assert [s.get("name") for s in steps] == ["Checkout code", "Run checks"]
+
+
+# ---------------------------------------------------------------- manifest, translation YAML, log backups (#103, #104, #105)
+
+class TestScaffoldManifest:
+    def _manifest(self, out, home, *flags):
+        r = generate(out, home, "--quiet", "--include-manifest", *flags)
+        assert r.returncode == 0, r.stdout + r.stderr
+        return (out / "SCAFFOLD_MANIFEST.md").read_text(encoding="utf-8")
+
+    def test_without_a_preset_it_suggests_the_options_used(self, tmp_path, home):
+        """With no preset, the manifest suggested `--preset None`, which the command rejects (#103)."""
+        manifest = self._manifest(tmp_path / "out", home, "--include-ci")
+        assert "--preset None" not in manifest
+        assert "None (individual options)" in manifest
+        assert "python generate_foundation.py --include-ci --include-manifest --output-dir" in manifest
+
+    def test_suggested_command_runs(self, tmp_path, home):
+        manifest = self._manifest(tmp_path / "out", home, "--include-ci")
+        line = next(l.strip() for l in manifest.splitlines()
+                    if l.strip().startswith("python generate_foundation.py --include"))
+        args = line.split()[2:]
+        args[args.index("--output-dir") + 1] = str(tmp_path / "again")
+        r = generate(tmp_path / "unused", home, "--quiet", *args)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert (tmp_path / "again" / ".github" / "workflows" / "ci.yml").exists()
+
+    def test_with_a_preset_it_suggests_the_preset(self, tmp_path, home):
+        manifest = self._manifest(tmp_path / "out", home, "--preset", "standard")
+        assert "python generate_foundation.py --preset standard --include-manifest --output-dir" in manifest
+
+    def test_with_a_preset_it_keeps_flags_the_preset_does_not_set(self, tmp_path, home):
+        """Presets do not set the glossary flag, so dropping it would not reproduce the run."""
+        manifest = self._manifest(tmp_path / "out", home, "--preset", "minimal", "--include-glossary")
+        assert ("python generate_foundation.py --preset minimal --include-glossary "
+                "--include-manifest --output-dir") in manifest
+
+    def test_with_all_it_suggests_all(self, tmp_path, home):
+        manifest = self._manifest(tmp_path / "out", home, "--all")
+        assert "python generate_foundation.py --all --include-manifest --output-dir" in manifest
+
+    def test_guides_section_says_why_it_is_empty(self, tmp_path, home):
+        """It listed no guides with no explanation (#103); guides are not generated yet (#101)."""
+        manifest = self._manifest(tmp_path / "out", home)
+        guides = manifest.split("## Guides Included", 1)[1].split("---", 1)[0]
+        assert "not generated into projects yet" in guides and "--list-guides" in guides
+
+
+class TestTranslationYaml:
+    AWKWARD = {
+        "yes": "no", "On": "off", "anchor": "*a", "at": "@user", "quote": 'say "hi"',
+        "backslash": "back\\slash", "colon": "a: b", "hash": "x # y", "empty": "",
+        "unicode": "ação", "number": 3, "flag": True, "1st": "first", "two words": "x",
+        "nested": {"null": "~", "inner": {}},
+        "breaks": "a b c\x85d\x7fe",
+    }
+
+    def test_awkward_values_are_quoted(self):
+        """Checked without PyYAML, so it runs wherever the suite runs (#104)."""
+        from core.internationalization import _dict_to_yaml
+        out = _dict_to_yaml({"yes": "no", "anchor": "*a", "quote": 'a"b', "plain": "x",
+                             "separator": "a b"}).splitlines()
+        assert out == ['"yes": "no"', 'anchor: "*a"', 'quote: "a\\"b"', 'plain: "x"',
+                       'separator: "a\\u2028b"']
+
+    def test_awkward_values_load_back_unchanged(self):
+        """Values and keys YAML would misread (#104) round-trip exactly."""
+        yaml = pytest.importorskip("yaml")
+        from core.internationalization import _dict_to_yaml
+        assert yaml.safe_load(_dict_to_yaml(self.AWKWARD)) == self.AWKWARD
+
+    def test_every_locale_matches_its_json_template(self):
+        yaml = pytest.importorskip("yaml")
+        from core.internationalization import ALL_LOCALES, generate_translation_template
+        for locale in ALL_LOCALES:
+            from_yaml = yaml.safe_load(generate_translation_template(locale, format="yaml"))
+            from_json = json.loads(generate_translation_template(locale, format="json"))
+            assert from_yaml == from_json, locale
+
+    def test_generated_by_names_the_current_version(self):
+        """`generated_by` was hard-coded to v3.6.0 (#104)."""
+        from core.internationalization import generate_translation_template
+        from core.utils import SCRIPT_VERSION
+        metadata = json.loads(generate_translation_template("en"))["_metadata"]
+        assert metadata["generated_by"] == f"Project Foundation Template v{SCRIPT_VERSION}"
+
+
+class TestGenerationLogBackups:
+    def test_force_overwrite_keeps_the_old_log(self, tmp_path):
+        """--force-overwrite replaced the log without a backup (#105)."""
+        from core.generation_log import write_generation_log
+        log = tmp_path / "GENERATION_LOG.md"
+        log.write_text("# Generation Log\n\nOUR NOTES\n", encoding="utf-8")
+        _, ok = write_generation_log(tmp_path, "Demo", ["README.md"], log_format="md",
+                                     interactive=False, force_overwrite=True)
+        assert ok
+        assert "OUR NOTES" not in log.read_text(encoding="utf-8")
+        assert "OUR NOTES" in (tmp_path / "GENERATION_LOG.md.bak").read_text(encoding="utf-8")
+
+    def test_interactive_overwrite_keeps_the_old_log(self, tmp_path, monkeypatch):
+        """Choosing "overwrite" at the prompt also keeps a backup."""
+        from core.generation_log import write_generation_log
+        log = tmp_path / "GENERATION_LOG.md"
+        log.write_text("# Generation Log\n\nOUR NOTES\n", encoding="utf-8")
+        answers = iter(["o", "y"])
+        monkeypatch.setattr("builtins.input", lambda prompt="": next(answers))
+        _, ok = write_generation_log(tmp_path, "Demo", ["README.md"], log_format="md", interactive=True)
+        assert ok
+        assert "OUR NOTES" in (tmp_path / "GENERATION_LOG.md.bak").read_text(encoding="utf-8")
+
+    def test_backups_never_replace_earlier_backups(self, tmp_path):
+        """A second replacement wrote over the first `.bak` (#105)."""
+        from core.generation_log import write_generation_log
+        log = tmp_path / "GENERATION_LOG.json"
+        for content in ("{ first", "{ second"):
+            log.write_text(content, encoding="utf-8")
+            _, ok = write_generation_log(tmp_path, "Demo", ["README.md"], log_format="json",
+                                         log_to=str(log), interactive=False)
+            assert ok
+        assert (tmp_path / "GENERATION_LOG.json.bak").read_text(encoding="utf-8") == "{ first"
+        assert (tmp_path / "GENERATION_LOG.json.bak.1").read_text(encoding="utf-8") == "{ second"
+
+    def test_force_overwrite_from_the_command_line_keeps_the_old_log(self, tmp_path, home):
+        out = tmp_path / "out"
+        assert generate(out, home, "--quiet", "--include-generation-log").returncode == 0
+        first = (out / "GENERATION_LOG.md").read_text(encoding="utf-8")
+        r = generate(out, home, "--quiet", "--include-generation-log", "--force-overwrite")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert (out / "GENERATION_LOG.md.bak").read_text(encoding="utf-8") == first
+        assert "GENERATION_LOG.md.bak" in r.stdout

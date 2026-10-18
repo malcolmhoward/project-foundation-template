@@ -93,7 +93,7 @@ python generate_foundation.py --non-interactive --accept-terms --preset standard
 
 ### Usage Scenarios
 
-**Existing project**: target its directory; existing files are not overwritten without confirmation. Non-interactive runs (`--non-interactive`) stop instead of asking: add `--force-overwrite` to replace existing files. `--accept-terms` and `--force-overwrite` must be given on the command line; a config file cannot set them.
+**Existing project**: target its directory; existing files that the run would write are not overwritten without confirmation, and files it does not generate are left alone. Non-interactive runs (`--non-interactive`) stop instead of asking: add `--force-overwrite` to replace the files listed. `--accept-terms` and `--force-overwrite` must be given on the command line; a config file cannot set them.
 
 ```bash
 python /path/to/project-foundation-template/generate_foundation.py   --project-name "ExistingProject" --author-name "Your Name"   --output-dir /path/to/existing-project --preset standard

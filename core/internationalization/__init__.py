@@ -22,6 +22,8 @@ Introduced in v3.6.0.
 from typing import Dict, List, Any
 import json
 
+from core.utils import SCRIPT_VERSION
+
 # Import all locale configurations
 from . import english
 from . import spanish
@@ -142,7 +144,7 @@ def generate_translation_template(
             "locale": locale_id,
             "name": locale["name"],
             "direction": locale["direction"],
-            "generated_by": "Project Foundation Template v3.6.0",
+            "generated_by": f"Project Foundation Template v{SCRIPT_VERSION}",
         }
 
     template["common"] = translations.get("common", {
@@ -181,19 +183,50 @@ def generate_translation_template(
     return json.dumps(template, indent=2, ensure_ascii=False)
 
 
+def _yaml_scalar(value: Any) -> str:
+    """Write a value as a YAML scalar that loads back unchanged.
+
+    Strings are always double-quoted, JSON style (a valid YAML double-quoted scalar),
+    so values such as `yes`, `no`, `*anchor`, `@user` and `a: b` stay strings and
+    quotes and backslashes are escaped.
+    """
+    if isinstance(value, str):
+        quoted = json.dumps(value, ensure_ascii=False)
+        # JSON leaves these unescaped, but YAML reads U+0085, U+2028 and U+2029 as line
+        # breaks and rejects U+007F, so escape them too
+        for char in ("\x7f", "\x85", " ", " "):
+            quoted = quoted.replace(char, f"\\u{ord(char):04x}")
+        return quoted
+    return json.dumps(value)  # true/false, null and numbers are the same in YAML
+
+
+# Words YAML 1.1 loaders (such as PyYAML) read as booleans or null, not strings
+_YAML_RESERVED_WORDS = {"y", "n", "yes", "no", "on", "off", "true", "false", "null", "~"}
+
+
+def _yaml_key(key: Any) -> str:
+    """Write a mapping key, quoting it unless it is a plain identifier."""
+    key = str(key)
+    if (key and (key[0].isalpha() or key[0] == "_")
+            and all(c.isalnum() or c == "_" for c in key)
+            and key.lower() not in _YAML_RESERVED_WORDS):
+        return key
+    return _yaml_scalar(key)
+
+
 def _dict_to_yaml(d: Dict, indent: int = 0) -> str:
     """Convert a dictionary to YAML format."""
     lines = []
     prefix = "  " * indent
 
     for key, value in d.items():
-        if isinstance(value, dict):
-            lines.append(f"{prefix}{key}:")
+        if isinstance(value, dict) and value:
+            lines.append(f"{prefix}{_yaml_key(key)}:")
             lines.append(_dict_to_yaml(value, indent + 1))
+        elif isinstance(value, dict):
+            lines.append(f"{prefix}{_yaml_key(key)}: {{}}")
         else:
-            if isinstance(value, str) and (not value or any(c in value for c in ":#{}[]")):
-                value = f'"{value}"'
-            lines.append(f"{prefix}{key}: {value}")
+            lines.append(f"{prefix}{_yaml_key(key)}: {_yaml_scalar(value)}")
 
     return "\n".join(lines)
 
