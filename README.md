@@ -145,6 +145,8 @@ Choose the level of governance that matches your project's needs:
 | **strict** | 12 | Security-sensitive projects, compliance requirements |
 | **enterprise** | 30 | Large organizations, regulated industries, maximum governance |
 
+> **Not legal advice, and not compliance**: presets suggested for compliance needs or regulated industries give you starting points. Following them does not make a project compliant with GDPR, HIPAA, SOC 2, PCI-DSS or any other regulation; confirm that with qualified legal and compliance professionals.
+
 ### What Each Preset Includes
 
 ```
@@ -209,7 +211,7 @@ Every principle includes **WHAT** (definition), **WHY** (importance), and **RISK
 ### Compliance
 | Principle | Purpose |
 |-----------|---------|
-| `compliance-policy` | Regulatory compliance framework |
+| `compliance-policy` | Starting points for documenting regulatory compliance (not legal advice) |
 | `audit-logging` | Audit trail requirements |
 
 ### Infrastructure

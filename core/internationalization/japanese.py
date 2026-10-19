@@ -23,6 +23,10 @@ LOCALE = {
     "native_name": "日本語",
     "direction": "ltr",
     "script": "Japanese",  # Combination of Kanji, Hiragana, Katakana
+    # Not yet checked by a fluent speaker; see CONTRIBUTING.md, Improving Translations
+    "translation_status": "unreviewed",
+    # Drafted with an AI model when the locales were added (#85, co-authored by Claude Opus 4.5)
+    "translation_origin": "ai-generated",
     "variants": ["ja-JP"],
     "formats": {
         "date": "YYYY/MM/DD",
