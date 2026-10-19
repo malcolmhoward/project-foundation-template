@@ -10,6 +10,8 @@ with regulatory requirements, standards, and organizational policies.
 Introduced in v2.10.0.
 """
 
+from core.utils import COMPLIANCE_DISCLAIMER
+
 GUIDE_ID = "compliance-guide"
 
 GUIDE = {
@@ -23,6 +25,8 @@ RELATED_PRINCIPLES = ["security", "adr", "compliance-policy"]
 
 CONTENT = """
 # Compliance Guide
+
+> **""" + COMPLIANCE_DISCLAIMER + """**
 
 ## Overview
 

@@ -162,11 +162,11 @@ Every template generation includes educational content explaining:
 
 ### 3. Usage Logging
 Local logging (never transmitted) creates accountability:
-- Who generated templates
+- Who generated templates (the log is kept in the home directory of the account that ran the generator)
 - When they were generated
 - What project they targeted
 
-This creates a paper trail without surveillance. See [Generation Log](core/generation_log.py) for implementation.
+This creates a paper trail without surveillance. It is implemented by `log_usage_locally` in [core/generator.py](core/generator.py), which writes to `~/.project_foundation_logs/`. The separate, opt-in [generation log](core/generation_log.py) (`--include-generation-log`) records in the project itself which files were generated.
 
 ### 4. Template Warnings
 Generated files include clear markers:
@@ -182,7 +182,7 @@ Templates have expiration dates that:
 
 ### 6. Ethical Review Process (v3.7.0)
 
-All features and pull requests require documented ethical review:
+Every feature and pull request to PFT itself (Tier 1 in [For the Ecosystem](#for-the-ecosystem)) requires documented ethical review. Projects generated with PFT, and ecosystem projects, follow the levels described there: strongly recommended (Tier 2) or at the project's discretion (Tier 3).
 
 | Resource | Purpose |
 |----------|---------|
@@ -320,6 +320,7 @@ The ethical review process exists to prevent harm. Documentation and coordinatio
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 1.2.0 | 2026-10-18 | Scoped the review requirement in §6 to PFT itself (Tier 1), matching the ecosystem tiers; corrected where usage logging is implemented |
 | 1.1.0 | 2026-01-25 | Added Ethical Review Process section; clarified ecosystem tiers and ethical review requirements |
 | 1.0.0 | 2025-10-29 | Initial ethical framework |
 

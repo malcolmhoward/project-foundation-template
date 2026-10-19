@@ -19,6 +19,16 @@ SCRIPT_VERSION = "3.7.0"
 EXPIRATION_DATE = date(2027, 4, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
+# Shown wherever PFT presents compliance content, so it is never mistaken for legal advice
+# or for compliance itself: the "Clear disclaimers" mitigation for legal exploitation in
+# ETHICS.md, Identified Risks.
+COMPLIANCE_DISCLAIMER = (
+    "Not legal advice, and not compliance: this content explains common requirements so you "
+    "can ask better questions. Following it does not make a project compliant with GDPR, "
+    "HIPAA, SOC 2, PCI-DSS or any other regulation or standard. Whether a project complies "
+    "depends on its circumstances; confirm it with qualified legal and compliance professionals."
+)
+
 # Default config file names (searched in order)
 CONFIG_FILES = [".foundationrc", ".foundationrc.json", "foundationrc.json"]
 

@@ -123,6 +123,8 @@ Use --preset <name> to apply a preset configuration.
         print(f"  Principles:  {len(principles)} included")
         if recommended:
             print(f"  Best for:    {', '.join(recommended[:2])}")
+        if preset.get("note"):
+            print(f"  Note:        {preset['note']}")
         print()
 
     print("""

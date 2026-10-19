@@ -10,6 +10,8 @@ protecting both users and the organization from legal and financial risks.
 Introduced in v2.10.0.
 """
 
+from core.utils import COMPLIANCE_DISCLAIMER
+
 PRINCIPLE_ID = "compliance-policy"
 
 PRINCIPLE = {
@@ -21,6 +23,8 @@ PRINCIPLE = {
 
 EDUCATION = """
 📚 LEARNING: Data protection regulators can, and do, impose large fines for non-compliance.
+
+⚖️  """ + COMPLIANCE_DISCLAIMER + """
 
 Compliance isn't optional when handling user data or operating in regulated industries.
 Key regulations include:

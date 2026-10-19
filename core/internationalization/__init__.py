@@ -95,6 +95,59 @@ def get_locales_by_region(region: str) -> List[str]:
     return region_map.get(region.lower(), [])
 
 
+# How far each locale's translations can be trusted. "ai-reviewed" and "reviewed" need a
+# record of who checked them and when, in the locale's "reviewed_by" and "reviewed_on"
+# fields; only a fluent speaker can make a locale "reviewed" (see CONTRIBUTING.md,
+# Improving Translations).
+TRANSLATION_STATUSES = {
+    "source": "The original text that translations are made from.",
+    "unreviewed": ("Not yet reviewed by a fluent speaker; may contain errors. Check it before "
+                   "use, and send corrections as described in CONTRIBUTING.md."),
+    "ai-reviewed": ("Checked by the AI model named in reviewed_by, not by a fluent speaker; "
+                    "may still contain errors, and a fluent speaker's review is still wanted."),
+    "reviewed": "Reviewed by a fluent speaker.",
+}
+
+# Where each locale's translations came from, kept separate from their review status.
+TRANSLATION_ORIGINS = {
+    "source": "Written in this language as the original text.",
+    "ai-generated": ("Drafted with an AI model when the locales were added "
+                     "(#85, whose commit is co-authored by Claude Opus 4.5)."),
+    "human": "Written by a person translating the source text.",
+}
+
+_RECORDED_STATUSES = ("ai-reviewed", "reviewed")
+
+
+def get_translation_status(locale_id: str) -> Dict[str, Any]:
+    """Get a locale's translation status and origin, with descriptions and any review record."""
+    locale = get_locale(locale_id)
+    status = locale.get("translation_status")
+    if status not in TRANSLATION_STATUSES:
+        raise ValueError(f"{locale_id}: unknown translation status {status!r}")
+    origin = locale.get("translation_origin")
+    if origin not in TRANSLATION_ORIGINS:
+        raise ValueError(f"{locale_id}: unknown translation origin {origin!r}")
+    result = {
+        "status": status,
+        "description": TRANSLATION_STATUSES[status],
+        "origin": origin,
+        "origin_description": TRANSLATION_ORIGINS[origin],
+    }
+    if status in _RECORDED_STATUSES:
+        if not locale.get("reviewed_by") or not locale.get("reviewed_on"):
+            raise ValueError(f"{locale_id}: a {status} locale needs reviewed_by and reviewed_on")
+        result["reviewed_by"] = locale["reviewed_by"]
+        result["reviewed_on"] = locale["reviewed_on"]
+    return result
+
+
+# Check every locale's status when the package loads, so a locale cannot claim a
+# review that is not recorded even if nothing else reads it
+for _locale_id in ALL_LOCALES:
+    get_translation_status(_locale_id)
+
+
 def get_locale_metadata(locale_id: str) -> Dict[str, Any]:
     """Get metadata for a locale."""
     locale = get_locale(locale_id)
@@ -104,6 +157,8 @@ def get_locale_metadata(locale_id: str) -> Dict[str, Any]:
         "native_name": locale["native_name"],
         "direction": locale["direction"],
         "script": locale.get("script", "Latin"),
+        "translation_status": get_translation_status(locale_id)["status"],
+        "translation_origin": get_translation_status(locale_id)["origin"],
     }
 
 
@@ -145,6 +200,8 @@ def generate_translation_template(
             "name": locale["name"],
             "direction": locale["direction"],
             "generated_by": f"Project Foundation Template v{SCRIPT_VERSION}",
+            # Travels with the file, so nobody uses an unreviewed translation unawares
+            "translation_status": get_translation_status(locale_id),
         }
 
     template["common"] = translations.get("common", {
@@ -177,6 +234,11 @@ def generate_translation_template(
         "validation_failed": "",
         "server_error": "",
     })
+
+    if not include_metadata:
+        # The status still travels with the file, so nobody uses an unreviewed
+        # translation unawares
+        template = {"_translation_status": get_translation_status(locale_id), **template}
 
     if format.lower() == "yaml":
         return _dict_to_yaml(template)
@@ -234,16 +296,23 @@ def _dict_to_yaml(d: Dict, indent: int = 0) -> str:
 def get_supported_locales_table() -> str:
     """Generate a markdown table of supported locales."""
     lines = [
-        "| Code | Language | Native Name | Direction | Script |",
-        "|------|----------|-------------|-----------|--------|",
+        "| Code | Language | Native Name | Direction | Script | Translations | Origin |",
+        "|------|----------|-------------|-----------|--------|--------------|--------|",
     ]
 
     for locale_id, locale in ALL_LOCALES.items():
         direction = "RTL" if locale["direction"] == RTL else "LTR"
         script = locale.get("script", "Latin")
+        record = get_translation_status(locale_id)
         lines.append(
             f"| {locale_id} | {locale['name']} | {locale['native_name']} | "
-            f"{direction} | {script} |"
+            f"{direction} | {script} | {record['status']} | {record['origin']} |"
         )
 
+    lines.append("")
+    lines.append("Translation status: " + "; ".join(
+        f"**{status}**: {description}" for status, description in TRANSLATION_STATUSES.items()))
+    lines.append("")
+    lines.append("Origin: " + "; ".join(
+        f"**{origin}**: {description}" for origin, description in TRANSLATION_ORIGINS.items()))
     return "\n".join(lines)

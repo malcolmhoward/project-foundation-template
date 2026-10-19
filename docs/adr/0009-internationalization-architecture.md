@@ -160,6 +160,8 @@ Auto-generate translations using AI.
 
 **Rejected because**: Quality concerns, adds API dependency, cost.
 
+*Note (v3.7.0): this rejects machine translation as a runtime service. The shipped translations for the nine non-English locales were themselves drafted with an AI model when the locales were added (#85, whose commit is co-authored by Claude Opus 4.5), and no fluent speaker has reviewed them. Each locale now records this in `translation_origin` (`ai-generated`) and `translation_status` (`unreviewed`), and CONTRIBUTING.md, Improving Translations, describes how they can be corrected and reviewed.*
+
 ## Implementation Plan
 
 ### Phase 1: Core Infrastructure

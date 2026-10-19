@@ -1102,6 +1102,8 @@ This document contains retroactive ethical reviews for all Project Foundation Te
 - Links to authoritative local resources
 - Community contribution process for improvements
 
+*Note (v3.7.0): when this review was written, the first and third mitigations did not exist yet. They are now implemented: each locale records a `translation_status` (`source`, `unreviewed`, `ai-reviewed` or `reviewed`) and a `translation_origin` (the nine non-English locales are `ai-generated`), shown in the locale metadata, the supported-locales table and every generated translation template; and CONTRIBUTING.md, Improving Translations, describes how to report, correct and review translations. No locale has been reviewed by a fluent speaker yet, so all except English are marked `unreviewed`. The second mitigation is limited to the official references (ISO 639-1, BCP 47 tags) listed in each locale file's docstring.*
+
 #### Enabling Harm
 
 **Considerations**: Could i18n support expand reach of potential misuse?
