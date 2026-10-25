@@ -98,13 +98,19 @@ def get_locales_by_region(region: str) -> List[str]:
 # How far each locale's translations can be trusted. "ai-reviewed" and "reviewed" need a
 # record of who checked them and when, in the locale's "reviewed_by" and "reviewed_on"
 # fields; only a fluent speaker can make a locale "reviewed" (see CONTRIBUTING.md,
-# Improving Translations).
+# Improving Translations). An AI review should use a model from a different provider that
+# is not built on the same base model as the one that drafted the translations: models
+# from the same provider or with the same base architecture tend to make the same errors,
+# so they would miss them (Kim et al., "Correlated Errors in Large Language Models",
+# ICML 2025: https://proceedings.mlr.press/v267/kim25e.html).
 TRANSLATION_STATUSES = {
-    "source": "The original text that translations are made from.",
+    "source": "The original text, from which the translations are made.",
     "unreviewed": ("Not yet reviewed by a fluent speaker; may contain errors. Check it before "
                    "use, and send corrections as described in CONTRIBUTING.md."),
-    "ai-reviewed": ("Checked by the AI model named in reviewed_by, not by a fluent speaker; "
-                    "may still contain errors, and a fluent speaker's review is still wanted."),
+    "ai-reviewed": ("Checked by the AI model named in reviewed_by, not by a fluent speaker. "
+                    "That model should come from a different provider, and not be built on the "
+                    "same base model, as the one that drafted the translations. May still contain "
+                    "errors; a fluent speaker's review is still wanted."),
     "reviewed": "Reviewed by a fluent speaker.",
 }
 

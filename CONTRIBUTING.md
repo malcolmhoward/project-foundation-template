@@ -477,7 +477,7 @@ PFT includes translations for 10 locales in `core/internationalization/`. A wron
 
 | Status | Meaning |
 |--------|---------|
-| `source` | The original text that translations are made from (English) |
+| `source` | The original text, from which the translations are made (English) |
 | `unreviewed` | Not yet reviewed by a fluent speaker; may contain errors |
 | `ai-reviewed` | Checked by an AI model, not a fluent speaker; may still contain errors |
 | `reviewed` | Reviewed by a fluent speaker |
@@ -500,9 +500,9 @@ Open an issue titled "Translation: <language>" with the locale code, the key (fo
 
 ### Reviewing a Locale
 
-A locale becomes `reviewed` only when a fluent speaker has checked **all** of its translations. A review by an AI model or a machine-translation tool can make a locale `ai-reviewed`, not `reviewed`: it can catch mistakes, but it cannot vouch for the result. For an AI review, use a different model from the one that drafted the translations (see the origin above), and name the model and version in `reviewed_by`, so readers can judge how independent the check was.
+A locale becomes `reviewed` only when a fluent speaker has checked **all** of its translations. A review by an AI model or a machine-translation tool can make a locale `ai-reviewed`, not `reviewed`: it can catch mistakes, but it cannot vouch for the result. For an AI review, use a model from a different provider that is not built on the same base model as the one that drafted the translations (for the nine current locales, not an Anthropic model; see the origin above): models from the same provider or with the same base architecture tend to make the same errors and to rate each other's output too highly ([Kim et al., ICML 2025](https://proceedings.mlr.press/v267/kim25e.html); see also [Panickssery et al., 2024](https://arxiv.org/abs/2404.13076)). Name the model and version in `reviewed_by`, so readers can judge how independent the check was.
 
-1. Check every value in the locale's `translations`, and correct any you need to.
+1. Check every value in the locale's `translations`, and correct any that are wrong.
 2. Set `"translation_status": "reviewed"` (or `"ai-reviewed"`) and add `"reviewed_by"` (your GitHub username, or the AI model and version) and `"reviewed_on": "YYYY-MM-DD"`.
 3. Open a PR saying how you reviewed it (for example, how you know the language and how you checked each string). A maintainer who does not speak the language checks that the review is described, not the translations themselves.
 

@@ -131,7 +131,7 @@ def test_status_travels_without_metadata_too():
 def test_contributing_limits_what_an_ai_review_can_claim():
     contributing = (ROOT / "CONTRIBUTING.md").read_text(encoding="utf-8")
     assert "can make a locale `ai-reviewed`, not `reviewed`" in contributing
-    assert "use a different model from the one that drafted the translations" in contributing
+    assert "use a model from a different provider that is not built on the same base model" in contributing
 
 
 def test_ethics_scopes_required_review_to_pft_itself():

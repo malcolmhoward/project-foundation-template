@@ -1,2 +1,0 @@
-# Project Foundation Template - Runtime Dependencies
-# No external runtime dependencies - uses only Python standard library

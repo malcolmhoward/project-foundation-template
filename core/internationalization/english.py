@@ -21,7 +21,7 @@ LOCALE = {
     "native_name": "English",
     "direction": "ltr",
     "script": "Latin",
-    # The original text that translations are made from
+    # The original text, from which the other locales are translated
     "translation_status": "source",
     "translation_origin": "source",
     "variants": ["en-US", "en-GB", "en-AU", "en-CA"],
