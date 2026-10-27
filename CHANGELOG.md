@@ -51,6 +51,10 @@ same files). Connecting them to generated output is planned for 3.8.0
 - **3.7.0**: Generation log (`--include-generation-log`, `--log-format md|json|both`,
   `--log-to`), `validate_customization.py`, ACKNOWLEDGMENTS.md and a tiered ethical review
   process. A Tests workflow runs the test suite on Linux and macOS for pull requests.
+  Each locale records a `translation_status` (`source`, `unreviewed`, `ai-reviewed` or
+  `reviewed`) and a `translation_origin` (`source`, `ai-generated` or `human`), shown in its
+  metadata, the supported-locales table and generated translation templates, and
+  CONTRIBUTING.md describes how to report, correct and review translations.
 
 ### Changed
 - `setup_foundation_lite.py` is now a compatibility shim: it runs `generate_foundation.py` with
@@ -142,6 +146,18 @@ same files). Connecting them to generated output is planned for 3.8.0
   Conventional Commits' breaking-change marker is described correctly.
 - The generated MAINTAINERS.md listed a GitHub username guessed from the author's name, which
   could belong to someone else; it is now a placeholder, and the file has a template notice.
+- The compliance guide, the compliance-policy principle, the enterprise preset (recommended for
+  regulated industries) and the README's presets table said nothing about the limits of their
+  compliance content. Each now states that it is not legal advice and does not make a project
+  compliant.
+- The ethical review of internationalization relied on two mitigations that did not exist:
+  marking each translation's status, and a process for correcting translations. Both now exist.
+  The nine non-English locales were drafted with an AI model (#85) and no fluent speaker has
+  reviewed them, so they are marked `ai-generated` and `unreviewed`.
+- ETHICS.md §6 said every feature and pull request requires documented ethical review, while
+  its ecosystem tiers only recommend review for generated projects; §6 now applies to PFT
+  itself (Tier 1). It also pointed to `core/generation_log.py` for usage logging, which is
+  `log_usage_locally` in `core/generator.py`.
 
 ### Removed
 - The stale `foundation/` package, left behind by the rename to `core/`.

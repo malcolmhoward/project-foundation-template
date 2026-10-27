@@ -15,6 +15,8 @@ This preset is for:
 - Teams with dedicated compliance/security staff
 """
 
+from core.utils import COMPLIANCE_DISCLAIMER
+
 ENTERPRISE_PRESET = {
     "name": "enterprise",
     "description": "Full governance suite - all 30 principles enabled",
@@ -90,4 +92,7 @@ ENTERPRISE_PRESET = {
         "Accessibility-focused products",
         "International/multilingual projects",
     ],
+    # Shown by --list-presets: recommending a preset for regulated industries must not
+    # read as a promise of compliance
+    "note": COMPLIANCE_DISCLAIMER,
 }

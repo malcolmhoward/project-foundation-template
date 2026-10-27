@@ -19,6 +19,10 @@ LOCALE = {
     "native_name": "Español",
     "direction": "ltr",
     "script": "Latin",
+    # Not yet checked by a fluent speaker; see CONTRIBUTING.md, Improving Translations
+    "translation_status": "unreviewed",
+    # Drafted with an AI model when the locales were added (#85, co-authored by Claude Opus 4.5)
+    "translation_origin": "ai-generated",
     "variants": ["es-ES", "es-MX", "es-AR", "es-CO"],
     "formats": {
         "date": "DD/MM/YYYY",

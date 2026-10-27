@@ -471,6 +471,43 @@ Guides appear in `--list-guides` and the Python API; they are not yet written in
 
 Add tests to `tests/test_foundation_guides.py`. A test there checks that every `RELATED_PRINCIPLES` entry is a real principle ID.
 
+## Improving Translations
+
+PFT includes translations for 10 locales in `core/internationalization/`. A wrong translation can mislead the people it is meant to help, so each locale records how far its translations can be trusted in its `translation_status`:
+
+| Status | Meaning |
+|--------|---------|
+| `source` | The original text, from which the translations are made (English) |
+| `unreviewed` | Not yet reviewed by a fluent speaker; may contain errors |
+| `ai-reviewed` | Checked by an AI model, not a fluent speaker; may still contain errors |
+| `reviewed` | Reviewed by a fluent speaker |
+
+`ai-reviewed` and `reviewed` record who checked the locale and when, in `reviewed_by` and `reviewed_on`. Each locale also records where its translations came from in `translation_origin`: `source` (the original text), `ai-generated` (drafted with an AI model) or `human` (translated by a person). The nine non-English locales are `ai-generated`: they were drafted with an AI model when they were added in #85, whose commit is co-authored by Claude Opus 4.5.
+
+The status and origin are shown wherever the translations are used: in `get_locale_metadata()`, in the supported-locales table and in every generated translation template (in its `_metadata`, or in `_translation_status` when the metadata is left out).
+
+No locale has been reviewed yet: apart from English, every locale is `unreviewed`. Reviewing one is a good way to contribute if you are fluent in one of these languages.
+
+### Reporting a Translation Problem
+
+Open an issue titled "Translation: <language>" with the locale code, the key (for example `governance.code_of_conduct`), the current text, your suggested text, and why. You do not need to write code.
+
+### Correcting a Translation
+
+1. Edit the locale's file in `core/internationalization/` (for example `spanish.py`).
+2. Keep every key: only the translated values change.
+3. Open a PR that explains each change; a correction does not change the locale's status.
+
+### Reviewing a Locale
+
+A locale becomes `reviewed` only when a fluent speaker has checked **all** of its translations. A review by an AI model or a machine-translation tool can make a locale `ai-reviewed`, not `reviewed`: it can catch mistakes, but it cannot vouch for the result. For an AI review, use a model from a different provider that is not built on the same base model as the one that drafted the translations (for the nine current locales, not an Anthropic model; see the origin above): models from the same provider or with the same base architecture tend to make the same errors and to rate each other's output too highly ([Kim et al., ICML 2025](https://proceedings.mlr.press/v267/kim25e.html); see also [Panickssery et al., 2024](https://arxiv.org/abs/2404.13076)). Name the model and version in `reviewed_by`, so readers can judge how independent the check was.
+
+1. Check every value in the locale's `translations`, and correct any that are wrong.
+2. Set `"translation_status": "reviewed"` (or `"ai-reviewed"`) and add `"reviewed_by"` (your GitHub username, or the AI model and version) and `"reviewed_on": "YYYY-MM-DD"`.
+3. Open a PR saying how you reviewed it (for example, how you know the language and how you checked each string). A maintainer who does not speak the language checks that the review is described, not the translations themselves.
+
+If a reviewed locale later gets new keys, set it back to `unreviewed` until they are reviewed too. If you translate a locale yourself rather than correcting it, also set `"translation_origin": "human"`.
+
 ## Priority Assessment
 
 Significant changes should include priority evaluation:
