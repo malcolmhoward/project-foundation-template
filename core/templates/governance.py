@@ -22,7 +22,7 @@ def generate_code_of_conduct_content() -> str:
 TEMPLATE NOTICE: This is the Contributor Covenant v2.0
 (https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
 Customize enforcement, contact methods, and scope for your project.
-A CoC without enforcement promises protection it does not give.
+A Code of Conduct without enforcement promises protection it does not give.
 -->
 
 ## Our Pledge

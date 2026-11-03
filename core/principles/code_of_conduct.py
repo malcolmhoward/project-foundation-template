@@ -21,7 +21,7 @@ PRINCIPLE = {
 EDUCATION = """
 📚 LEARNING: A Code of Conduct tells newcomers what behaviour to expect and how problems are handled.
 
-A code of conduct sets expectations and tells people how to report
+A Code of Conduct sets expectations and tells people how to report
 problems. It's not about policing, but about setting positive expectations.
 
 Without one, you implicitly tolerate behavior that drives people away.
