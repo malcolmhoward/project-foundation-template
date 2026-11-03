@@ -24,7 +24,8 @@ EDUCATION = """
 
 Security researchers need to know how to report issues safely. Without a
 SECURITY.md, they may disclose publicly, report to the wrong channel, or
-not report at all. GitHub recommends security policies for all public repos.
+not report at all. GitHub lets you add a security policy that tells people
+how to report a vulnerability.
 (Reference: https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository)
 
 Key elements: Supported versions, reporting process, response timeline, and

@@ -20,23 +20,26 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Semantic Versioning is widely used by package ecosystems to signal the impact of a release.
+📚 LEARNING: Semantic Versioning signals the impact of a release in its version number.
 
-Semantic Versioning (semver.org) uses MAJOR.MINOR.PATCH format:
+Semantic Versioning uses MAJOR.MINOR.PATCH format:
+(Reference: https://semver.org/spec/v2.0.0.html)
 - **MAJOR**: Breaking changes that require user action to upgrade
 - **MINOR**: New features that are backward compatible
 - **PATCH**: Bug fixes that don't change the API
 
 Good versioning practices include:
-- Starting at 0.x.x for unstable/development versions
-- Reaching 1.0.0 when the API is stable and production-ready
+- Starting at 0.y.z for initial development, when the public API should not be
+  considered stable (SemVer item 4)
+- Reaching 1.0.0 once the software is used in production or users depend on a
+  stable API (the SemVer FAQ says it "should probably already be 1.0.0" then)
 - Documenting breaking changes prominently in release notes
 - Maintaining compatibility within major versions
 - Providing migration guides for major version bumps
 
 Version numbers are a promise to your users. Breaking that promise (shipping
-breaking changes in minor versions) destroys trust and makes users reluctant
-to upgrade - which means they miss security fixes and improvements.
+breaking changes in minor versions) can erode trust and make users reluctant
+to upgrade, so they miss security fixes and improvements.
 
 Automated tools like commitizen can enforce conventional commits that map
 directly to version bumps, removing guesswork from the release process.

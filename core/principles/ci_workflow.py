@@ -23,9 +23,10 @@ EDUCATION = """
 📚 LEARNING: CI/CD catches issues before they reach production.
 
 Continuous Integration ensures that every change is automatically tested.
-GitHub Actions provides free CI for public repositories and integrates
-directly with pull requests.
-(Reference: https://docs.github.com/en/actions/automating-builds-and-tests)
+GitHub Actions is free for public repositories that use standard GitHub-hosted
+runners (terms can change), and integrates directly with pull requests.
+(Reference: https://docs.github.com/en/actions/automating-builds-and-tests,
+https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions)
 
 A basic CI workflow runs tests, linting, and builds on every PR, giving
 reviewers confidence that the code works.

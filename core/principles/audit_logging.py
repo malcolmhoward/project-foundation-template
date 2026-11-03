@@ -16,7 +16,7 @@ PRINCIPLE = {
     "name": "Audit Logging",
     "why": "Security incidents require forensic data to understand scope and impact",
     "what": "Immutable, tamper-evident logs of security-relevant events with proper retention",
-    "risk": "Without audit logs, breaches go undetected and incident response is impossible",
+    "risk": "Without audit logs, breaches are harder to detect and investigate",
 }
 
 EDUCATION = """

@@ -150,7 +150,7 @@ Figures are measured at the end of v2.5.0 and v2.6.0. Test coverage was not meas
 
 ### Recommendation
 
-The v2.6.0 modularization completed **~60% of the v3.0.0 architectural work**:
+The v2.6.0 modularization completed an estimated **60% of the v3.0.0 architectural work**:
 
 - Package structure: ✅ Done
 - Module boundaries: ✅ Done

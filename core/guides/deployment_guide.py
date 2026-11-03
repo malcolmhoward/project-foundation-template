@@ -382,6 +382,8 @@ docker-compose logs -f app
 
 ### Key Metrics to Watch
 
+Example targets: set your own from your service's baseline.
+
 - **Error rate:** Should remain below 0.1%
 - **Response time:** p99 < 500ms
 - **CPU/Memory:** Below 80% utilization

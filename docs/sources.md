@@ -1,9 +1,10 @@
 # Sources Register
 
 This register lists the external sources behind claims in PFT's principles (`core/principles/`) and guides
-(`core/guides/`), which users reach through the Python API (and, for some principles, during interactive generation):
-laws, standards and third parties' terms. For each source it records what is relied on, where to find it, when and how it was checked, and
-the wording that supports the claim.
+(`core/guides/`), which users reach through the Python API (and, for some principles, during interactive generation),
+in the templates for generated files (`core/templates/`), and in CONTRIBUTING.md: laws, standards, specifications,
+studies and third parties' terms. For each source it records what is relied on, where to find it, when and how it was
+checked, and the wording that supports the claim.
 
 **WHY:** a reader should be able to check every claim about the outside world. Links break and laws change, so each
 entry names the provision, not just a URL, and says when it was last checked.
@@ -131,3 +132,68 @@ Checked 2026-11-03 unless stated otherwise.
 - **Alt text and search:** Google Search Central, "Image SEO best practices",
   https://developers.google.com/search/docs/appearance/google-images (checked 2026-10-27): "Google uses alt text along
   with computer vision algorithms and the contents of the page to understand the subject matter of the image."
+
+## Specifications and standards
+
+Checked 2026-10-27 unless stated otherwise.
+
+- **HTTP status codes:** RFC 9110, *HTTP Semantics*, section 15 (https://www.rfc-editor.org/rfc/rfc9110.html); 422 is
+  "Unprocessable Content" (section 15.5.21). RFC 6585, section 4 defines 429 Too Many Requests
+  (https://www.rfc-editor.org/rfc/rfc6585.html#section-4). Used in the API standards guide.
+- **OAuth 2.0:** RFC 6749, *The OAuth 2.0 Authorization Framework* (https://www.rfc-editor.org/rfc/rfc6749.html).
+- **Dates:** RFC 3339, *Date and Time on the Internet: Timestamps* (https://www.rfc-editor.org/rfc/rfc3339.html), a
+  profile of ISO 8601.
+- **Semantic Versioning 2.0.0:** https://semver.org/spec/v2.0.0.html. Item 4: "Major version zero (0.y.z) is for
+  initial development. Anything MAY change at any time. The public API SHOULD NOT be considered stable." FAQ "How do I
+  know when to release 1.0.0?": "If your software is being used in production, it should probably already be 1.0.0. If
+  you have a stable API on which users have come to depend, you should be 1.0.0." No source was found for how widely
+  SemVer is used, so the versioning principle makes no claim about adoption.
+- **Conventional Commits 1.0.0:** https://www.conventionalcommits.org/en/v1.0.0/. feat "correlates with MINOR", fix
+  "correlates with PATCH", and a `BREAKING CHANGE:` footer or `!` introduces a breaking change "correlating with MAJOR".
+  "Types other than feat and fix MAY be used"; "Additional types are not mandated by the Conventional Commits
+  specification."
+- **Version ranges:** PEP 440, "Compatible release" (https://peps.python.org/pep-0440/#compatible-release) for `~=`;
+  npm's node-semver README, "Caret Ranges" (https://github.com/npm/node-semver) for `^`. The versioned npm
+  documentation pages returned 404, so npm's own README was used.
+- **Contributor Covenant 2.0:** https://www.contributor-covenant.org/version/2/0/code_of_conduct/ (the generated code
+  of conduct). The site's latest version is 3.0; moving the template to it is a separate change.
+- **License texts:** the generated MIT text matches GitHub's canonical text (`gh api licenses/mit`, compared
+  2026-11-03).
+
+## Platform and programme documentation
+
+- **Removing secrets from git history:** GitHub Docs, "Removing sensitive data from a repository",
+  https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/removing-sensitive-data-from-a-repository
+  (checked 2026-10-27): "as a first step you need to revoke and/or rotate that secret"; rewriting history "may not be
+  warranted".
+- **GitHub Actions cost:** GitHub Docs, "GitHub Actions billing",
+  https://docs.github.com/en/billing/managing-billing-for-your-products/managing-billing-for-github-actions/about-billing-for-github-actions
+  (checked 2026-10-27): "GitHub Actions usage is free for self-hosted runners and for public repositories that use
+  standard GitHub-hosted runners."
+- **Security policies:** GitHub Docs, "Adding a security policy to your repository",
+  https://docs.github.com/en/code-security/getting-started/adding-a-security-policy-to-your-repository (checked
+  2026-10-27): "You can give instructions for how to report a security vulnerability in your project." The page does
+  not say GitHub recommends a policy for every public repository, so the text no longer claims that.
+- **Requesting a CVE ID:** CVE Program, https://www.cve.org/ReportRequest/ReportRequestForNonCNAs#RequestCVEID (checked
+  2026-10-27; the page renders with JavaScript, so its text was read from the site's own script): find the CVE
+  Numbering Authority (CNA) whose scope covers the product; the CNA of Last Resort is the fallback. No one has yet
+  checked the rendered page in a browser. GitHub Docs, "About repository security advisories" and "Publishing a
+  repository security advisory" (https://docs.github.com/en/code-security/security-advisories/working-with-repository-security-advisories/about-repository-security-advisories,
+  checked 2026-10-27): "GitHub is a CVE Numbering Authority (CNA) and is authorized to assign CVE identification
+  numbers"; "Anyone with admin permissions to a security advisory can request a CVE identification number."
+- **CVE and the NVD:** the CVE Program's website source, https://github.com/CVEProject/cve-website (`faqs.json` and
+  `About/RelatedEfforts.vue`, checked 2026-11-03): "CVE and NVD are two separate programs"; "The CVE List feeds NVD, which historically has built upon the information included in CVE Records";
+  "you can request that the CVE Record be updated by contacting the CNA that assigned the CVE ID".
+
+## Reports and studies
+
+- **Verizon 2026 Data Breach Investigations Report:** https://www.verizon.com/business/resources/reports/dbir/ (full
+  report PDF, p.10; checked 2026-10-27): "Exploitation of vulnerabilities is now the most common initial access vector
+  for breaches. It has risen to 31% in this year's reporting dataset, while credential abuse—the previous leader—is
+  down to 13%." The verification notes read the figure as a share of breaches with a known initial access vector
+  (excluding Error and Misuse breaches), which is how the principle states it. The report has no analysis of secrets
+  committed to code repositories, so it is not cited for that.
+- **AI-generated content and fabricated references** (CONTRIBUTING.md, Sources and Claims; checked 2026-10-25): Huang
+  et al., ACM Transactions on Information Systems, https://doi.org/10.1145/3703155 (a survey of hallucination in large
+  language models); Walters & Wilder, Scientific Reports 13:14045 (2023), https://doi.org/10.1038/s41598-023-41032-5,
+  which found fabricated citations in references generated by GPT-3.5 and GPT-4.

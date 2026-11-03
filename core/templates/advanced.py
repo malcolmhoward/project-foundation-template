@@ -487,14 +487,12 @@ The following templates were created:
 
 ## Why These Notices Matter
 
-Every year, companies face penalties for:
-- Claiming false compliance (fraud)
-- Inadequate security practices (negligence)
-- Toxic project cultures (liability)
-- Misleading documentation (misrepresentation)
+Organizations can face legal consequences for:
+- Claiming compliance they don't have
+- Inadequate security practices
+- Misleading documentation
 
-Don't be a statistic. Use these templates as education and starting points,
-not as final solutions.
+Use these templates as education and starting points, not as final solutions.
 
 ## Next Steps
 

@@ -37,7 +37,8 @@ localization (l10n) possible. Key practices include:
 - Handle timezone conversion correctly
 
 **Cultural Considerations:**
-- Color meanings vary by culture (red = luck in China, danger in US)
+- Color meanings can vary by culture (for example, red can signal luck in one
+  culture and danger in another)
 - Icons and images may need localization (mailbox styles differ globally)
 - Names and addresses have different formats worldwide
 
@@ -47,5 +48,6 @@ localization (l10n) possible. Key practices include:
 - Implement locale detection and user preference settings
 - Set up translation management workflows
 
-Retrofitting i18n into an existing codebase is expensive. Build it in from day one.
+Retrofitting i18n into an existing codebase can be costly, so consider it from
+the start.
 """

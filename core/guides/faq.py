@@ -133,9 +133,11 @@ docs(readme): update installation instructions
 
 ### How long until my PR is reviewed?
 
+Example targets (set ones your maintainers can meet):
+
 - **Small PRs (< 100 lines):** 1-2 business days
-- **Medium PRs (100-500 lines):** 2-5 business days
-- **Large PRs (> 500 lines):** Consider breaking into smaller PRs
+- **Medium PRs (100-400 lines):** 2-5 business days
+- **Large PRs (> 400 lines):** Consider breaking into smaller PRs
 
 Expedite by:
 - Writing a clear PR description

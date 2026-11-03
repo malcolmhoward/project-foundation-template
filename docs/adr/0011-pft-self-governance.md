@@ -31,7 +31,7 @@ The strict preset includes 12 governance principles:
 
 | Principle | Implementation Status | Notes |
 |-----------|----------------------|-------|
-| readme | Enhanced | 7x more comprehensive than template |
+| readme | Enhanced | Expanded well beyond the generated template |
 | contributing | Enhanced | Includes ethical review, attribution policy |
 | license | Aligned | MIT license |
 | code-of-conduct | Adopted | Generated and customized |

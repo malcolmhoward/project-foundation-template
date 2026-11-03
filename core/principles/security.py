@@ -5,7 +5,7 @@
 Security Basics Principle.
 
 Security isn't optional - it's a responsibility to your users.
-Basic security practices can prevent most common vulnerabilities.
+Basic security practices help prevent common vulnerabilities.
 """
 
 PRINCIPLE_ID = "security"
@@ -22,7 +22,6 @@ EDUCATION = """
 
 Security isn't optional - it's a responsibility to your users.
 Basic practices like dependency scanning and security policies
-can prevent most common vulnerabilities.
-
-Without security practices, you're one CVE away from headlines.
+help prevent common vulnerabilities, and a policy tells people how
+to report the ones that remain.
 """

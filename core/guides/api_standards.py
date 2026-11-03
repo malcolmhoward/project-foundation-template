@@ -5,7 +5,8 @@
 API Standards Guide.
 
 Provides practical guidance on designing, implementing, and documenting
-RESTful APIs following industry best practices.
+RESTful APIs: resource-oriented URLs, standard HTTP status codes, consistent
+formats and versioning.
 
 Introduced in v2.10.0.
 """
@@ -150,7 +151,7 @@ Content-Type: application/json
 | 403 | Forbidden | Authenticated but not authorized |
 | 404 | Not Found | Resource doesn't exist |
 | 409 | Conflict | Resource state conflict |
-| 422 | Unprocessable Entity | Validation errors |
+| 422 | Unprocessable Content | Validation errors |
 | 429 | Too Many Requests | Rate limit exceeded |
 
 ### Server Error Codes
@@ -160,6 +161,10 @@ Content-Type: application/json
 | 500 | Internal Server Error | Unexpected server error |
 | 502 | Bad Gateway | Upstream service error |
 | 503 | Service Unavailable | Service temporarily down |
+
+Status codes are defined in RFC 9110, section 15 (https://www.rfc-editor.org/rfc/rfc9110.html);
+429 Too Many Requests is defined in RFC 6585, section 4
+(https://www.rfc-editor.org/rfc/rfc6585.html#section-4).
 
 ## Request/Response Format
 
@@ -181,7 +186,8 @@ Content-Type: application/json
 
 **Conventions:**
 - Use snake_case for property names
-- Use ISO 8601 for dates: `2024-01-15T10:30:00Z`
+- Use ISO 8601 dates in the RFC 3339 profile: `2024-01-15T10:30:00Z`
+  (https://www.rfc-editor.org/rfc/rfc3339.html)
 - Use strings for IDs (even if numeric)
 - Include `null` for missing optional fields
 
@@ -413,6 +419,8 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIs...
 ```
 
 ### OAuth 2.0
+
+OAuth 2.0 is defined in RFC 6749 (https://www.rfc-editor.org/rfc/rfc6749.html).
 
 ```http
 # Authorization request

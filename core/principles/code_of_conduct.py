@@ -5,8 +5,8 @@
 Code of Conduct Principle.
 
 A Code of Conduct creates a safe, inclusive environment for all
-contributors. Research shows it increases diversity and reduces
-toxic interactions.
+contributors. It sets expectations and tells people how problems are
+reported and handled.
 """
 
 PRINCIPLE_ID = "code-of-conduct"
@@ -21,9 +21,8 @@ PRINCIPLE = {
 EDUCATION = """
 📚 LEARNING: A Code of Conduct tells newcomers what behaviour to expect and how problems are handled.
 
-Research shows that projects with CoCs have more diverse contributors
-and fewer toxic interactions. They're not about policing, but about
-setting positive expectations.
+A code of conduct sets expectations and tells people how to report
+problems. It's not about policing, but about setting positive expectations.
 
 Without one, you implicitly tolerate behavior that drives people away.
 """

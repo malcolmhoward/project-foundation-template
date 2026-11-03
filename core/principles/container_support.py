@@ -14,7 +14,7 @@ PRINCIPLE_ID = "container-support"
 
 PRINCIPLE = {
     "name": "Container Support",
-    "why": "Containers eliminate 'works on my machine' problems and enable consistent deployments",
+    "why": "Containers reduce 'works on my machine' problems and enable consistent deployments",
     "what": "Dockerfiles, compose configurations, and container best practices",
     "risk": "Without containerization, deployments are inconsistent and environment setup is error-prone",
 }
@@ -50,6 +50,6 @@ behavior from development laptop to production cluster. Best practices include:
 - Structured logging to stdout/stderr
 - Externalized configuration via environment variables
 
-Containers are the standard deployment unit. Supporting them isn't optional
-for modern projects - it's expected.
+If your users deploy with containers, supporting them well makes your
+project easier to adopt.
 """

@@ -23,7 +23,7 @@ EDUCATION = """
 📚 LEARNING: Architecture Decision Records preserve institutional knowledge.
 
 Michael Nygard introduced ADRs in 2011 as a way to capture the 'why' behind
-architectural decisions. Without them, teams often reverse good decisions
+architectural decisions. Without them, teams can reverse good decisions
 because they don't understand the original context.
 (Reference: https://cognitect.com/blog/2011/11/15/documenting-architecture-decisions)
 

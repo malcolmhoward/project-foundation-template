@@ -287,7 +287,7 @@ Response ← Controller ← Service ← Repository ← Database
 ### Code Review
 
 **As an author:**
-- Keep PRs small (< 400 lines)
+- Keep PRs small (< 400 lines is a common rule of thumb)
 - Write clear descriptions
 - Respond to feedback promptly
 

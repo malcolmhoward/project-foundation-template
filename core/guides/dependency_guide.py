@@ -67,6 +67,10 @@ your-project
 | `^1.2.3` | SemVer compatible | >=1.2.3, <2.0.0 |
 | `>=1.2,<2.0` | Range | Between 1.2 and 2.0 |
 
+Syntax differs by ecosystem: `==`, `~=` and comma-separated ranges are Python's
+(PEP 440, https://peps.python.org/pep-0440/#compatible-release); `^` is npm's
+(https://github.com/npm/node-semver). Check your package manager's documentation.
+
 ### Choosing Constraints
 
 **For applications:**
@@ -298,8 +302,11 @@ npm ls conflicting-package
 |---------|------|--------------|
 | MIT | Permissive | Include license |
 | Apache 2.0 | Permissive | Include license + notice |
-| GPL | Copyleft | Open source derivative works |
+| GPL | Copyleft | Make complete source code available (conditions in the license) |
 | BSD | Permissive | Include license |
+
+License texts: https://opensource.org/license/mit, https://opensource.org/license/apache-2-0,
+https://opensource.org/license/gpl-3-0. Summaries: https://choosealicense.com/licenses/
 
 ### License Checking
 
@@ -368,7 +375,7 @@ In your README or docs:
 ### Document Update Policy
 
 ```markdown
-## Dependency Update Policy
+## Dependency Update Policy (example: set intervals your team can meet)
 
 - Security updates: Within 24 hours
 - Patch updates: Weekly
