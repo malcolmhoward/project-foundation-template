@@ -14,7 +14,7 @@ PRINCIPLE_ID = "quality-assurance"
 
 PRINCIPLE = {
     "name": "Quality Assurance",
-    "why": "Defects found late in development usually cost more to fix than those caught early",
+    "why": "Defects found late in development often cost more to fix than those caught early",
     "what": "Systematic testing, code reviews, and quality gates throughout the development lifecycle",
     "risk": "Without QA processes, bugs reach production, eroding user trust and increasing maintenance costs",
 }
@@ -30,9 +30,9 @@ entire development process. It includes:
 - **Quality Gates**: Automated checks that prevent merging code that doesn't meet standards
 - **Static Analysis**: Tools that find potential bugs before code even runs
 
-The cost of fixing a bug increases exponentially as it moves through the pipeline.
-A bug caught in development might take minutes to fix; the same bug in production
-could require emergency patches, customer communication, and reputation repair.
+A bug found late often costs more to fix: one caught in development might take
+minutes, while the same bug in production could require emergency patches,
+customer communication, and reputation repair.
 
 QA isn't a phase - it's a continuous practice woven into every commit.
 """

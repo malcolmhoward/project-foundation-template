@@ -298,6 +298,7 @@ Lead maintainer succession:
 - **Email**: For sensitive matters
 
 ### Response Time Expectations
+[REPLACE: Adjust these targets to match your capacity]
 - Issues: Initial response within 1 week
 - PRs: Initial review within 2 weeks
 - Security issues: Within 48 hours

@@ -210,7 +210,7 @@ Reviewers evaluate PRs against these criteria:
 
 **WHAT**: Every change is reviewed by someone other than its author before it merges. If an AI assistant helped write the change, "someone other than the author" means a person, or a different AI model working from a fresh context. The same assistant re-reading its own work, in the same conversation or a new one, does not count.
 
-**WHY**: An author, human or AI, shares the assumptions that produced the change, so it tends to miss the same things twice. A reviewer who starts fresh with a different model, ideally from a different model family, sees different gaps. This is the [Mutual Fallibility](ETHICS.md#mutual-fallibility) design implication applied to review: redundant safeguards that assume both parties will make mistakes. A second opinion costs far less than a missed defect, so ask for it routinely, not only for large changes.
+**WHY**: An author, human or AI, shares the assumptions that produced the change, so it tends to miss the same things twice. A reviewer who starts fresh with a different model, ideally from a different provider and not built on the same base model, sees different gaps. This is the [Mutual Fallibility](ETHICS.md#mutual-fallibility) design implication applied to review: redundant safeguards that assume both parties will make mistakes. A second opinion costs far less than a missed defect, so ask for it routinely, not only for large changes.
 
 **HOW**:
 - Match the review to the change:
@@ -221,6 +221,22 @@ Reviewers evaluate PRs against these criteria:
 - If the change was reviewed before you opened the PR (for example by a different AI model), say so in the PR description, for example "Independent review: a different AI model; findings addressed in the second commit". Otherwise the maintainer's review is the independent review.
 - AI review supplements maintainer review; it does not replace it. A maintainer still approves and merges.
 - The habit is useful beyond pull requests too: ask a different reviewer to challenge a plan, a design or an analysis before you act on it.
+
+### Sources and Claims
+
+**WHAT**: Every claim about the outside world cites a source a reader can check. That covers laws and regulations, standards, studies and statistics, claimed costs and effects ("reduces bugs", "improves retention"), and what a third party's service, tool or terms do.
+
+**WHY**: PFT teaches governance, so an unsourced claim teaches readers to repeat it, and a wrong one can mislead them. AI assistants, which help write PFT, are known to produce plausible but unsupported content, including fabricated references ([Huang et al., ACM Transactions on Information Systems](https://doi.org/10.1145/3703155); [Walters & Wilder, Scientific Reports, 2023](https://doi.org/10.1038/s41598-023-41032-5)).
+
+**HOW**:
+- Separate claims about the world from the project's own advice. "Never commit secrets" is advice and needs no source; "committed secrets cause most breaches" is a claim and does.
+- Link the primary source: the regulation itself (for EU law, EUR-Lex), the standard's publisher, the RFC, the study, the provider's own documentation, not a summary of it. Name the article, section or edition.
+- Never cite from memory, including an AI assistant's: open the source and check that it says what the text claims.
+- If you can't find a source, say less: describe what the practice does rather than what it achieves, or hedge ("can", "may").
+- Label numbers that are your own choices (thresholds, response times, coverage targets) as examples or defaults.
+- Words that usually signal a claim needing a source: "research shows", "studies", "proven", "leading cause", "industry standard", "most", "required", "legally", and any percentage or multiplier. In the project's own advice, "always" and "never" are fine.
+- Record each external source in [docs/sources.md](docs/sources.md), with what it supports and when you checked it.
+- `tests/test_sources_and_claims.py` fails on common unsourced phrases such as "research shows". If a sentence with one of them is sourced, add it to the test's `ALLOWED` list with its source.
 
 ### What We Look For
 
@@ -381,7 +397,7 @@ EDUCATION = """
 📚 LEARNING: One sentence a user should remember.
 
 A short explanation of WHY and HOW. Cite a source for any statistic,
-or leave the statistic out.
+or leave the statistic out (see Sources and Claims, above).
 """
 ```
 

@@ -55,6 +55,10 @@ same files). Connecting them to generated output is planned for 3.8.0
   `reviewed`) and a `translation_origin` (`source`, `ai-generated` or `human`), shown in its
   metadata, the supported-locales table and generated translation templates, and
   CONTRIBUTING.md describes how to report, correct and review translations.
+  CONTRIBUTING.md's Sources and Claims section says how to source claims about the outside
+  world, CLAUDE.md points to it, `docs/sources.md` records each external source, and
+  `tests/test_sources_and_claims.py` fails on common unsourced phrasing (#124). The pull
+  request template asks for evidence under each reviewer box, and for what a change leaves out.
 
 ### Changed
 - `setup_foundation_lite.py` is now a compatibility shim: it runs `generate_foundation.py` with
@@ -162,6 +166,18 @@ same files). Connecting them to generated output is planned for 3.8.0
   segmentation presented as a requirement. Each statement now cites the provision it relies on,
   checked against the primary source, and `docs/sources.md` records how (#124). The
   accessibility and license principles now carry the not-legal-advice disclaimer too.
+- Other principles, guides and templates made claims no source supports, or got sources wrong
+  (#124): "research shows" that codes of conduct increase diversity, the cost of late bugs
+  rising "exponentially", committed secrets as "a leading cause of breaches", a Verizon report
+  cited without its edition or figure (now the 2026 report's 13%), GitHub said to "recommend"
+  security policies for all public repositories, Conventional Commits types said to "trigger"
+  version bumps, 422 named "Unprocessable Entity" (RFC 9110: "Unprocessable Content"), and a
+  CVE step to "update NVD", which projects do through the CVE Record's CNA. These are now
+  sourced, reworded or removed, and the project's own example numbers (review times, coverage
+  and performance targets, response times) are labelled as examples. ROADMAP.md and ADR 0004
+  call their 60% figure an estimate, ADR 0011 no longer claims its README is "7x more
+  comprehensive", and CONTRIBUTING.md asks for an independent reviewer from a different provider
+  rather than a different "model family".
 - The ethical review of internationalization relied on two mitigations that did not exist:
   marking each translation's status, and a process for correcting translations. Both now exist.
   The nine non-English locales were drafted with an AI model (#85) and no fluent speaker has

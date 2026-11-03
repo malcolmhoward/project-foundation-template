@@ -20,7 +20,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: Clear maintainership improves project health.
+📚 LEARNING: Clear maintainership tells contributors who decides and who to ask.
 
 A MAINTAINERS file establishes:
 - Who can merge pull requests
@@ -28,7 +28,6 @@ A MAINTAINERS file establishes:
 - Who makes release decisions
 - How to become a maintainer
 
-Projects with documented maintainership tend to have clearer
-governance, faster decisions, and better contributor retention.
-It also helps potential contributors know who to contact.
+Documenting it makes ownership and decision-making visible, and helps
+potential contributors know who to contact.
 """

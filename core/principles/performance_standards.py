@@ -14,7 +14,7 @@ PRINCIPLE_ID = "performance-standards"
 
 PRINCIPLE = {
     "name": "Performance Standards",
-    "why": "Users abandon software that feels slow",
+    "why": "Users can abandon software that feels slow",
     "what": "Documented performance budgets, benchmarks, and monitoring practices",
     "risk": "Without performance standards, gradual degradation goes unnoticed until users leave",
 }

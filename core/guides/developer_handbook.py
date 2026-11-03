@@ -204,7 +204,7 @@ def test_user_creation_without_email_raises_validation_error():
 
 ### Test Coverage
 
-**Minimum Requirements:**
+**Example Requirements (adjust to your project):**
 - Unit tests: 80% coverage
 - Critical paths: 100% coverage
 - New code: Must include tests

@@ -19,9 +19,10 @@ def generate_code_of_conduct_content() -> str:
     return f"""# Code of Conduct
 
 <!--
-TEMPLATE NOTICE: This is the Contributor Covenant v2.0.
+TEMPLATE NOTICE: This is the Contributor Covenant v2.0
+(https://www.contributor-covenant.org/version/2/0/code_of_conduct/).
 Customize enforcement, contact methods, and scope for your project.
-A CoC without enforcement is worse than no CoC at all.
+A Code of Conduct without enforcement promises protection it does not give.
 -->
 
 ## Our Pledge

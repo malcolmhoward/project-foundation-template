@@ -233,7 +233,7 @@ Fixes #123
 - Easier to review
 - Faster to merge
 - Lower risk of conflicts
-- Aim for < 400 lines changed
+- Aim for < 400 lines changed (a common rule of thumb, not a hard limit)
 
 **One PR, one purpose:**
 - Don't mix features

@@ -69,7 +69,7 @@ When you discover a security issue:
    ```
 
 3. **Wait for response**
-   - Allow 72 hours for initial response
+   - Allow the response time stated in the project's security policy
    - Be patient but follow up if needed
 
 ### Disclosure Timeline
@@ -99,6 +99,9 @@ Standard responsible disclosure:
    - Who can approve patches?
 
 ### Handling Reports
+
+The times below are examples: set ones your team can meet, and publish them
+in SECURITY.md.
 
 1. **Acknowledge quickly**
    - Respond within 72 hours
@@ -167,9 +170,12 @@ Thanks to [reporter] for responsible disclosure.
 
 For significant vulnerabilities:
 
-1. **Request CVE** from cve.org or through GitHub
-2. **Include CVE** in advisory
-3. **Update** NVD with details
+1. **Request a CVE ID** from the CVE Numbering Authority (CNA) whose scope covers
+   the product, or through a GitHub repository security advisory
+   (https://www.cve.org/ReportRequest/ReportRequestForNonCNAs#RequestCVEID)
+2. **Include the CVE ID** in the advisory
+3. **Update the CVE Record** through the CNA that assigned it; the NVD is a
+   separate program that has historically built on CVE Records
 
 ## Common Mistakes
 

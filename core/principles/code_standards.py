@@ -4,8 +4,8 @@
 """
 Code Standards Principle.
 
-Consistent code standards reduce cognitive load and enable teams to
-focus on solving problems rather than deciphering formatting.
+Consistent code standards let teams focus on solving problems rather than
+deciphering formatting.
 
 Introduced in v2.10.0.
 """
@@ -14,7 +14,7 @@ PRINCIPLE_ID = "code-standards"
 
 PRINCIPLE = {
     "name": "Code Standards",
-    "why": "Inconsistent code increases cognitive load and review time",
+    "why": "Inconsistent code is harder to read and review",
     "what": "Documented style guides, linting rules, and automated formatting",
     "risk": "Without standards, code reviews become style debates instead of logic reviews",
 }
@@ -25,7 +25,7 @@ EDUCATION = """
 Code standards are about more than aesthetics - they're about communication.
 When code follows consistent patterns, developers can:
 
-- **Read faster**: Familiar patterns reduce the mental effort to understand code
+- **Read more easily**: Familiar patterns make code easier to follow
 - **Review effectively**: Focus on logic and design, not formatting
 - **Onboard quickly**: New team members learn one style, not many
 - **Automate confidently**: Consistent code is easier to analyze and transform

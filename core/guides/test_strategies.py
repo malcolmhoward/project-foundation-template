@@ -47,7 +47,7 @@ enabling confident refactoring, and documenting expected behavior.
 ### Unit Tests
 - Test individual functions/methods in isolation
 - Fast execution (milliseconds)
-- High coverage target (80%+)
+- High coverage target (for example, 80%+)
 
 ### Integration Tests
 - Test component interactions

@@ -232,7 +232,7 @@ These features don't add governance principles but make the tool more usable for
 
 ### Gap Analysis from v2.6.0
 
-The v2.6.0 modularization completed approximately **60% of the v3.0.0 architectural work**:
+The v2.6.0 modularization completed an estimated **60% of the v3.0.0 architectural work**:
 
 | Requirement | v2.6.0 Status | Remaining Work |
 |-------------|---------------|----------------|

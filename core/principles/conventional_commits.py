@@ -22,14 +22,15 @@ PRINCIPLE = {
 EDUCATION = """
 📚 LEARNING: Conventional Commits enable automated workflows.
 
-The Conventional Commits specification (conventionalcommits.org)
-provides a lightweight convention for commit messages.
+The Conventional Commits specification provides a lightweight convention for
+commit messages.
+(Reference: https://www.conventionalcommits.org/en/v1.0.0/)
 
 Format: <type>(<scope>): <description>
 
 Types:
-- feat: New feature (triggers minor version bump)
-- fix: Bug fix (triggers patch version bump)
+- feat: New feature (correlates with a MINOR version bump in SemVer)
+- fix: Bug fix (correlates with a PATCH version bump)
 - docs: Documentation only
 - style: Formatting, no code change
 - refactor: Code restructuring
@@ -37,7 +38,9 @@ Types:
 - chore: Maintenance tasks
 
 Breaking changes are not a type: mark them with `!` before the colon
-(feat!: ...) or a `BREAKING CHANGE:` footer. Either triggers a major version bump.
+(feat!: ...) or a `BREAKING CHANGE:` footer. Either correlates with a MAJOR
+version bump. The specification defines only feat and fix; the other types
+above are a common convention it allows.
 
 Benefits:
 - Automated changelog generation
