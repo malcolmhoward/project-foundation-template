@@ -146,6 +146,11 @@ same files). Connecting them to generated output is planned for 3.8.0
   Conventional Commits' breaking-change marker is described correctly.
 - The generated MAINTAINERS.md listed a GitHub username guessed from the author's name, which
   could belong to someone else; it is now a placeholder, and the file has a template notice.
+- The LICENSE generated for `--license apache` or `--license gpl` contained only the short
+  notice each license asks you to put in source files, not the license itself, and its "Learn
+  more" link for the GPL returned 404. It now contains the full published text, taken from
+  GitHub's licenses API and checked against it by test, the header explains where the copyright
+  notice goes, and the links use choosealicense.com's names (`apache-2.0`, `gpl-3.0`) (#128).
 - The compliance guide, the compliance-policy principle, the enterprise preset (recommended for
   regulated industries) and the README's presets table said nothing about the limits of their
   compliance content. Each now states that it is not legal advice and does not make a project
