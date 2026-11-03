@@ -16,19 +16,29 @@ PRINCIPLE = {
     "name": "Accessibility",
     "why": "Many people live with disabilities; excluding them limits your reach and may violate laws",
     "what": "WCAG compliance, assistive technology support, and inclusive design practices",
-    "risk": "Without accessibility, projects exclude users and face legal liability",
+    "risk": "Without accessibility, projects exclude users and may face legal liability",
 }
 
 EDUCATION = """
-📚 LEARNING: Accessible software reaches more people, and accessible markup also helps search engines.
+📚 LEARNING: Accessible software reaches more people.
 
 Accessibility (a11y) ensures everyone can use your software regardless of ability.
-It's both an ethical imperative and increasingly a legal requirement.
+It's an ethical imperative, and for some software a legal one. For example
+(sources checked November 2026):
+- US: the Department of Justice's ADA Title II rule makes WCAG 2.1 Level AA the
+  technical standard for state and local governments' web content and mobile
+  apps, with compliance dates in 2027 and 2028.
+  (Reference: https://www.ada.gov/resources/2024-03-08-web-rule/)
+- EU: the European Accessibility Act has applied since 28 June 2025 to the
+  products and services it lists; microenterprises providing services are
+  exempt (Directive (EU) 2019/882, Arts. 2, 4(5), 31). Whether it applies to
+  your project depends on what you offer.
+  (Reference: https://eur-lex.europa.eu/eli/dir/2019/882/oj)
 
-**WCAG Guidelines:**
-- Level A: Minimum accessibility (required)
-- Level AA: Standard compliance (recommended, often legally required)
-- Level AAA: Enhanced accessibility (ideal for inclusive organizations)
+**WCAG conformance levels:** A (lowest), AA, and AAA (highest). Level AA means
+meeting all Level A and Level AA success criteria, and it is the level the
+US rule above uses. W3C does not recommend requiring Level AAA as a general
+policy for entire sites. (Reference: https://www.w3.org/TR/WCAG22/#cc1)
 
 **Core Principles (POUR):**
 - **Perceivable**: Content available to all senses (alt text, captions)
@@ -41,7 +51,8 @@ It's both an ethical imperative and increasingly a legal requirement.
 - Keyboard navigation for all interactive elements
 - Color contrast ratios meeting WCAG standards
 - Focus indicators for keyboard users
-- Alternative text for images and media
+- Alternative text for images and media (search engines use alt text too:
+  https://developers.google.com/search/docs/appearance/google-images)
 - Captions and transcripts for video content
 
 **Testing:**

@@ -150,6 +150,12 @@ same files). Connecting them to generated output is planned for 3.8.0
   regulated industries) and the README's presets table said nothing about the limits of their
   compliance content. Each now states that it is not legal advice and does not make a project
   compliant.
+- Legal and regulatory statements in the compliance guide and the compliance-policy,
+  accessibility and license principles were unsourced, and some were wrong: the GDPR's 72-hour
+  breach notification without its qualifiers, GDPR scope described as "EU residents", SOC 2
+  called a regulation and "certified", HIPAA encryption presented as a plain requirement, and
+  PCI DSS network segmentation listed as required. Each statement now cites the provision it
+  relies on, checked against the primary source, and `docs/sources.md` records how (#124).
 - The ethical review of internationalization relied on two mitigations that did not exist:
   marking each translation's status, and a process for correcting translations. Both now exist.
   The nine non-English locales were drafted with an AI model (#85) and no fluent speaker has
