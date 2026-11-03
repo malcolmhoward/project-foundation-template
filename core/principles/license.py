@@ -4,9 +4,11 @@
 """
 License Selection Principle.
 
-A license defines the legal terms for use and contribution. Without one,
-copyright gives others no permission to reuse the work, which prevents adoption.
+A license defines the legal terms for use and contribution. Without one, others
+generally have no permission to reuse the work, which prevents adoption.
 """
+
+from core.utils import COMPLIANCE_DISCLAIMER
 
 PRINCIPLE_ID = "license"
 
@@ -18,12 +20,16 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: No license means no permission to reuse your code.
+📚 LEARNING: Without a license, others generally have no permission to reuse your code.
 
-In the US, copyright applies automatically when a work is created, and only the
-copyright owner may reproduce it, adapt it or distribute copies. Without a
-license, others have no permission to do those things; other countries' rules
-differ. (Reference: https://www.copyright.gov/circs/circ01.pdf)
+⚖️  """ + COMPLIANCE_DISCLAIMER + """
+
+In the US, copyright protection exists automatically once a work is fixed (for
+example, saved to a file), and the copyright owner has the exclusive right,
+subject to exceptions such as fair use, to reproduce it, adapt it and
+distribute copies. Without a license, others have no permission to do those
+things; other countries' rules differ.
+(Reference: https://www.copyright.gov/circs/circ01.pdf)
 On GitHub, making a repository public lets others view it and fork it, making
 their own copies within GitHub (GitHub Terms of Service, D.5).
 (Reference: https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#5-license-grant-to-other-users)

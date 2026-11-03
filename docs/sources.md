@@ -33,7 +33,7 @@ Checked 2026-11-03 unless stated otherwise.
 | Art. 25 | Data protection by design and by default | obligations of "the controller" |
 | Art. 32(1)(a) | Encryption as an example measure | "including inter alia as appropriate: (a) the pseudonymisation and encryption of personal data" |
 | Art. 33(1)-(2) | Breach notification | "without undue delay and, where feasible, not later than 72 hours after having become aware of it ... unless the personal data breach is unlikely to result in a risk"; "The processor shall notify the controller without undue delay" |
-| Art. 34(1) | Telling people affected | "likely to result in a high risk ... without undue delay" |
+| Art. 34(1), 34(3) | Telling people affected | "likely to result in a high risk ... without undue delay"; 34(3): "shall not be required if any of the following conditions are met" |
 | Art. 83(4)-(5) | Fine ceilings | "up to 10 000 000 EUR, or in the case of an undertaking, up to 2 %"; "up to 20 000 000 EUR ... up to 4 % of the total worldwide annual turnover of the preceding financial year, whichever is higher" |
 
 - **Second source for Art. 33(1):** EDPB Guidelines 9/2022 on personal data breach notification, version 2.0,
@@ -45,9 +45,10 @@ Checked 2026-11-03 unless stated otherwise.
 - **Link:** https://eur-lex.europa.eu/eli/dir/2019/882/oj
 - **Version checked:** the Official Journal text (OJ L 151, 7.6.2019), as for the GDPR. The only consolidated version
   (CELEX 02019L0882-20190607) has no amendments; its corrigendum (OJ L 23, 29.1.2020) is in the Estonian version.
-- **Relied on:** Art. 2 (scope: listed products and services); Art. 4(5) ("Microenterprises providing services shall be
-  exempt from complying with the accessibility requirements"); Art. 31(2) ("They shall apply those measures from
-  28 June 2025"). Art. 31(3) lets Member States apply the Art. 4(8) obligations from 28 June 2027 at the latest.
+- **Relied on:** Art. 2 (scope: listed products and services); Art. 4(5) ("Microenterprises providing services shall
+  be exempt from complying with the accessibility requirements"); Art. 31(2): the Directive applies through Member
+  States' national measures ("They shall apply those measures from 28 June 2025"). Art. 31(3) lets Member States
+  apply the Art. 4(8) obligations from 28 June 2027 at the latest (the "transitional periods" the text mentions).
 
 ### HIPAA Security Rule: 45 CFR Part 164
 
@@ -104,8 +105,10 @@ Checked 2026-11-03 unless stated otherwise.
 
 - **US copyright default:** U.S. Copyright Office, Circular 1, https://www.copyright.gov/circs/circ01.pdf (checked
   2026-10-27): "Copyright protection in the United States exists automatically from the moment the original work of
-  authorship is fixed"; the owner has the exclusive right to reproduce, prepare derivative works and distribute copies.
-  Other countries' rules were not checked; the text says they differ.
+  authorship is fixed"; the owner has the exclusive right to reproduce, prepare derivative works and distribute copies,
+  "subject to certain statutory limitations", including fair use, which permits "the unlicensed use of
+  copyright-protected works in certain circumstances" (re-checked 2026-11-03). Other countries' rules were not
+  checked; the text says they differ.
 - **GitHub Terms of Service, D.5:**
   https://docs.github.com/en/site-policy/github-terms/github-terms-of-service#5-license-grant-to-other-users (checked
   2026-10-27): "By setting your repositories to be viewed publicly, you agree to allow others to view and 'fork' your

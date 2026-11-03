@@ -153,9 +153,10 @@ same files). Connecting them to generated output is planned for 3.8.0
 - Legal and regulatory statements in the compliance guide and the compliance-policy,
   accessibility and license principles were unsourced, and some were wrong: the GDPR's 72-hour
   breach notification without its qualifiers, GDPR scope described as "EU residents", SOC 2
-  called a regulation and "certified", HIPAA encryption presented as a plain requirement, and
-  PCI DSS network segmentation listed as required. Each statement now cites the provision it
-  relies on, checked against the primary source, and `docs/sources.md` records how (#124).
+  called a regulation, HIPAA encryption presented as a plain requirement, and PCI DSS network
+  segmentation presented as a requirement. Each statement now cites the provision it relies on,
+  checked against the primary source, and `docs/sources.md` records how (#124). The
+  accessibility and license principles now carry the not-legal-advice disclaimer too.
 - The ethical review of internationalization relied on two mitigations that did not exist:
   marking each translation's status, and a process for correcting translations. Both now exist.
   The nine non-English locales were drafted with an AI model (#85) and no fluent speaker has

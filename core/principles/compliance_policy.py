@@ -24,15 +24,15 @@ PRINCIPLE = {
 EDUCATION = """
 📚 LEARNING: Data protection regulators can impose large fines for non-compliance.
 
+⚖️  """ + COMPLIANCE_DISCLAIMER + """
+
 Under the GDPR, the most serious infringements can be fined up to EUR 20 million
 or, for an undertaking, 4% of its worldwide annual turnover, whichever is higher
 (Regulation (EU) 2016/679, Art. 83(5)).
 (Reference: https://eur-lex.europa.eu/eli/reg/2016/679/oj)
 
-⚖️  """ + COMPLIANCE_DISCLAIMER + """
-
 Which of these apply depends on where you operate, the data you handle and your
-industry. Frameworks to know (sources checked November 2026):
+industry. Frameworks to know (sources checked October-November 2026):
 
 - **GDPR** (EU law): applies to organisations established in the EU, and to
   those offering goods or services to, or monitoring the behaviour of, people in

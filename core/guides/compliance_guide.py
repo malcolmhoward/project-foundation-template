@@ -36,7 +36,7 @@ Software compliance ensures your project meets:
 - Organizational policies
 - Contractual obligations
 
-The sources below were checked in November 2026. Laws and standards change, so
+The sources below were checked in October and November 2026. Laws and standards change, so
 check the current text before relying on any detail here. `docs/sources.md` in
 the Project Foundation Template repository records how each was checked.
 
@@ -59,7 +59,8 @@ that offer goods or services to, or monitor the behaviour of, people in the EU
   authority without undue delay and, where feasible, within 72 hours of becoming
   aware of a breach, unless it is unlikely to result in a risk to people's rights
   and freedoms; people affected are told without undue delay when the risk is
-  high; a processor notifies the controller without undue delay
+  high, with exceptions (Art. 34(3)); a processor notifies the controller
+  without undue delay
 - Data protection by design and by default (Art. 25)
 
 **Implementation Checklist:**
@@ -75,8 +76,9 @@ that offer goods or services to, or monitor the behaviour of, people in the EU
 
 AICPA: https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2
 
-**What it is:** an examination, by a CPA, of a service organization's controls.
-It produces a report for customers; it is not a law or a certification.
+**What it is:** an examination, by a CPA, of a service organization's
+description of its system and its controls, which produces an examination
+report. It is not a law.
 
 **Trust Services categories:**
 - Security
@@ -98,10 +100,10 @@ It produces a report for customers; it is not a law or a certification.
 
 45 CFR Part 164: https://www.ecfr.gov/current/title-45/part-164
 
-**Applies to:** Covered entities and their business associates in the US
+**Applies to:** Covered entities and their business associates
 (45 CFR 164.104, 164.302)
 
-**Key Requirements (Security Rule):**
+**Key Requirements (45 CFR Part 164):**
 - Safeguards for electronic protected health information (ePHI)
 - Access control, including encryption (164.312(a))
 - "Addressable" specifications, such as encryption: assess each one, and
@@ -124,8 +126,8 @@ cardholder data environment
 - Regular testing
 - Security policies
 
-Network segmentation is not required, but it can reduce the scope of a PCI DSS
-assessment (PCI SSC FAQ 1135: https://www.pcisecuritystandards.org/faqs/1135).
+Network segmentation can reduce the scope of a PCI DSS assessment
+(PCI SSC FAQ 1135: https://www.pcisecuritystandards.org/faqs/1135).
 
 ## Implementing Compliance
 
@@ -136,8 +138,8 @@ assessment (PCI SSC FAQ 1135: https://www.pcisecuritystandards.org/faqs/1135).
 
 | Requirement | Framework | Implementation | Owner |
 |-------------|-----------|----------------|-------|
-| Data encryption | GDPR Art. 32 (encryption is one example measure), SOC 2 | AES-256 at rest (your choice) | Security |
-| Access logging | SOC2, HIPAA | Audit log service | Platform |
+| Data encryption | GDPR Art. 32 (encryption is one example measure) | AES-256 at rest (your choice) | Security |
+| Access logging | <the frameworks your assessor maps this to> | Audit log service | Platform |
 | Consent tracking | GDPR | Consent service | Product |
 ```
 
