@@ -27,6 +27,7 @@ Checked 2026-11-03 unless stated otherwise.
 
 | Provision | Used for | Wording relied on |
 |---|---|---|
+| Title | What the Regulation covers | "on the protection of natural persons with regard to the processing of personal data and on the free movement of such data" |
 | Art. 3(1)-(2) | Territorial scope | establishment in the Union; offering goods or services to, or monitoring the behaviour of, data subjects "who are in the Union" |
 | Art. 5(1)(c), 6(1), 15, 17, 17(3), 20 | Principles and rights | data minimisation; lawful bases; access; erasure and its exceptions; portability |
 | Art. 20(1) | Portability conditions | data "which he or she has provided to a controller", where processing is based on consent or a contract "and" "carried out by automated means" |
@@ -50,10 +51,16 @@ Checked 2026-11-03 unless stated otherwise.
   States' national measures ("They shall apply those measures from 28 June 2025"). Art. 31(3) lets Member States
   apply the Art. 4(8) obligations from 28 June 2027 at the latest (the "transitional periods" the text mentions).
 
-### HIPAA Security Rule: 45 CFR Part 164
+### HIPAA: 45 CFR Part 164
 
 - **Link:** https://www.ecfr.gov/current/title-45/part-164 (checked 2026-10-27 via the eCFR versioner, 2026-10-01 text)
-- **Relied on:** 164.104 and 164.302 (applies to covered entities and business associates); 164.306(d)(3) (addressable
+- **Relied on:** 164.104 and 164.302 (applies to covered entities and business associates); 164.306(a)(1) (re-checked
+  2026-11-03: "Ensure the confidentiality, integrity, and availability of all electronic protected health information
+  the covered entity or business associate creates, receives, maintains, or transmits"; (a)(3) refers to uses and
+  disclosures "not permitted or required under subpart E"); subpart E heading "Privacy of Individually Identifiable
+  Health Information" (re-checked 2026-11-03); 164.312(a)(1) "Standard: Access control" and 164.312(b)
+  "Standard: Audit controls" ("record and examine activity in information systems that contain or use electronic
+  protected health information", re-checked 2026-11-03); 164.306(d)(3) (addressable
   specifications: assess; implement if reasonable and appropriate, or document why not and implement an equivalent
   alternative measure if reasonable and appropriate); 164.312(a)(2)(iv) (encryption is addressable); 164.308(b),
   164.314(a), 164.504(e) (business associate contracts).

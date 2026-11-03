@@ -106,6 +106,8 @@ report. It is not a law.
 **Key Requirements (45 CFR Part 164):**
 - Safeguards for electronic protected health information (ePHI)
 - Access control, including encryption (164.312(a))
+- Audit controls that record and examine activity in systems holding ePHI
+  (164.312(b))
 - "Addressable" specifications, such as encryption: assess each one, and
   implement it if reasonable and appropriate, or document why not and use an
   equivalent measure if that is reasonable and appropriate (164.306(d)(3))

@@ -34,12 +34,18 @@ or, for an undertaking, 4% of its worldwide annual turnover, whichever is higher
 Which of these apply depends on where you operate, the data you handle and your
 industry. Frameworks to know (sources checked October-November 2026):
 
-- **GDPR** (EU law): applies to organisations established in the EU, and to
-  those offering goods or services to, or monitoring the behaviour of, people in
-  the EU (Art. 3). (Reference: https://eur-lex.europa.eu/eli/reg/2016/679/oj)
-- **HIPAA** (US law): its Security Rule applies to covered entities and their
-  business associates (45 CFR 164.104, 164.302).
-  (Reference: https://www.ecfr.gov/current/title-45/part-164/section-164.302)
+- **GDPR** (EU law): data protection, that is, the protection of people with
+  regard to the processing of their personal data. It applies to
+  organisations established in the EU, and to those offering goods or services
+  to, or monitoring the behaviour of, people in the EU (Art. 3).
+  (Reference: https://eur-lex.europa.eu/eli/reg/2016/679/oj)
+- **HIPAA** (US law): health information privacy and security. Its security
+  standards require covered entities and their business associates to ensure the
+  confidentiality, integrity and availability of electronic protected health
+  information (45 CFR 164.302, 164.306(a)); subpart E, "Privacy of
+  Individually Identifiable Health Information", sets which uses and
+  disclosures are permitted.
+  (Reference: https://www.ecfr.gov/current/title-45/part-164/section-164.306)
 - **SOC 2**: an examination by a CPA of a service organisation's controls
   relevant to security, availability, processing integrity, confidentiality or
   privacy; it is an examination report, not a law.
