@@ -61,7 +61,7 @@ python generate_foundation.py --plugins-dir ./my-plugins --project-name "My Proj
 ### Backward Compatibility
 
 All v2.x command-line arguments remain supported:
-`--project-name`, `--author-name`, `--output-dir`, `--license`, `--all`, `--coc`, `--security`, `--enhanced-security`, `--secrets-detection`, `--changelog`, `--issue-templates`, `--pr-template`, `--adr`, `--ci-workflow`, `--non-interactive`, `--accept-terms`, `--config`, `--export-json`
+`--project-name`, `--author-name`, `--output-dir`, `--license`, `--all`, `--include-coc`, `--include-security`, `--include-enhanced-security`, `--include-secrets-detection`, `--include-changelog`, `--include-github-templates` (issue and PR templates), `--include-adr`, `--include-ci`, `--non-interactive`, `--accept-terms`, `--config`, `--export-json`
 
 ### Config File Updates
 

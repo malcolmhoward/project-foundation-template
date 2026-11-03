@@ -188,7 +188,7 @@ Every feature and pull request to PFT itself (Tier 1 in [For the Ecosystem](#for
 |----------|---------|
 | [Ethical Review Process](docs/ethical-review/README.md) | Step-by-step review workflow |
 | [Review Template](docs/ethical-review/TEMPLATE.md) | Reusable template for reviews |
-| [Historical Audits](docs/ethical-review/historical-audits.md) | Retroactive reviews for v2.1.0-v3.7.0 |
+| [Historical Audits](docs/ethical-review/historical-audits.md) | Retroactive reviews for v2.2.0-v3.7.0 |
 
 The process ensures every change is evaluated for:
 - **Principle Zero compliance** (Direct, Enabling, Passive harm)

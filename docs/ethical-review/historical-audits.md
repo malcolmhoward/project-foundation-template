@@ -38,7 +38,7 @@ This document contains retroactive ethical reviews for all Project Foundation Te
 
 ### Overall Finding
 
-**All 17 versions (v2.2.0 - v3.7.0) pass Principle Zero** when considered with their mitigations and accepted residual risks. No version introduced unmitigated critical risks requiring immediate rollback or remediation.
+**All 18 versions (v2.2.0 - v3.7.0) pass Principle Zero** when considered with their mitigations and accepted residual risks. No version introduced unmitigated critical risks requiring immediate rollback or remediation.
 
 ### Cross-Version Accepted Residual Risks
 

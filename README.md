@@ -46,7 +46,7 @@ Governance templates carry responsibility, so PFT:
 - **Requires acknowledgment**: you confirm that templates are starting points, not finished products
 - **Prevents misuse**: features that would enable governance theater or mass automation are deliberately limited
 - **Logs usage locally**: a record of what was generated stays on your machine, never sent anywhere
-- **Expires gracefully**: an advisory date prompts you to check for updates instead of running outdated governance (warns, never blocks)
+- **Expires gracefully**: an advisory date prompts you to check for updates instead of running outdated governance (it warns; in interactive mode you continue by acknowledging it)
 
 Ethical review requirements scale based on a project's relationship to PFT:
 - **Tier 1** (Core components): Full ethical review required

@@ -10,7 +10,9 @@ Features are reintroduced gradually with:
 3. **Ethical review** - Principle Zero compliance
 4. **Community feedback** - Time for testing and refinement
 
-## Current State: v2.6.0 (Stabilization & Testability)
+> **Historical:** this roadmap led to v3.0.0. Versions 2.4.0 to 3.6.0 were not released separately; they ship together in 3.7.0 (see CHANGELOG.md). Later plans are tracked in GitHub issues.
+
+## State at v2.6.0 (Stabilization & Testability)
 
 **Milestone Achievement**: Modular package architecture with comprehensive test suite.
 
@@ -33,7 +35,7 @@ core/
 ├── education.py            # 12 principles and educational content
 └── templates/
     ├── core.py             # README, CONTRIBUTING, LICENSE, .gitignore
-    ├── governance.py       # CoC, SECURITY, CHANGELOG
+    ├── governance.py       # Code of Conduct, SECURITY, CHANGELOG
     ├── github.py           # Issue templates, PR template, workflows
     └── advanced.py         # ADR, secrets detection, enhanced security
 ```
@@ -664,7 +666,7 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | Principles | 23 | 30 | Exceeded | ✅ Complete |
 | Guides | 20 | 25 | Exceeded | ✅ Complete |
 | Generated Files | 15+ | 15+ | 0% | ✅ Complete |
-| Language Support | 18 | 17 | 6% | ✅ v3.5.0 |
+| Language Support | 18 | 18 | 0% | ✅ v3.5.0 (configurations) |
 | i18n Locales | 10 | 10 | 0% | ✅ v3.6.0 |
 | Generation Log | N/A | New feature | N/A | 🔄 v3.7.0 |
 | Dogfooding | N/A | New principle | N/A | 📋 v3.8.0 |
@@ -681,16 +683,16 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 2.1.x | ✅ Released | Lite edition, ethical safeguards |
 | 2.2.x | ✅ Released | Non-interactive mode, config files |
 | 2.3.x | ✅ Released | Issue/PR templates, CHANGELOG |
-| 2.4.x | ✅ Released | Enhanced security, secrets detection |
-| 2.5.x | ✅ Released | ADR system, CI workflows, smoke tests |
-| 2.6.0 | ✅ Released | Modular package, 148 tests |
-| 3.0.0 | ✅ Released | Plugin architecture, 30 principles, 25 guides, 5 presets |
-| 3.1.0 | ✅ Released | Onboarding files (GLOSSARY, MAINTAINERS generation) |
-| 3.2.0 | ✅ Released | Developer documentation guides |
-| 3.3.0 | ✅ Released | Extended governance principles |
-| 3.4.0 | ✅ Released | Advanced features |
-| 3.5.0 | ✅ Released | Programming language support (18 languages) |
-| 3.6.0 | ✅ Released | Internationalization (10 locales) |
+| 2.4.x | ✅ In 3.7.0 | Enhanced security, secrets detection |
+| 2.5.x | ✅ In 3.7.0 | ADR system, CI workflows, smoke tests |
+| 2.6.0 | ✅ In 3.7.0 | Modular package, 148 tests |
+| 3.0.0 | ✅ In 3.7.0 | Plugin architecture, 23 principles, 15 guides, 5 presets |
+| 3.1.0 | ✅ In 3.7.0 | Onboarding files (GLOSSARY, MAINTAINERS generation) |
+| 3.2.0 | ✅ In 3.7.0 | Developer documentation guides |
+| 3.3.0 | ✅ In 3.7.0 | Extended governance principles |
+| 3.4.0 | ✅ In 3.7.0 | Advanced features |
+| 3.5.0 | ✅ In 3.7.0 | Programming language support (18 languages) |
+| 3.6.0 | ✅ In 3.7.0 | Internationalization (10 locales) |
 | 3.7.0 | 🔄 In Progress | Generation log tracking, dogfooding documentation |
 | 3.8.0 | 📋 Planned | Template improvements (dogfooding insights) |
 | 3.9.0 | 📋 Planned | Multi-platform docs, container support |

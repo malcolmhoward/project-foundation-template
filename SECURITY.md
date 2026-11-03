@@ -5,13 +5,11 @@
 | Version | Supported          | Notes |
 | ------- | ------------------ | ----- |
 | 3.7.x   | Yes                | Current release |
-| 3.6.x   | Security fixes     | Previous minor |
-| 3.5.x   | Security fixes     | Previous minor |
-| < 3.5   | No                 | Please upgrade |
+| < 3.7   | No                 | Please upgrade (versions 2.4 to 3.6 were not released separately) |
 
 ## Reporting a Vulnerability
 
-We take security vulnerabilities seriously. As a governance template generator, a vulnerability in PFT could affect thousands of downstream projects.
+We take security vulnerabilities seriously. As a governance template generator, a vulnerability in PFT could affect every project generated with it.
 
 ### How to Report
 

@@ -5,7 +5,7 @@ Templates subpackage for Project Foundation Template.
 
 Modules:
     core: README, CONTRIBUTING, LICENSE, .gitignore
-    governance: CoC, SECURITY, CHANGELOG
+    governance: Code of Conduct, SECURITY, CHANGELOG
     github: Issue templates, PR template, workflows
     advanced: ADR, CI, secrets detection, enhanced security
     onboarding: GLOSSARY, MAINTAINERS, SCAFFOLD_MANIFEST

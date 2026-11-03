@@ -2,7 +2,13 @@
 
 ## Status
 
-Accepted (implemented in v3.5.0)
+Accepted (partly implemented in v3.5.0; see the note below)
+
+**Implementation note (v3.7.0):** the 18 language configurations exist in
+`core/programming_languages/`, one module per language, as plain dictionaries read
+through functions such as `get_language()` and `get_ci_workflow()`. There is no `base.py`
+or `LanguageConfig` dataclass, no `--language` option, and the generator does not use
+the configurations yet (Phase 5 below). Scala was missing from the Phase 3 list below and has been added.
 
 ## Date
 
@@ -150,7 +156,7 @@ Just link to language-specific setup guides.
 - [ ] Java, C#, Rust, Bash
 
 ### Phase 3: Additional Languages (7)
-- [ ] C, C++, PHP, Ruby, Swift, Kotlin
+- [ ] C, C++, PHP, Ruby, Swift, Kotlin, Scala
 
 ### Phase 4: Game Development (3)
 - [ ] GDScript, Lua, Haxe

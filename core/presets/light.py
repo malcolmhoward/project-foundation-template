@@ -17,7 +17,7 @@ This preset is for:
 
 LIGHT_PRESET = {
     "name": "light",
-    "description": "Basic governance - adds CoC, Security, Changelog to minimal",
+    "description": "Basic governance - adds Code of Conduct, Security, Changelog to minimal",
     "principles": [
         "readme",
         "contributing",
