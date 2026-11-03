@@ -228,6 +228,12 @@ When working on multi-file tasks, **always consider parallelization**:
 3. Test generated output against ethical guidelines
 4. Update version and expiration date appropriately
 
+### When Writing Claims
+Before writing any claim about laws, standards, studies, statistics, costs or third parties, follow the Sources and Claims section of CONTRIBUTING.md:
+- Never cite from memory. Fetch the source from its canonical publisher (see Web Content Fetching above) and check that it says what the text claims.
+- Record the source in `docs/sources.md`.
+- If the source can't be read, say less rather than guess, and say what you couldn't check.
+
 ### When Adding Features
 Evaluate proposed features using priority assessment:
 - **Priority**: High / Medium / Low
