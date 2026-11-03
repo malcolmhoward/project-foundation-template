@@ -32,7 +32,7 @@ CONTENT = """
 
 Software compliance ensures your project meets:
 - Laws and regulations (GDPR, HIPAA, CCPA)
-- Industry standards and attestations (ISO/IEC 27001, PCI DSS, SOC 2)
+- Industry standards (ISO/IEC 27001, PCI DSS) and audit reports (SOC 2)
 - Organizational policies
 - Contractual obligations
 
