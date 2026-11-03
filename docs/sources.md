@@ -125,6 +125,12 @@ Checked 2026-11-03 unless stated otherwise.
   grant), https://opensource.org/license/gpl-3-0 ; summaries from https://choosealicense.com/licenses/ (GPLv3:
   "Permissions of this strong copyleft license are conditioned on making available complete source code of licensed
   works") (checked 2026-10-27).
+- **License texts in generated LICENSE files** (`core/templates/license_texts.py`): GitHub's licenses API,
+  `gh api licenses/mit`, `licenses/apache-2.0` and `licenses/gpl-3.0` (fetched 2026-11-03), stored unchanged and
+  pinned by SHA-256 in `tests/test_license_texts.py`. The Apache 2.0 text matches this repository's own LICENSE file.
+  Where to put the copyright notice comes from each license's own "how to apply" section (the Apache appendix; the
+  GPL's "How to Apply These Terms to Your New Programs"). choosealicense.com pages are at `/licenses/mit/`,
+  `/licenses/apache-2.0/` and `/licenses/gpl-3.0/`; `/licenses/gpl/` returned 404 on 2026-11-03.
 
 ## Other sources
 

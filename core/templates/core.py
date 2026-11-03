@@ -13,6 +13,7 @@ Contains template generators for:
 
 from datetime import date
 from core.utils import SCRIPT_VERSION, OFFICIAL_REPO
+from core.templates.license_texts import LICENSE_SOURCES, LICENSE_TEXTS
 
 
 def generate_readme_content(project_name: str, license_type: str) -> str:
@@ -392,73 +393,69 @@ Generated with [Project Foundation Template]({OFFICIAL_REPO})
 """
 
 
-# License templates
+# License templates: the full published texts (see license_texts.py). MIT's copyright
+# line is filled in from the author and year; the Apache 2.0 and GPL texts have no
+# copyright line of their own, so they are used as published.
 LICENSE_TEMPLATES = {
-    "mit": """MIT License
+    "mit": LICENSE_TEXTS["mit"].replace("[year]", "{year}").replace("[fullname]", "{author}"),
+    "apache": LICENSE_TEXTS["apache"],
+    "gpl": LICENSE_TEXTS["gpl"],
+}
 
-Copyright (c) {year} {author}
+# Where to put the copyright notice for licenses whose text has no copyright line.
+# Both come from the "how to apply" section at the end of each license.
+_APPLY_NOTES = {
+    "apache": """Apache 2.0 has no copyright line in the license itself. Its appendix, "How to
+apply the Apache License to your work", says to attach a boilerplate notice to your
+files, in the file's comment syntax. The notice starts:
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+    Copyright {year} {author}
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+    Licensed under the Apache License, Version 2.0 (the "License");
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.""",
+Copy the full notice from the appendix at the end of the license below.
+""",
+    "gpl": """The GPL has no copyright line in the license itself. Its "How to Apply These
+Terms to Your New Programs" section, at the end of the license below, says it is
+safest to attach its notices to the start of each source file. The notice starts:
 
-    "apache": """Copyright {year} {author}
-
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-
-    http://www.apache.org/licenses/LICENSE-2.0
-
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.""",
-
-    "gpl": """This program is free software: you can redistribute it and/or modify
-it under the terms of the GNU General Public License as published by
-the Free Software Foundation, either version 3 of the License, or
-(at your option) any later version.
-
-Copyright (C) {year} {author}"""
+    <one line to give the program's name and a brief idea of what it does.>
+    Copyright (C) {year}  {author}
+""",
 }
 
 
 def generate_license_content(license_type: str, author_name: str) -> str:
     """Generate LICENSE file content with explanation."""
-    license_text = LICENSE_TEMPLATES.get(license_type, LICENSE_TEMPLATES["mit"])
-    license_text = license_text.format(
-        year=date.today().year,
-        author=author_name
-    )
+    if license_type not in LICENSE_TEMPLATES:
+        license_type = "mit"
+    year = date.today().year
+    # Fill in only MIT's copyright line; the other texts are used exactly as published,
+    # so they are never passed through str.format().
+    if license_type == "mit":
+        license_text = LICENSE_TEMPLATES["mit"].replace("{year}", str(year)).replace("{author}", author_name)
+    else:
+        license_text = LICENSE_TEMPLATES[license_type]
+    slug = LICENSE_SOURCES[license_type][0]
+    apply_note = _APPLY_NOTES.get(license_type, "")
+    if apply_note:
+        apply_note = "\n" + apply_note.format(year=year, author=author_name)
 
     # Add educational header
     educational_header = f"""# LICENSE NOTICE
 
 This is a TEMPLATE license. You must:
 1. Verify this license suits your needs
-2. Replace {{author}} with actual copyright holder
+2. Check that the copyright holder and year are right (in the license for MIT,
+   in the notice below for Apache 2.0 and the GPL)
 3. Consider patent, trademark, and other IP concerns
 4. Consult legal counsel for commercial projects
+5. Delete this notice, down to and including the line of dashes, so the file
+   contains only the license
 
 License type: {license_type.upper()}
-Learn more: https://choosealicense.com/licenses/{license_type}/
-
+Learn more: https://choosealicense.com/licenses/{slug}/
+{apply_note}
 ---
 
 """
