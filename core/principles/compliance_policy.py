@@ -44,7 +44,7 @@ industry. Frameworks to know (sources checked October-November 2026):
   confidentiality, integrity and availability of electronic protected health
   information (45 CFR 164.302, 164.306(a)); subpart E, "Privacy of
   Individually Identifiable Health Information", sets which uses and
-  disclosures are permitted.
+  disclosures are permitted or required.
   (Reference: https://www.ecfr.gov/current/title-45/part-164/section-164.306)
 - **SOC 2**: an examination by a CPA of a service organisation's controls
   relevant to security, availability, processing integrity, confidentiality or

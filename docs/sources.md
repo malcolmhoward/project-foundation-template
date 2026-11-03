@@ -1,8 +1,8 @@
 # Sources Register
 
 This register lists the external sources behind claims in PFT's principles (`core/principles/`) and guides
-(`core/guides/`), which users see through `--list-principles`, `--list-guides` and the Python API: laws, standards and
-third parties' terms. For each source it records what is relied on, where to find it, when and how it was checked, and
+(`core/guides/`), which users reach through the Python API (and, for some principles, during interactive generation):
+laws, standards and third parties' terms. For each source it records what is relied on, where to find it, when and how it was checked, and
 the wording that supports the claim.
 
 **WHY:** a reader should be able to check every claim about the outside world. Links break and laws change, so each
