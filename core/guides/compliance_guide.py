@@ -31,23 +31,37 @@ CONTENT = """
 ## Overview
 
 Software compliance ensures your project meets:
-- Regulatory requirements (GDPR, HIPAA, SOC2)
-- Industry standards (ISO 27001, PCI-DSS)
+- Laws and regulations (GDPR, HIPAA, CCPA)
+- Industry standards (ISO/IEC 27001, PCI DSS) and audit reports (SOC 2)
 - Organizational policies
 - Contractual obligations
+
+The sources below were checked in October and November 2026. Laws and standards change, so
+check the current text before relying on any detail here. `docs/sources.md` in
+the Project Foundation Template repository records how each was checked.
 
 ## Common Compliance Frameworks
 
 ### GDPR (General Data Protection Regulation)
 
-**Applies to:** Processing EU residents' personal data
+Regulation (EU) 2016/679: https://eur-lex.europa.eu/eli/reg/2016/679/oj
+
+**Applies to:** Organizations established in the EU, and organizations elsewhere
+that offer goods or services to, or monitor the behaviour of, people in the EU
+(Art. 3)
 
 **Key Requirements:**
-- Lawful basis for processing
-- Data minimization
-- Right to access and deletion
-- Data breach notification (72 hours)
-- Privacy by design
+- A lawful basis for processing (Art. 6)
+- Data minimisation (Art. 5(1)(c))
+- Rights of access (Art. 15), erasure (Art. 17, which has exceptions in
+  Art. 17(3)) and data portability (Art. 20)
+- Breach notification (Arts. 33-34): the controller notifies the supervisory
+  authority without undue delay and, where feasible, within 72 hours of becoming
+  aware of a breach, unless it is unlikely to result in a risk to people's rights
+  and freedoms; people affected are told without undue delay when the risk is
+  high, with exceptions (Art. 34(3)); a processor notifies the controller
+  without undue delay
+- Data protection by design and by default (Art. 25)
 
 **Implementation Checklist:**
 - [ ] Document all personal data processing
@@ -60,9 +74,13 @@ Software compliance ensures your project meets:
 
 ### SOC 2
 
-**Applies to:** Service organizations handling customer data
+AICPA: https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2
 
-**Trust Service Criteria:**
+**What it is:** an examination, by a CPA, of a service organization's
+description of its system and its controls, which produces an examination
+report. It is not a law.
+
+**Trust Services categories:**
 - Security
 - Availability
 - Processing Integrity
@@ -80,37 +98,50 @@ Software compliance ensures your project meets:
 
 ### HIPAA (Health Insurance Portability and Accountability Act)
 
-**Applies to:** Healthcare data in the US
+45 CFR Part 164: https://www.ecfr.gov/current/title-45/part-164
 
-**Key Requirements:**
-- Protected Health Information (PHI) safeguards
-- Access controls
-- Audit trails
-- Encryption
-- Business Associate Agreements
+**Applies to:** Covered entities and their business associates
+(45 CFR 164.104, 164.302)
 
-### PCI-DSS (Payment Card Industry Data Security Standard)
+**Key Requirements (45 CFR Part 164):**
+- Safeguards for electronic protected health information (ePHI)
+- Access control, including encryption (164.312(a))
+- Audit controls that record and examine activity in systems holding ePHI
+  (164.312(b))
+- "Addressable" specifications, such as encryption: assess each one, and
+  implement it if reasonable and appropriate, or document why not and use an
+  equivalent measure if that is reasonable and appropriate (164.306(d)(3))
+- Business associate contracts (164.308(b), 164.314(a), 164.504(e))
 
-**Applies to:** Handling credit card data
+### PCI DSS (Payment Card Industry Data Security Standard)
 
-**Key Requirements:**
-- Network segmentation
-- Encryption of cardholder data
+PCI Security Standards Council: https://www.pcisecuritystandards.org/standards/pci-dss/
+(v4.0.1 is the only active version since v4.0 was retired on 31 December 2024)
+
+**Applies to:** Entities that store, process or transmit cardholder data or
+sensitive authentication data, or that could affect the security of the
+cardholder data environment
+
+**Requirement areas (examples; the standard lists the full requirements):**
+- Protection of cardholder data
 - Access control
 - Regular testing
 - Security policies
+
+Network segmentation can reduce the scope of a PCI DSS assessment
+(PCI SSC FAQ 1135: https://www.pcisecuritystandards.org/faqs/1135).
 
 ## Implementing Compliance
 
 ### 1. Identify Requirements
 
 ```markdown
-## Compliance Requirements Matrix
+## Compliance Requirements Matrix (example)
 
 | Requirement | Framework | Implementation | Owner |
 |-------------|-----------|----------------|-------|
-| Data encryption | GDPR, SOC2 | AES-256 at rest | Security |
-| Access logging | SOC2, HIPAA | Audit log service | Platform |
+| Data encryption | GDPR Art. 32 (encryption is one example measure) | AES-256 at rest (your choice) | Security |
+| Access logging | <the frameworks your assessor maps this to> | Audit log service | Platform |
 | Consent tracking | GDPR | Consent service | Product |
 ```
 
@@ -215,7 +246,7 @@ class EncryptedField:
 - Change management procedures
 - Training records
 
-**Documentation Template:**
+**Documentation Template (example values):**
 
 ```markdown
 # Control Documentation
@@ -227,11 +258,11 @@ CTRL-001
 Data Encryption at Rest
 
 ## Framework Mapping
-- SOC2: CC6.1
-- GDPR: Article 32
+- SOC 2: <the criterion your auditor maps this control to>
+- GDPR: Article 32(1)(a) (lists encryption as an example of an appropriate measure)
 
 ## Description
-All sensitive data must be encrypted at rest using AES-256.
+All sensitive data must be encrypted at rest using AES-256 (our chosen standard).
 
 ## Implementation
 - Database: Transparent Data Encryption (TDE)
@@ -346,6 +377,11 @@ Maintain records of:
 
 ### Implementing GDPR Rights
 
+Access (Art. 15), erasure (Art. 17) and portability (Art. 20):
+https://eur-lex.europa.eu/eli/reg/2016/679/oj. Erasure has exceptions
+(Art. 17(3)), and portability applies only to data the person provided, where
+processing is based on consent or a contract and is automated (Art. 20(1)).
+
 **Right to Access:**
 ```python
 def get_user_data_export(user_id: str) -> dict:
@@ -386,7 +422,7 @@ def delete_user_data(user_id: str) -> DeletionReport:
 
 Before using third-party services:
 
-- [ ] Review their compliance certifications
+- [ ] Review their certifications and audit reports (for example ISO/IEC 27001 certification, a SOC 2 report)
 - [ ] Sign Data Processing Agreements (DPA)
 - [ ] Verify data handling practices
 - [ ] Assess security controls
@@ -395,14 +431,14 @@ Before using third-party services:
 ### Third-Party Risk Management
 
 ```markdown
-## Vendor Risk Assessment
+## Vendor Risk Assessment (example values)
 
 ### Vendor: Cloud Provider X
 
 | Category | Risk Level | Mitigation |
 |----------|------------|------------|
 | Data location | Medium | Contractual data residency |
-| Security | Low | SOC2 Type II certified |
+| Security | Low | Current SOC 2 report reviewed |
 | Availability | Low | 99.99% SLA |
 | Vendor lock-in | Medium | Abstract storage layer |
 ```
@@ -434,7 +470,7 @@ Before using third-party services:
 1. **Detect** - Identify potential compliance breach
 2. **Assess** - Determine scope and severity
 3. **Contain** - Limit further exposure
-4. **Notify** - Inform required parties (72h for GDPR)
+4. **Notify** - Inform required parties (GDPR: the supervisory authority within 72 hours where feasible, see Art. 33)
 5. **Remediate** - Fix the root cause
 6. **Document** - Record all actions taken
 7. **Review** - Update controls to prevent recurrence
