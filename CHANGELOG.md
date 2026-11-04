@@ -60,9 +60,11 @@ enterprise presets generate the same files). Connecting them to generated output
   `tests/test_sources_and_claims.py` fails on common unsourced phrasing (#124). The pull
   request template asks for evidence under each reviewer box, and for what a change leaves out.
 - The generated CHANGELOG.md includes compare-view links for each version, with a
-  `[REPLACE:owner/repo]` marker for the repository (#14).
-- README links ACKNOWLEDGMENTS.md and the attribution policy (#74); the ethical review
-  template and the pull request template link ETHICS.md as the source of the framework (#75).
+  `[REPLACE:owner/repo]` marker for the repository ([#14](https://github.com/malcolmhoward/project-foundation-template/issues/14)).
+- README links [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) and the
+  [attribution policy](CONTRIBUTING.md#attribution-policy) ([#74](https://github.com/malcolmhoward/project-foundation-template/issues/74)); the ethical review
+  template and the pull request template link [ETHICS.md](ETHICS.md) as the source of the
+  framework ([#75](https://github.com/malcolmhoward/project-foundation-template/issues/75)).
 
 ### Changed
 - `setup_foundation_lite.py` is now a compatibility shim: it runs `generate_foundation.py` with
@@ -71,7 +73,8 @@ enterprise presets generate the same files). Connecting them to generated output
   written with escaped backticks.
 - The generation log records files by path relative to the output directory
   (for example `.github/workflows/ci.yml`).
-- The advisory expiration date is now 2027-05-01, six months after this release (ADR 0003).
+- The advisory expiration date is now 2027-05-01, six months after this release
+  ([ADR 0003](docs/adr/0003-advisory-expiration.md)).
 - Non-interactive runs no longer overwrite existing files: they stop with an error unless
   `--force-overwrite` is given. Interactive runs still ask first. Only files the run would
   write are checked, so a repository's own files that the run does not generate (for example
