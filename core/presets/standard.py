@@ -1,10 +1,10 @@
 # core/presets/standard.py
-# Standard preset - Recommended default
+# Standard preset - Recommended starting point
 
 """
 Standard preset for Project Foundation Template.
 
-The recommended default for most projects:
+The recommended starting point for most projects:
 - All light preset features
 - GitHub issue and PR templates
 - CI workflow for automated testing
