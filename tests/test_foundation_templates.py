@@ -104,6 +104,22 @@ class TestGovernanceTemplates(unittest.TestCase):
         self.assertIn("Keep a Changelog", content)
         self.assertIn("Semantic Versioning", content)
 
+    def test_changelog_compare_links(self):
+        """Changelog should include compare-view links with a flagged marker (#14)."""
+        from validate_customization import PLACEHOLDER_PATTERNS
+
+        content = generate_changelog_content("TestProject")
+        repo = "https://github.com/[REPLACE:owner/repo]"
+        unreleased = f"[Unreleased]: {repo}/compare/v0.1.0...HEAD"
+        first = f"[0.1.0]: {repo}/releases/tag/v0.1.0"
+        self.assertIn(unreleased, content)
+        self.assertIn(first, content)
+        # No spaces, so Markdown parses them as link definitions
+        self.assertNotIn(" ", unreleased.split(": ", 1)[1])
+        # validate_customization.py reports the marker until it is replaced
+        marker = PLACEHOLDER_PATTERNS[0][0]
+        self.assertRegex(unreleased, marker)
+
 
 class TestGitHubTemplates(unittest.TestCase):
     """Test GitHub template generators."""

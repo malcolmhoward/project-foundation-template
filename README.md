@@ -335,6 +335,7 @@ project-foundation-template/
 | [MIGRATION.md](MIGRATION.md) | Upgrading between versions |
 | [CONTRIBUTING.md](CONTRIBUTING.md) | How to contribute |
 | [CHANGELOG.md](CHANGELOG.md) | Version history |
+| [ACKNOWLEDGMENTS.md](ACKNOWLEDGMENTS.md) | Credits for feature inspiration, under the [attribution policy](CONTRIBUTING.md#attribution-policy) |
 | [SEMANTIC_VERSIONING.md](SEMANTIC_VERSIONING.md) | Versioning policy |
 | [docs/adr/](docs/adr/) | Architecture Decision Records |
 
