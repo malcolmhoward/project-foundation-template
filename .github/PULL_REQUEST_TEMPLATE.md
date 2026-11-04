@@ -73,9 +73,9 @@
 - [ ] The Principle Zero and Ethical Pause sections are complete
   - Evidence: <!-- where each section is answered -->
 - [ ] Every identified risk has a mitigation or a documented justification, and no critical risk is accepted without a mitigation
-  - Evidence: <!-- Start with the totals: how many risks are mitigated, how many are accepted, and whether any is critical. Then give each risk named above its own line, in whichever of the two forms below fits it, including risks from what the change leaves out. Delete the example lines you don't use, or write "No risks identified." -->
-    - **Risk: <!-- what could go wrong, in one sentence -->** **Mitigated:** <!-- what prevents or limits it, with a link to the code, test, or doc -->
-    - **Risk: <!-- what could go wrong, in one sentence -->** **Accepted. Justification:** <!-- why it is acceptable without a mitigation -->
+  - Evidence: <!-- After this comment, on this line, give the totals: how many risks are mitigated, how many are accepted, and whether any is critical. Below, give each risk named above its own line, in whichever of the two forms fits it, including risks from what the change leaves out. Delete the example lines you don't use, or write "No risks identified." -->
+    - **Risk:** <!-- what could go wrong, in one sentence --> **Mitigated:** <!-- what prevents or limits it, with a link to the code, test, or doc -->
+    - **Risk:** <!-- what could go wrong, in one sentence --> **Accepted. Justification:** <!-- why it is acceptable without a mitigation -->
 - [ ] Educational value preserved
   - Evidence: <!-- what the change still teaches, and where -->
 - [ ] Independently reviewed by someone other than the author: a person, or a different AI model from a fresh context (see CONTRIBUTING.md, Independent Review)
