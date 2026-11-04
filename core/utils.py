@@ -16,7 +16,7 @@ from pathlib import Path
 # Version and expiration
 SCRIPT_VERSION = "3.7.0"
 # Advisory expiration: about 6 months after release (ADR 0003). Update with every release.
-EXPIRATION_DATE = date(2027, 4, 1)
+EXPIRATION_DATE = date(2027, 5, 1)
 OFFICIAL_REPO = "https://github.com/malcolmhoward/project-foundation-template"
 
 # Shown wherever PFT presents compliance content, so it is never mistaken for legal advice

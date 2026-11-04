@@ -120,3 +120,7 @@ Could inaction or negligence in implementing this cause harm?
 ## Notes
 
 <!-- Any additional observations, concerns, or follow-up items -->
+
+---
+
+*This template applies PFT's [ETHICS.md](../../ETHICS.md), the source of truth for Principle Zero and the Ethical Pause. See the full framework for context.*

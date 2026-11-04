@@ -180,6 +180,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - CONTRIBUTING guidelines
 - LICENSE file
 
+[Unreleased]: https://github.com/[REPLACE: owner/repo]/compare/v0.1.0...HEAD
+[0.1.0]: https://github.com/[REPLACE: owner/repo]/releases/tag/v0.1.0
+
 ---
 
 <!--
@@ -189,6 +192,8 @@ How to update this changelog:
 2. When releasing:
    - Change "Unreleased" to version number and date
    - Create new "Unreleased" section above it
+   - Add a compare link for the new version at the bottom, and point
+     [Unreleased] at the comparison from the new version to HEAD
 3. Use categories: Added, Changed, Deprecated, Removed, Fixed, Security
 4. Write for humans, not machines
 5. Link to relevant issues/PRs

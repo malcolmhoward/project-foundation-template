@@ -104,6 +104,12 @@ class TestGovernanceTemplates(unittest.TestCase):
         self.assertIn("Keep a Changelog", content)
         self.assertIn("Semantic Versioning", content)
 
+    def test_changelog_compare_links(self):
+        """Changelog should end with Keep a Changelog compare-view links (#14)."""
+        content = generate_changelog_content("TestProject")
+        self.assertIn("[Unreleased]: https://github.com/[REPLACE: owner/repo]/compare/v0.1.0...HEAD", content)
+        self.assertIn("[0.1.0]: https://github.com/[REPLACE: owner/repo]/releases/tag/v0.1.0", content)
+
 
 class TestGitHubTemplates(unittest.TestCase):
     """Test GitHub template generators."""

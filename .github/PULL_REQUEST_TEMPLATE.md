@@ -17,6 +17,8 @@
 
 ## Ethical Review
 
+*Principle Zero and the Ethical Pause are defined in [ETHICS.md](https://github.com/malcolmhoward/project-foundation-template/blob/main/ETHICS.md).*
+
 ### Contributor Self-Assessment
 *Required: Check each box that is fully true and provide documentation below*
 
