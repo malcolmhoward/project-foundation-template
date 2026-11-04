@@ -29,8 +29,9 @@ enterprise presets generate the same files). Connecting them to generated output
 - **2.5.0**: Architecture Decision Record templates (`--include-adr`) and a GitHub Actions CI
   workflow (`--include-ci`); principles `adr` and `ci-workflow`; first smoke tests.
 - **2.6.0**: The generator is now a Python package (`core/`) instead of a single file.
-- **2.7.0**: Governance presets: `minimal` (3 principles), `light` (6), `standard` (9, default),
-  `strict` (12) and `enterprise` (all 30).
+- **2.7.0**: Governance presets: `minimal` (3 principles), `light` (6), `standard` (9,
+  recommended), `strict` (12) and `enterprise` (all 30). No preset is applied unless
+  `--preset` is given.
 - **2.8.0 / 2.9.0**: One module per principle (`core/principles/`) and implementation guides
   (`core/guides/`, 6 at first).
 - **2.10.0**: 11 principles (quality, compliance, infrastructure, inclusivity, lifecycle) and

@@ -231,8 +231,9 @@ They complement principles by offering practical implementation guidance.
     print(f"""
 Total guides: {len(list_all_guides())}
 
-Guides are included based on selected principles and presets.
-For full guide content, see the docs/ directory after generation.
+Guides are reference content: they are not written into generated projects
+yet (planned for v3.8.0, issue #116). Read them through the Python API,
+e.g. core.guides.get_guide_content("onboarding").
 """)
 
 

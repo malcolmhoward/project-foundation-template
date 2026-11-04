@@ -2,7 +2,14 @@
 
 ## Status
 
-Accepted
+Accepted (implemented with two differences; see the note below)
+
+**Implementation note (v3.7.0):** the generator does not apply `standard` when
+`--preset` is left out. With no preset, it writes the core files plus the `--include-*`
+flags given, so the "Use default preset" example and the `DEFAULT_PRESET` fallback under
+Implementation below describe the original design, not the code. `DEFAULT_PRESET` names
+the recommended preset. A preset also never turns off a feature requested with an
+`--include-*` flag, `--all`, or the config file; flags add to the preset's files.
 
 ## Date
 
