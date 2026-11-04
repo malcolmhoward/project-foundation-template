@@ -517,7 +517,7 @@ Significant changes should include priority evaluation:
 | **Impact** | How much does this improve the template? |
 | **Effort** | How realistic is implementation? What resources are needed? |
 | **Risk** | What could go wrong? |
-| **Strategic Fit** | Does it align with the educational mission? |
+| **Alignment** | Does it support the educational mission? |
 | **Priority** | High / Medium / Low |
 
 ## Code of Conduct

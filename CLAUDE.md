@@ -234,7 +234,7 @@ Evaluate proposed features using priority assessment:
 - **Impact**: Who benefits and how significantly?
 - **Effort**: Rough estimate of implementation complexity
 - **Risk**: What could go wrong?
-- **Strategic Fit**: Does it support the educational mission?
+- **Alignment**: Does it support the educational mission?
 
 Features should have clear educational value and align with Principle Zero.
 

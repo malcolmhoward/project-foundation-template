@@ -253,7 +253,7 @@ Features are reintroduced based on priority assessment:
 | Impact | How significantly does this improve governance? |
 | Effort | How much work is required to implement? |
 | Risk | What could go wrong? |
-| Strategic Fit | Alignment with educational mission |
+| Alignment | Support for the educational mission |
 
 Features are categorized as High, Medium, or Low priority based on these factors.
 
