@@ -456,7 +456,7 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | Language Category | Languages | Features |
 |-------------------|-----------|----------|
 | Top 10 General | Python, JavaScript, TypeScript, Java, C++, C, C#, Go, Rust, PHP | Linter, Formatter, Test Framework |
-| Additional | Ruby, Swift, Kotlin, Bash | Same as above |
+| Additional | Ruby, Swift, Kotlin, Scala, Bash | Same as above |
 | Game Development | GDScript, Lua, Haxe | Same as above |
 
 **Per-Language Configuration**:

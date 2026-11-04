@@ -267,7 +267,7 @@ Before committing one-off scripts, ask: "Could this help other projects?"
 |--------|------------|----------|
 | minimal | 3 | Personal projects, prototypes |
 | light | 6 | Small open source projects |
-| standard | 9 | Active open source projects (Default) |
+| standard | 9 | Active open source projects (Recommended) |
 | strict | 12 | Security-sensitive projects |
 | enterprise | 30 | Large organizations, regulated industries |
 

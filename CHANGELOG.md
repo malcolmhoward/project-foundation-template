@@ -29,8 +29,9 @@ enterprise presets generate the same files). Connecting them to generated output
 - **2.5.0**: Architecture Decision Record templates (`--include-adr`) and a GitHub Actions CI
   workflow (`--include-ci`); principles `adr` and `ci-workflow`; first smoke tests.
 - **2.6.0**: The generator is now a Python package (`core/`) instead of a single file.
-- **2.7.0**: Governance presets: `minimal` (3 principles), `light` (6), `standard` (9, default),
-  `strict` (12) and `enterprise` (all 30).
+- **2.7.0**: Governance presets: `minimal` (3 principles), `light` (6), `standard` (9,
+  recommended), `strict` (12) and `enterprise` (all 30). No preset is applied unless
+  `--preset` is given.
 - **2.8.0 / 2.9.0**: One module per principle (`core/principles/`) and implementation guides
   (`core/guides/`, 6 at first).
 - **2.10.0**: 11 principles (quality, compliance, infrastructure, inclusivity, lifecycle) and
@@ -71,6 +72,10 @@ enterprise presets generate the same files). Connecting them to generated output
   the same arguments and needs the full repository (see MIGRATION.md).
 - Generated templates no longer contain emoji in headings, and README code blocks are no longer
   written with escaped backticks.
+- A preset no longer turns off features requested with `--include-*` flags, `--all`, or the
+  config file; the flags add to the preset's files. `--preset standard --include-adr` used to
+  generate no ADR templates, because standard leaves them out. The scaffold manifest's
+  regenerate command keeps such flags.
 - The generation log records files by path relative to the output directory
   (for example `.github/workflows/ci.yml`).
 - The advisory expiration date is now 2027-05-01, six months after this release

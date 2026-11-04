@@ -30,7 +30,7 @@ The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
 # Minimal (3 principles)
 python generate_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
 
-# Standard (9 principles) - Default
+# Standard (9 principles) - Recommended; no preset is applied unless you pass --preset
 python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
 
 # Enterprise (all 30 principles)
@@ -50,6 +50,8 @@ python generate_foundation.py --list-guides       # Show available guides
 ```bash
 python generate_foundation.py --plugins-dir ./my-plugins --project-name "My Project" --author-name "Name"
 ```
+
+> **Not yet implemented (v3.7.0)**: the generator accepts `--plugins-dir` but does not load plugins from it yet; it prints a notice and generates without them. Loading is tracked in [#135](https://github.com/malcolmhoward/project-foundation-template/issues/135).
 
 ### v3.0.0 Migration Checklist
 
@@ -154,7 +156,7 @@ This created false confidence and enabled potential misuse.
 |--------|---------------------|----------|
 | minimal | 3 | v2.7.0 |
 | light | 6 | v2.7.0 |
-| standard | 9 (default) | v2.7.0 |
+| standard | 9 (recommended) | v2.7.0 |
 | strict | 12 | v2.7.0 |
 | enterprise | All (30 since v3.4.0) | v2.7.0 |
 
@@ -171,11 +173,11 @@ If you have existing projects generated with the enterprise edition:
 
 ```bash
 # DON'T do this:
-python setup_foundation_lite.py --force-overwrite existing-project/
+python setup_foundation_lite.py --force-overwrite --project-name "Test" --author-name "Name" --output-dir existing-project/
 
 # DO this:
 # 1. Generate to a new directory
-python setup_foundation_lite.py --project-name "Test" --output-dir ./compare/
+python setup_foundation_lite.py --project-name "Test" --author-name "Name" --output-dir ./compare/
 
 # 2. Compare with your existing files
 diff -r existing-project/ ./compare/

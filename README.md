@@ -88,7 +88,7 @@ This walks you through each decision, explaining what each file does and why it 
 ```bash
 # Choose your governance level
 python generate_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name"
-python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Default
+python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Recommended
 python generate_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name"
 ```
 
@@ -141,7 +141,7 @@ Choose the level of governance that matches your project's needs:
 |--------|------------|----------|
 | **minimal** | 3 | Personal projects, prototypes, learning exercises |
 | **light** | 6 | Small open source projects, basic governance needs |
-| **standard** | 9 | Active open source projects, professional teams (Default) |
+| **standard** | 9 | Active open source projects, professional teams (Recommended) |
 | **strict** | 12 | Security-sensitive projects, compliance requirements |
 | **enterprise** | 30 | Large organizations, regulated industries, maximum governance |
 
@@ -162,6 +162,22 @@ enterprise (30) → Lists all 30 principles; generates the same files as strict
 ```
 
 > **Note (v3.7.0)**: A preset's count is the number of principles it lists. Presets choose which files are generated, and only some principles have files of their own: strict and enterprise generate the same files, and `glossary` and `maintainers` need `--include-glossary` and `--include-maintainers`. The other principles and the 25 implementation guides are reference content, available through `--list-principles`, `--list-guides` and the Python API but not yet written into generated projects. Connecting them is planned for v3.8.0 ([#116](https://github.com/malcolmhoward/project-foundation-template/issues/116)).
+
+### Without a Preset, or With Extra Files
+
+No preset is applied unless you pass `--preset`. Without one, you get the core files (README, LICENSE, CONTRIBUTING, `.gitignore`, and FOUNDATION_NOTICE) plus whatever you ask for with `--include-*` flags or `--all`, so you can build your own selection:
+
+```bash
+# Core files plus a CI workflow and ADR templates, nothing else
+python generate_foundation.py --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"
+```
+
+A preset is a starting point, and `--include-*` flags add to it. A preset never turns off a file you asked for:
+
+```bash
+# The standard files plus ADR templates, which standard leaves out
+python generate_foundation.py --preset standard --include-adr --project-name "MyProject" --author-name "Your Name"
+```
 
 ---
 
@@ -288,7 +304,7 @@ project-foundation-template/
 │   │   ├── __init__.py         # Preset aggregation
 │   │   ├── minimal.py          # 3 principles
 │   │   ├── light.py            # 6 principles
-│   │   ├── standard.py         # 9 principles (default)
+│   │   ├── standard.py         # 9 principles (recommended)
 │   │   ├── strict.py           # 12 principles
 │   │   └── enterprise.py       # 30 principles
 │   │

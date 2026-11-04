@@ -162,6 +162,22 @@ class TestPresetsAndListings:
         listed = re.findall(r"^    - ([a-z0-9-]+)", out, re.M)
         assert sorted(listed) == sorted(expected)
 
+    def test_flags_add_to_a_preset(self, tmp_path, home):
+        """Standard leaves ADR off; `--include-adr` used to be overridden by the preset."""
+        out = tmp_path / "out"
+        r = generate(out, home, "--quiet", "--preset", "standard", "--include-adr")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert (out / "docs" / "adr").is_dir()
+        assert (out / ".github" / "workflows" / "ci.yml").exists()
+
+    def test_no_preset_generates_only_what_is_asked_for(self, tmp_path, home):
+        """Leaving out --preset applies no preset: core files plus the --include-* flags given."""
+        out = tmp_path / "out"
+        r = generate(out, home, "--quiet", "--include-ci")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert (out / ".github" / "workflows" / "ci.yml").exists()
+        assert not (out / "CODE_OF_CONDUCT.md").exists()
+
 
 # ---------------------------------------------------------------- plugin safety
 
@@ -543,6 +559,12 @@ class TestScaffoldManifest:
         """Presets do not set the glossary flag, so dropping it would not reproduce the run."""
         manifest = self._manifest(tmp_path / "out", home, "--preset", "minimal", "--include-glossary")
         assert ("python generate_foundation.py --preset minimal --include-glossary "
+                "--include-manifest --output-dir") in manifest
+
+    def test_with_a_preset_it_keeps_flags_the_preset_turns_off(self, tmp_path, home):
+        """Standard leaves ADR off; the flag adds it, so the manifest has to keep it."""
+        manifest = self._manifest(tmp_path / "out", home, "--preset", "standard", "--include-adr")
+        assert ("python generate_foundation.py --preset standard --include-adr "
                 "--include-manifest --output-dir") in manifest
 
     def test_with_all_it_suggests_all(self, tmp_path, home):

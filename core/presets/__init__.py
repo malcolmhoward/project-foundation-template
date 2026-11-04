@@ -7,7 +7,7 @@ Presets module for Project Foundation Template.
 Provides 5 governance presets with different levels of features:
     - minimal: Core essentials only (3 principles)
     - light: Basic governance (6 principles)
-    - standard: Recommended default (9 principles)
+    - standard: Recommended starting point (9 principles)
     - strict: Comprehensive governance (12 principles)
     - enterprise: Full governance suite (all 30 principles)
 
@@ -29,7 +29,8 @@ PRESETS = {
     "enterprise": ENTERPRISE_PRESET,
 }
 
-# Default preset
+# Recommended preset. The generator does not apply it automatically: with no
+# --preset, only the core files and the --include-* flags given are generated.
 DEFAULT_PRESET = "standard"
 
 

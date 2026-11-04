@@ -19,7 +19,8 @@ from core.utils import (
     OFFICIAL_REPO,
     EXPIRATION_DATE,
 )
-from core.config import PRESET_FEATURE_ARGS
+from core.config import preset_enabled_args
+from core.presets import get_preset
 
 from core.education import (
     LITE_PRINCIPLES,
@@ -549,9 +550,9 @@ Generating template in 3 seconds...
         guides_used = []  # Will be populated when guide system is connected
 
         # Options that reproduce this run: the preset, plus the --include-* flags given
-        # that the preset does not set (`--all` for include_all; the other flags map
-        # to their dest names).
-        preset_set = set(PRESET_FEATURE_ARGS.values()) if preset else set()
+        # that the preset does not turn on (`--all` for include_all; the other flags
+        # map to their dest names).
+        preset_set = preset_enabled_args(get_preset(preset)) if preset else set()
         flags = ["--all" if name == "include_all" else "--" + name.replace("_", "-")
                  for name, value in sorted(vars(self.args).items())
                  if name.startswith("include_") and value is True and name not in preset_set]
