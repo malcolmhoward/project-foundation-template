@@ -59,8 +59,8 @@ enterprise presets generate the same files). Connecting them to generated output
   world, CLAUDE.md points to it, `docs/sources.md` records each external source, and
   `tests/test_sources_and_claims.py` fails on common unsourced phrasing (#124). The pull
   request template asks for evidence under each reviewer box, and for what a change leaves out.
-- The generated CHANGELOG.md ends with compare-view links for each version, with a
-  `[REPLACE: owner/repo]` marker for the repository (#14).
+- The generated CHANGELOG.md includes compare-view links for each version, with a
+  `[REPLACE:owner/repo]` marker for the repository (#14).
 - README links ACKNOWLEDGMENTS.md and the attribution policy (#74); the ethical review
   template and the pull request template link ETHICS.md as the source of the framework (#75).
 
