@@ -240,7 +240,7 @@ Reviewers evaluate PRs against these criteria:
 
 ### What We Look For
 
-**Good PR description:**
+**Good PR description** (abbreviated to show the tone; a real description follows the [PR template](.github/PULL_REQUEST_TEMPLATE.md), including its Reviewer Guide, Known Issues, and Ethical Review sections):
 ```markdown
 ## Summary
 Adds Docker template generation for projects that need containerization.

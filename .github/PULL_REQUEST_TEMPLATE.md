@@ -103,7 +103,7 @@
 
 ---
 
-*In the checklists below, tick an item only when it was checked, and say how after it ("Verified: …"). For an item that doesn't apply, write "Not applicable: …" after it and leave it unticked.*
+*In the three checklists below (Reviewer Verification above is ticked only by the maintainer), tick an item only when it was checked, and say how after it ("Verified: …"). For an item that doesn't apply, write "Not applicable: …" after it and leave it unticked.*
 
 ## Code Quality Checklist
 - [ ] Code follows existing patterns
