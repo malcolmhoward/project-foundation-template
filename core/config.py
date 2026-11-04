@@ -487,11 +487,29 @@ PRESET_FEATURE_ARGS = {
 }
 
 
+def preset_enabled_args(preset_config: Dict[str, Any]) -> set:
+    """
+    Return the names of the arguments a preset turns on.
+
+    Args:
+        preset_config: Preset configuration dict with 'features' key
+
+    Returns:
+        Set of argument names (e.g. "include_ci") for the features the preset enables
+    """
+    features = (preset_config or {}).get("features", {})
+    return {arg_name for feature_name, arg_name in PRESET_FEATURE_ARGS.items()
+            if features.get(feature_name)}
+
+
 def apply_preset_to_args(args, preset_config: Dict[str, Any]):
     """
     Apply preset configuration to arguments.
 
-    Preset features override individual --include-* flags.
+    A preset is a starting point: it turns on the features it includes and never
+    turns off a feature requested with an --include-* flag, --all, or the config
+    file. `--preset standard --include-adr` therefore generates the standard files
+    plus the ADR templates.
 
     Args:
         args: Parsed arguments namespace
@@ -500,14 +518,8 @@ def apply_preset_to_args(args, preset_config: Dict[str, Any]):
     Returns:
         Modified args namespace
     """
-    if not preset_config or "features" not in preset_config:
-        return args
-
-    features = preset_config["features"]
-
-    for feature_name, arg_name in PRESET_FEATURE_ARGS.items():
-        if feature_name in features:
-            setattr(args, arg_name, features[feature_name])
+    for arg_name in preset_enabled_args(preset_config):
+        setattr(args, arg_name, True)
 
     return args
 

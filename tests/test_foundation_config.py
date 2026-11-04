@@ -15,6 +15,7 @@ from pathlib import Path
 from core.config import (
     CONFIG_KEY_MAPPING,
     DEFAULT_VALUES,
+    apply_preset_to_args,
     load_config_file,
     merge_config_with_args,
     validate_arguments,
@@ -132,6 +133,27 @@ class TestMergeConfigWithArgs(unittest.TestCase):
         result = merge_config_with_args(args, config)
         self.assertEqual(result.project_name, "FromCLI")
         self.assertEqual(result.author_name, "Config Author")
+
+
+class TestApplyPresetToArgs(unittest.TestCase):
+    """A preset turns its features on and never turns a requested feature off."""
+
+    def test_preset_turns_its_features_on(self):
+        args = Namespace(include_ci=False, include_adr=False)
+        preset = {"features": {"ci_workflow": True, "adr": False}}
+        result = apply_preset_to_args(args, preset)
+        self.assertTrue(result.include_ci)
+        self.assertFalse(result.include_adr)
+
+    def test_preset_does_not_turn_requested_features_off(self):
+        args = Namespace(include_ci=False, include_adr=True)
+        preset = {"features": {"ci_workflow": True, "adr": False}}
+        result = apply_preset_to_args(args, preset)
+        self.assertTrue(result.include_adr)
+
+    def test_empty_preset_changes_nothing(self):
+        args = Namespace(include_adr=True)
+        self.assertTrue(apply_preset_to_args(args, {}).include_adr)
 
 
 class TestCommandLineOnlySettings(unittest.TestCase):

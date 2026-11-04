@@ -71,6 +71,10 @@ enterprise presets generate the same files). Connecting them to generated output
   the same arguments and needs the full repository (see MIGRATION.md).
 - Generated templates no longer contain emoji in headings, and README code blocks are no longer
   written with escaped backticks.
+- A preset no longer turns off features requested with `--include-*` flags, `--all`, or the
+  config file; the flags add to the preset's files. `--preset standard --include-adr` used to
+  generate no ADR templates, because standard leaves them out. The scaffold manifest's
+  regenerate command keeps such flags.
 - The generation log records files by path relative to the output directory
   (for example `.github/workflows/ci.yml`).
 - The advisory expiration date is now 2027-05-01, six months after this release
