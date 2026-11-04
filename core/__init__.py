@@ -1,5 +1,5 @@
 # core - Project Foundation Template Package
-# v2.9.0 - Modular Guides
+# v3.7.0
 
 """
 Project Foundation Template - Modular Package
@@ -95,7 +95,7 @@ from core.guides import (
     list_all_guides,
 )
 
-__version__ = "2.9.0-lite"
+__version__ = SCRIPT_VERSION
 __all__ = [
     # Utils
     "SCRIPT_VERSION",

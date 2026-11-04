@@ -19,7 +19,7 @@ Different projects have different governance needs:
 | Project Type | Governance Needs |
 |-------------|------------------|
 | Personal hobby project | Minimal (README, LICENSE) |
-| Small open source library | Light (+ CONTRIBUTING, CoC) |
+| Small open source library | Light (+ CONTRIBUTING, Code of Conduct) |
 | Active community project | Standard (+ issue templates, CI) |
 | Enterprise software | Strict (+ security policies, ADRs) |
 | Regulated industry | Enterprise (full governance suite) |

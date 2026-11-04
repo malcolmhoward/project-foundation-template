@@ -33,7 +33,7 @@ The strict preset includes 12 governance principles:
 |-----------|----------------------|-------|
 | readme | Enhanced | Expanded well beyond the generated template |
 | contributing | Enhanced | Includes ethical review, attribution policy |
-| license | Aligned | MIT license |
+| license | Aligned | Apache 2.0 license |
 | code-of-conduct | Adopted | Generated and customized |
 | security | Adopted | Generated and customized |
 | enhanced-security | Enhanced | Existing exceeds template |
@@ -41,7 +41,7 @@ The strict preset includes 12 governance principles:
 | changelog | Enhanced | Real version history |
 | issue-templates | Enhanced | Principle Zero integration |
 | pr-template | Enhanced | Ethical verification sections |
-| ci-workflow | Not Applicable | Python project, different needs |
+| ci-workflow | Adapted | `.github/workflows/tests.yml` runs the test suite on Linux and macOS |
 | adr | Enhanced | 11 ADRs with educational philosophy |
 
 ### Implementation Status Legend

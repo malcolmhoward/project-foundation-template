@@ -52,7 +52,7 @@ project-foundation-template/
 │   └── templates/
 │       ├── __init__.py         # Template subpackage exports
 │       ├── core.py             # README, CONTRIBUTING, LICENSE, .gitignore
-│       ├── governance.py       # CoC, SECURITY, CHANGELOG
+│       ├── governance.py       # Code of Conduct, SECURITY, CHANGELOG
 │       ├── github.py           # Issue templates, PR template, workflows
 │       └── advanced.py         # ADR, secrets detection, enhanced security
 └── tests/

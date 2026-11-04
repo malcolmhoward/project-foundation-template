@@ -94,7 +94,7 @@ If you've evaluated this feature:
 - **Impact**: How much does this improve governance?
 - **Effort**: How realistic is implementation?
 - **Risk**: What could go wrong?
-- **Strategic Fit**: Does it align with the educational mission?
+- **Alignment**: Does it support the educational mission?
 - **Suggested Priority**: High / Medium / Low
 
 ---

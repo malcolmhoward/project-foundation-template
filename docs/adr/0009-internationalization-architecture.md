@@ -2,7 +2,14 @@
 
 ## Status
 
-Accepted (implemented in v3.6.0)
+Accepted (partly implemented in v3.6.0; see the note below)
+
+**Implementation note (v3.7.0):** the 10 locale configurations exist in
+`core/internationalization/`, one module per locale, as plain dictionaries read through
+functions such as `get_locale()` and `generate_translation_template()`, and each records
+its `translation_status` and `translation_origin`. There is no `base.py` or
+`LocaleConfig` dataclass, no `--locales` or `--all-locales` option, and the generator
+does not write `locales/` directories yet.
 
 ## Date
 
@@ -160,7 +167,7 @@ Auto-generate translations using AI.
 
 **Rejected because**: Quality concerns, adds API dependency, cost.
 
-*Note (v3.7.0): this rejects machine translation as a runtime service. The shipped translations for the nine non-English locales were themselves drafted with an AI model when the locales were added (#85, whose commit is co-authored by Claude Opus 4.5), and no fluent speaker has reviewed them. Each locale now records this in `translation_origin` (`ai-generated`) and `translation_status` (`unreviewed`), and CONTRIBUTING.md, Improving Translations, describes how they can be corrected and reviewed.*
+*Note (v3.7.0): this rejects machine translation as a runtime service. The translations included for the nine non-English locales were themselves drafted with an AI model when the locales were added (#85, whose commit is co-authored by Claude Opus 4.5), and no fluent speaker has reviewed them. Each locale now records this in `translation_origin` (`ai-generated`) and `translation_status` (`unreviewed`), and CONTRIBUTING.md, Improving Translations, describes how they can be corrected and reviewed.*
 
 ## Implementation Plan
 

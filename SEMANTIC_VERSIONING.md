@@ -288,14 +288,14 @@ Our CHANGELOG follows [Keep a Changelog](https://keepachangelog.com):
 
 ## Version in Code
 
-The version is defined in `generate_foundation.py` and `core/utils.py`:
+The version and the advisory expiration date are defined in `core/utils.py`; other modules import them:
 
 ```python
-SCRIPT_VERSION = "3.0.0"
-EXPIRATION_DATE = date(2026, 6, 1)
+SCRIPT_VERSION = "X.Y.Z"
+EXPIRATION_DATE = date(YYYY, M, D)
 ```
 
-Both should be updated together during releases.
+Update both together during releases (see ADR 0003 for the expiration date).
 
 ## Checking Versions
 

@@ -76,7 +76,7 @@ Checked 2026-11-03 unless stated otherwise.
   authentication data (SAD)" and those that "could impact the security of the cardholder data environment"; "PCI DSS
   v4.0 will be retired on 31 December 2024 ... v4.0.1 will be the only active version"; "implementing adequate network
   segmentation can reduce the scope of the PCI DSS assessment".
-- **Not checked:** the standard's own text, which requires accepting a licence to download.
+- **Not checked:** the standard's own text, which requires accepting a license to download.
 
 ### SOC 2
 

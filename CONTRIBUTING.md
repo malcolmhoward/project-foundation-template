@@ -533,12 +533,12 @@ Significant changes should include priority evaluation:
 | **Impact** | How much does this improve the template? |
 | **Effort** | How realistic is implementation? What resources are needed? |
 | **Risk** | What could go wrong? |
-| **Strategic Fit** | Does it align with the educational mission? |
+| **Alignment** | Does it support the educational mission? |
 | **Priority** | High / Medium / Low |
 
 ## Code of Conduct
 
-We do not have a separate Code of Conduct file because our [ETHICS.md](ETHICS.md) covers behavioral expectations. In summary:
+Our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) sets behavioral expectations, and [ETHICS.md](ETHICS.md) explains the principles behind them. In summary:
 
 - Be respectful and constructive
 - Focus on education over ego

@@ -16,10 +16,10 @@ Versions 2.4.0 through 3.6.0 were developed as a chain of pull requests and ship
 in 3.7.0. Changes are grouped by the version that introduced them.
 
 The implementation guides, and the principles that do not have their own generated files, are
-reference content in 3.7.0: they are available through `--list-principles`, `--list-guides` and
-the Python API, but the generator does not write them into projects, and a preset's principle
-list does not change which files are generated (the strict and enterprise presets generate the
-same files). Connecting them to generated output is planned for 3.8.0
+reference content in 3.7.0: `--list-principles` and `--list-guides` list them by name, and their
+text is available through the Python API, but the generator does not write them into projects,
+and a preset's principle list does not change which files are generated (the strict and
+enterprise presets generate the same files). Connecting them to generated output is planned for 3.8.0
 ([#116](https://github.com/malcolmhoward/project-foundation-template/issues/116)).
 
 ### Added
@@ -113,7 +113,7 @@ same files). Connecting them to generated output is planned for 3.8.0
 - `--log-to` with `--log-format both` could overwrite the other format's existing log; an
   unreadable JSON log is now backed up instead of replaced.
 - The enterprise preset enabled 23 of 30 principles; `--list-principles` and `--list-guides`
-  showed only part of each catalogue.
+  showed only part of each catalog.
 - Smoke tests no longer write to the real `~/.project_foundation_logs`.
 - `--quiet` no longer hides the warning that the version is outdated; it prints a one-line
   version of it.
@@ -122,7 +122,7 @@ same files). Connecting them to generated output is planned for 3.8.0
   generated. It now lists exactly what the hook detects, and only when the hook is generated;
   the hook and the list share one set of patterns (`SECRET_DETECTORS` in `core/utils.py`).
 - The generated secrets hook flagged its own file and SECURITY.md, so freshly generated files
-  could not be committed. It also printed colour codes literally, skipped staged files whose
+  could not be committed. It also printed color codes literally, skipped staged files whose
   names contain spaces, skipped renamed files, and scanned the working copy instead of the
   staged version. With nothing staged it now says so instead of reporting no secrets.
 - `--all` wrote SECURITY.md twice, the basic policy and then the enhanced one.

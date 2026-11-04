@@ -28,7 +28,7 @@ Key findings:
 |---------------|-----------|--------|-------------|
 | README.md | Yes | Keep existing | Existing is 7x more comprehensive with audience matrix, philosophy, 30 principles |
 | CONTRIBUTING.md | Yes | Keep existing | Existing has ethical review criteria, 12 commit scopes, attribution policy |
-| LICENSE | Yes | Keep existing | MIT license, identical intent |
+| LICENSE | Yes | Keep existing | Apache 2.0 license, identical intent |
 | .gitignore | Yes | Keep existing | Existing is project-specific |
 | CODE_OF_CONDUCT.md | No | **Add** | Contributor Covenant v2.0 with customization needed |
 | SECURITY.md | No | **Add** | Comprehensive security policy with disclosure process |

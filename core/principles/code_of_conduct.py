@@ -19,7 +19,7 @@ PRINCIPLE = {
 }
 
 EDUCATION = """
-📚 LEARNING: A Code of Conduct tells newcomers what behaviour to expect and how problems are handled.
+📚 LEARNING: A Code of Conduct tells newcomers what behavior to expect and how problems are handled.
 
 A Code of Conduct sets expectations and tells people how to report
 problems. It's not about policing, but about setting positive expectations.

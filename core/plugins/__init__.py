@@ -9,7 +9,8 @@ foundation template with custom principles and guides without modifying
 core code.
 
 Quick Start:
-    1. Create a plugin file in ~/.foundation-plugins/ or ./plugins/
+    1. Create a plugin file in ~/.foundation-plugins/ (or the directory in
+       FOUNDATION_PLUGINS_DIR); ./plugins/ is not searched
     2. Define a class inheriting from PrinciplePlugin or GuidePlugin
     3. Use discover_plugins() to load and merge with built-in content
 
@@ -355,7 +356,7 @@ def create_plugin_directory(
         example_path = path / "example_principle.py"
         if not example_path.exists():
             example_content = '''# Example custom principle plugin
-# Place this file in ~/.foundation-plugins/ or ./plugins/
+# Place this file in ~/.foundation-plugins/ (or the directory in FOUNDATION_PLUGINS_DIR)
 
 from core.plugins import PrinciplePlugin
 

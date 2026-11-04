@@ -4,6 +4,15 @@
 
 Accepted
 
+**Implementation note (v3.7.0):** the plugin API exists in `core/plugins/`, with these
+differences from the design below. The current directory's `./plugins/` is not searched,
+so running the generator inside an untrusted checkout cannot execute its code; plugins
+come from `FOUNDATION_PLUGINS_DIR`, `~/.foundation-plugins/` or a directory passed to
+`discover_plugins()`. The generator does not load plugins yet (`--plugins-dir` is
+accepted but not wired in). Guide plugins use `GUIDE` and `CONTENT`, which the design below
+calls `GUIDE_INFO` and `GUIDE_CONTENT`. The tests are in
+`tests/test_release_integrity.py`.
+
 ## Date
 
 2026-01-18
@@ -238,7 +247,7 @@ class HealthcarePreset(PresetPlugin):
 
 - `core/plugins/` - Implementation
 - `core/plugins/base.py` - Base classes
-- `tests/test_foundation_plugins.py` - Test suite
+- `tests/test_release_integrity.py` - Plugin tests
 - [ROADMAP.md](../../ROADMAP.md) - Plugin system in version roadmap
 
 ---

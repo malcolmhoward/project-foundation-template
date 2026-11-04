@@ -36,7 +36,7 @@ industry. Frameworks to know (sources checked October-November 2026):
 
 - **GDPR** (EU law): data protection, that is, the protection of people with
   regard to the processing of their personal data. It applies to
-  organisations established in the EU, and to those offering goods or services
+  organizations established in the EU, and to those offering goods or services
   to, or monitoring the behaviour of, people in the EU (Art. 3).
   (Reference: https://eur-lex.europa.eu/eli/reg/2016/679/oj)
 - **HIPAA** (US law): health information privacy and security. Its security
@@ -46,7 +46,7 @@ industry. Frameworks to know (sources checked October-November 2026):
   Individually Identifiable Health Information", sets which uses and
   disclosures are permitted or required.
   (Reference: https://www.ecfr.gov/current/title-45/part-164/section-164.306)
-- **SOC 2**: an examination by a CPA of a service organisation's controls
+- **SOC 2**: an examination by a CPA of a service organization's controls
   relevant to security, availability, processing integrity, confidentiality or
   privacy; it is an examination report, not a law.
   (Reference: https://www.aicpa-cima.com/topic/audit-assurance/audit-and-assurance-greater-than-soc-2)

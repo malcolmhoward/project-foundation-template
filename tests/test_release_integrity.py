@@ -142,7 +142,7 @@ class TestGenerationLog:
         assert json.loads(log.read_text(encoding="utf-8"))["files"][0]["file"] == "README.md"
 
 
-# ---------------------------------------------------------------- presets and catalogue listings
+# ---------------------------------------------------------------- presets and catalog listings
 
 class TestPresetsAndListings:
     def test_enterprise_enables_every_principle(self):
@@ -152,12 +152,12 @@ class TestPresetsAndListings:
         assert set(principles) == set(ALL_PRINCIPLES)
         assert len(principles) == len(set(principles))
 
-    @pytest.mark.parametrize("flag,catalogue", [("--list-principles", "ALL_PRINCIPLES"),
+    @pytest.mark.parametrize("flag,catalog", [("--list-principles", "ALL_PRINCIPLES"),
                                                 ("--list-guides", "ALL_GUIDES")])
-    def test_list_commands_show_the_whole_catalogue(self, home, flag, catalogue):
+    def test_list_commands_show_the_whole_catalog(self, home, flag, catalog):
         import core.guides
         import core.principles
-        expected = getattr(core.principles, catalogue, None) or getattr(core.guides, catalogue)
+        expected = getattr(core.principles, catalog, None) or getattr(core.guides, catalog)
         out = run("generate_foundation.py", flag, home=home).stdout
         listed = re.findall(r"^    - ([a-z0-9-]+)", out, re.M)
         assert sorted(listed) == sorted(expected)
@@ -438,8 +438,8 @@ class TestGeneratedSecretsHook:
         assert "No staged files to scan" in r.stdout and "No secrets detected" not in r.stdout
 
     @needs_bash
-    def test_hook_prints_no_raw_colour_codes(self, hook_repo):
-        """Colour codes were printed literally as \\033[...; output that is not a terminal has none."""
+    def test_hook_prints_no_raw_color_codes(self, hook_repo):
+        """Color codes were printed literally as \\033[...; output that is not a terminal has none."""
         r = _run_hook(hook_repo)
         assert "\\033" not in r.stdout and "\x1b" not in r.stdout
 
