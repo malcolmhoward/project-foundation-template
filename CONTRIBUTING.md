@@ -299,8 +299,11 @@ pytest tests/test_foundation_generator.py
 
 ### 4. Commit Your Changes
 
+Stage the files you changed by name rather than with `git add .`, and check what is staged before you commit. `git add .` also stages files you didn't mean to include, such as local notes, generated output, or files deleted by accident, and the deletions are easy to miss in a commit.
+
 ```bash
-git add .
+git add core/generator.py tests/test_foundation_generator.py
+git status          # only the files you meant to change are staged
 git commit -m "feat(scope): clear description"
 ```
 
@@ -314,6 +317,7 @@ git push origin feat/42-your-feature
 
 - Go to your fork on GitHub
 - Click "Compare & pull request"
+- Keep the title to 65 characters or fewer: it becomes the subject of the squash commit (see [Squash Commit Message](#squash-commit-message)), and changing that after the merge means rewriting `main`
 - Fill out the PR template completely
 - Fill in the Reviewer Guide: it tells a reviewer how big the change is, what to read first, and which points need their judgment, so the review starts from a map rather than the diff
 - List every problem you found and didn't fix under Known Issues, with its tracking issue and why it is out of scope, so leaving something out is a recorded decision rather than a silent one
@@ -326,10 +330,33 @@ git push origin feat/42-your-feature
 - Make requested changes
 - Push additional commits (do not force-push during review)
 
-### 8. After Approval
+### 8. Merge
 
-- Maintainer will merge
-- Delete your branch
+A maintainer squash-merges the PR, so `main` gets one commit per PR, and that commit's message is the lasting record of the change. The PR's description stays on GitHub; the message is what `git log` shows.
+
+#### Squash Commit Message
+
+- **Subject:** the PR title, plus the " (#N)" that GitHub adds, 72 characters or fewer in total. GitHub fills the merge box's title field from the PR title, so a long title becomes a long subject, and fixing it after the merge would mean rewriting `main`.
+- **Body:** a few prose paragraphs on what changed and why, not the PR's checklists. Write each paragraph as one unwrapped line, with a blank line between paragraphs: the merge box wraps text itself, so line breaks typed in advance show up in the middle of sentences. Describe the change ("Adds…", "The check now…") rather than giving instructions ("Add…"), and use the serial comma.
+- **Known limitations:** state each one with its tracking issue, in the same terms as the issue, so the commit and the issue tell the same story.
+- **Issue line:** `Closes #N` for an issue the PR completes and `Refs #N` for one it contributes to. Write each number out (`#1, #2, #3`, not `#1-#3`), because GitHub links each number on its own.
+- **Trailer, last:** a `Co-authored-by:` line for each person or AI model that co-wrote the change.
+
+[`830c6fd`](https://github.com/malcolmhoward/project-foundation-template/commit/830c6fd257727611dae3a965e1a09f699cd98037) (#139) is an example.
+
+### 9. After the Merge
+
+Before the next change starts, check that the merge did what the PR said:
+
+1. **`main`:** the squash commit makes exactly the PR's change (`git diff --stat <squash>^ <squash>` matches the PR and deletes nothing unexpected), its message is the one drafted, and CI on `main` passes.
+2. **Issues:** every issue named with `Closes` is closed; in a tracking issue, the item the PR completes is marked "→ #N (merged)"; and a search of open issues finds anything else the PR resolves.
+3. **PR description:** links that point at commits on the PR's branch are repinned to the squash commit, which survives after the branch is deleted. Edit the current description, so the maintainer's ticks are kept.
+4. **Branches:** delete your branch. Rebase any branch that was based on it with `git rebase --onto main <old tip of the merged branch>`, and check that its files are unchanged (see [Safe PR Chain Rebase](scripts/bulk-operations/safe-pr-chain-rebase.md)).
+5. **Record:** the release's tracking issue says what merged and what remains.
+
+An AI assistant doing these steps shows each public edit, to issues or PR descriptions, to the maintainer before posting it.
+
+After the last PR of a release: confirm the default branch is `main`, check the documentation against the code, date the CHANGELOG entry, tag the release, close the tracking issue, and update the pins in any repository that includes this one as a submodule.
 
 ## Types of Contributions
 
