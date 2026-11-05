@@ -240,7 +240,7 @@ Reviewers evaluate PRs against these criteria:
 
 ### What We Look For
 
-**Good PR description:**
+**Good PR description** (abbreviated to show the tone; a real description follows the [PR template](.github/PULL_REQUEST_TEMPLATE.md), including its Reviewer Guide, Known Issues, and Ethical Review sections):
 ```markdown
 ## Summary
 Adds Docker template generation for projects that need containerization.
@@ -315,6 +315,8 @@ git push origin feat/42-your-feature
 - Go to your fork on GitHub
 - Click "Compare & pull request"
 - Fill out the PR template completely
+- Fill in the Reviewer Guide: it tells a reviewer how big the change is, what to read first, and which points need their judgment, so the review starts from a map rather than the diff
+- List every problem you found and didn't fix under Known Issues, with its tracking issue and why it is out of scope, so leaving something out is a recorded decision rather than a silent one
 - Link related issues
 - If the change was independently reviewed before you opened the PR, say who or what reviewed it (see [Independent Review](#independent-review))
 

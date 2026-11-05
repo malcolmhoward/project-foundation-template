@@ -1,6 +1,21 @@
 ## Summary
 <!-- Brief description of changes -->
 
+## Reviewer Guide
+*A short map for whoever reviews this PR, person or AI model. Keep every heading; under one that doesn't apply, write "Not applicable: …" with the reason.*
+
+- **Size:** <!-- files, additions and deletions by category (code, tests, docs, config), and commits, taken from `git diff --stat` against the base branch, not estimated -->
+- **Shape:** <!-- what kind of change this is, and how much of it is moved or renamed rather than new -->
+- **Reading order:** <!-- the files or sections to read, in order, with links -->
+- **Needs judgment:** <!-- decisions the maintainer should make or confirm, as opposed to facts they can check -->
+- **Verify locally:** <!-- commands a reviewer can run, and what they should show -->
+- **Not covered:** <!-- what this PR deliberately leaves out, with the issue that tracks it -->
+
+## Known Issues
+*Every problem found while writing or reviewing this PR, and not fixed in it: one line each, with its tracking issue and the reason it is out of scope. Write "None." if there are none.*
+
+<!-- - Problem → #issue: why it is out of scope -->
+
 ## Type of Change
 - [ ] Bug fix (non-breaking change that fixes an issue)
 - [ ] New feature (non-breaking change that adds functionality)
@@ -8,7 +23,7 @@
 - [ ] Documentation update
 
 ## Related Issues
-<!-- Link any related issues: Fixes #123, Relates to #456 -->
+<!-- "Closes #123" for an issue this PR completes; "Refs #456" for one it contributes to -->
 
 ## Educational Context
 <!-- Explain WHY these changes matter, not just WHAT they do -->
@@ -87,6 +102,8 @@
 <!-- Any additional ethical considerations, concerns, or observations -->
 
 ---
+
+*In the three checklists below (Reviewer Verification above is ticked only by the maintainer), tick an item only when it was checked, and say how after it ("Verified: …"). For an item that doesn't apply, write "Not applicable: …" after it and leave it unticked.*
 
 ## Code Quality Checklist
 - [ ] Code follows existing patterns
