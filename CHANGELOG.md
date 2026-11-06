@@ -113,9 +113,10 @@ enterprise presets generate the same files). Connecting them to generated output
   which never ran with the workflow's read-only token, is removed.
 - PFT's own PR template adds a Reviewer Guide (size, shape, reading order, points that need
   judgment, how to verify, what is not covered) and a Known Issues section, marks each risk as
-  mitigated or accepted with a justification, and says that "Not applicable" checklist items
-  stay unticked. CONTRIBUTING.md stages files by name rather than with `git add .`, and
-  describes the squash commit message and the checks after each merge (#139, #140, #142).
+  mitigated (with a link to what limits it) or accepted (with a justification), and says that
+  "Not applicable" checklist items stay unticked. CONTRIBUTING.md stages files by name rather
+  than with `git add .`, and describes the squash commit message and the checks after each
+  merge (#139, #140, #142).
 - `scripts/bulk-operations/update-github-issues.sh` is a dry run unless `--apply` is given,
   needs `--repo`, and will not apply while any `[REPLACE: ...]` placeholder is unfilled. Run
   as-is, it used to edit issues 1-10 of this repository and record "Principle Zero: ✅ Passes"
