@@ -337,7 +337,7 @@ A maintainer squash-merges the PR, so `main` gets one commit per PR, and that co
 #### Squash Commit Message
 
 - **Subject:** the PR title, plus the " (#N)" that GitHub adds, 72 characters or fewer in total. GitHub fills the merge box's title field from the PR title, so a long title becomes a long subject, and fixing it after the merge would mean rewriting `main`.
-- **Body:** a few prose paragraphs on what changed and why, not the PR's checklists. Write each paragraph as one unwrapped line, with a blank line between paragraphs: the merge box wraps text itself, so line breaks typed in advance show up in the middle of sentences. Describe the change ("Adds…", "The check now…") rather than giving instructions ("Add…"), and use the serial comma.
+- **Body:** a few prose paragraphs on what changed and why, not the PR's checklists. Write each paragraph as one unwrapped line, with a blank line between paragraphs: the merge box wraps text itself, so line breaks typed in advance show up in the middle of sentences.
 - **Known limitations:** state each item from the PR's Known Issues section with its tracking issue, in the same terms as the issue, so the commit, the PR, and the issue tell the same story.
 - **Issue line:** `Closes #N` for an issue the PR completes and `Refs #N` for one it contributes to. Write each number out (`#1, #2, #3`, not `#1-#3`), because GitHub links each number on its own.
 - **Trailer, last:** a `Co-authored-by:` line for each person or AI model that co-wrote the change.
