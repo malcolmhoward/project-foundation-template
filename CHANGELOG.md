@@ -10,7 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - (Upcoming features will be listed here)
 
-## [3.7.0] - Unreleased
+## [3.7.0] - 2026-11-06
 
 Versions 2.4.0 through 3.6.0 were developed as a chain of pull requests and ship together
 in 3.7.0. Changes are grouped by the version that introduced them.
@@ -111,6 +111,12 @@ enterprise presets generate the same files). Connecting them to generated output
   required "New concerns found during implementation" line. The check now confirms only that the
   sections are present, since the PR's author can edit the description, and its label step,
   which never ran with the workflow's read-only token, is removed.
+- PFT's own PR template adds a Reviewer Guide (size, shape, reading order, points that need
+  judgment, how to verify, what is not covered) and a Known Issues section, marks each risk as
+  mitigated (with a link to what limits it) or accepted (with a justification), and says that
+  "Not applicable" checklist items stay unticked. CONTRIBUTING.md stages files by name rather
+  than with `git add .`, and describes the squash commit message and the checks after each
+  merge (#139, #140, #142).
 - `scripts/bulk-operations/update-github-issues.sh` is a dry run unless `--apply` is given,
   needs `--repo`, and will not apply while any `[REPLACE: ...]` placeholder is unfilled. Run
   as-is, it used to edit issues 1-10 of this repository and record "Principle Zero: ✅ Passes"
