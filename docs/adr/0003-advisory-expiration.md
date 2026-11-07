@@ -2,7 +2,14 @@
 
 ## Status
 
-Accepted
+Accepted (the behavior is implemented; the code samples show v2.6.0; see the note below)
+
+**Implementation note (v3.7.0):** the behavior described here is unchanged, but the code has
+moved and the values are from v2.6.0. The expiration date is in `core/utils.py`
+(`date(2027, 5, 1)` in v3.7.0). The warning and the "I understand the risks" prompt are in
+`check_version_advisory()` in `core/ethics.py`; `setup_foundation_lite.py` is now a shim that
+forwards to `generate_foundation.py`. The usage log entry, including `outdated`, is written by
+`core/generator.py`. With `--quiet`, the warning is shortened to one line but still shown.
 
 ## Date
 

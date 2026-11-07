@@ -62,10 +62,9 @@ class TestCheckExpiration(unittest.TestCase):
     def test_check_expiration_not_expired(self, mock_date):
         """Should return False when not expired."""
         mock_date.today.return_value = date(2025, 1, 1)
-        # Assuming EXPIRATION_DATE is 2026-03-01
-        result = check_expiration()
-        # Since we can't mock the constant, just verify the function works
-        self.assertIsInstance(result, bool)
+        # Only today() is mocked; EXPIRATION_DATE is a real date set at import,
+        # and 2025-01-01 is before any expiration date PFT has used.
+        self.assertFalse(check_expiration())
 
     def test_get_expiration_warning_returns_string(self):
         """get_expiration_warning should return a non-empty string."""

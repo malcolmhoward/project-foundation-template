@@ -2,7 +2,12 @@
 
 ## Status
 
-Accepted
+Accepted (the sample under Implementation shows v2.6.0 values; see the note below)
+
+**Implementation note (v3.7.0):** in v3.7.0, `core/utils.py` sets `SCRIPT_VERSION = "3.7.0"` and
+`EXPIRATION_DATE = date(2027, 5, 1)`, and each release moves the expiration to about six months
+after its own date ([ADR 0003](0003-advisory-expiration.md)). Versions 2.4.0 to 3.6.0 were not
+released separately; they were released together in 3.7.0 (see CHANGELOG.md).
 
 ## Date
 

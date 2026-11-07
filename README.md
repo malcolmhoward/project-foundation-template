@@ -81,7 +81,7 @@ Templates are starting points, not finished products. Every generated file requi
 python generate_foundation.py --project-name "MyProject" --author-name "Your Name"
 ```
 
-This walks you through each decision, explaining what each file does and why it matters.
+For each principle, before writing its files, it explains why the principle matters, what it does, and the risk without it, then asks whether you will customize the template.
 
 ### For Experienced Users (Preset Selection)
 
@@ -310,6 +310,7 @@ project-foundation-template/
 │   │
 │   ├── programming_languages/  # 18 language configurations
 │   ├── internationalization/   # 10 locale configurations
+│   ├── templates/              # Text of the generated files
 │   │
 │   └── plugins/                # Plugin System
 │       ├── __init__.py         # Plugin API
@@ -375,6 +376,42 @@ Key terms used in this project:
 | **Shim** | A small stand-in file that keeps an old command working by forwarding to its replacement |
 
 For a comprehensive glossary of software development terms, see [GLOSSARY.md](GLOSSARY.md).
+
+---
+
+## Internationalization
+
+PFT includes configurations for 10 locales in `core/internationalization/`: each has the
+language's name, text direction, script, date and number formats, and translations of common,
+governance and error text. The generator does not write locale files into projects yet (see
+[ADR 0009](docs/adr/0009-internationalization-architecture.md)); the configurations are
+available through the Python API:
+
+```python
+from core.internationalization import (
+    generate_translation_template, get_supported_locales_table, is_rtl)
+
+print(get_supported_locales_table())        # the table below, with more columns
+print(is_rtl("ar"))                         # True
+print(generate_translation_template("es"))  # Spanish translations as JSON, with their review status
+```
+
+| Code | Language | Direction | Translations |
+|------|----------|-----------|--------------|
+| en | English | LTR | source |
+| es | Spanish | LTR | unreviewed |
+| fr | French | LTR | unreviewed |
+| de | German | LTR | unreviewed |
+| pt | Portuguese | LTR | unreviewed |
+| zh | Chinese | LTR | unreviewed |
+| ja | Japanese | LTR | unreviewed |
+| ko | Korean | LTR | unreviewed |
+| ar | Arabic | RTL | unreviewed |
+| hi | Hindi | LTR | unreviewed |
+
+English is the source text. The other nine translations were drafted with an AI model and no
+fluent speaker has reviewed them yet ([#122](https://github.com/malcolmhoward/project-foundation-template/issues/122)), so check them before use.
+[Improving Translations](CONTRIBUTING.md#improving-translations) explains how to correct them.
 
 ---
 
