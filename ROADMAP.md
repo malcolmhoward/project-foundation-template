@@ -10,7 +10,7 @@ Features are reintroduced gradually with:
 3. **Ethical review** - Principle Zero compliance
 4. **Community feedback** - Time for testing and refinement
 
-> **Historical:** this roadmap led to v3.0.0. Versions 2.4.0 to 3.6.0 were not released separately; they ship together in 3.7.0 (see CHANGELOG.md). Later plans are tracked in GitHub issues.
+> **Historical:** this roadmap led to v3.0.0. Versions 2.4.0 to 3.6.0 were not released separately; they were released together in 3.7.0 (see CHANGELOG.md). Later plans are tracked in GitHub issues.
 
 ## State at v2.6.0 (Stabilization & Testability)
 
@@ -196,6 +196,8 @@ These features don't add governance principles but make the tool more usable for
 | 19 | Architecture Decisions | ADR creation and maintenance |
 | 20 | Documentation System | Comprehensive docs structure |
 
+> **Not built:** the principles and guides that were released differ from this plan (see `--list-principles` and `--list-guides`). Branch protection, as a principle or a guide, was not built.
+
 ### New Documentation Modules (1-10)
 
 | # | Module | Focus |
@@ -249,6 +251,8 @@ The v2.6.0 modularization completed an estimated **60% of the v3.0.0 architectur
 | Principles directory | ❌ Not started | Split into modules |
 | Documentation modules | ❌ Not started | 20 new modules |
 | Plugin architecture | ❌ Not started | Dynamic loading |
+
+> **Status at v2.6.0.** By v3.7.0 each row exists in `core/` (`generator.py`, `ethics.py`, `presets/`, `principles/`, `guides/`, `templates/`, `plugins/`), but the generator does not load plugins yet ([#135](https://github.com/malcolmhoward/project-foundation-template/issues/135)).
 
 ### Effort Estimate
 
@@ -516,6 +520,8 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 
 ### Version 3.8.0 - Template Improvements (Dogfooding Insights)
 
+> **Superseded:** the v3.8.0 milestone on GitHub holds the plan for 3.8.0. The items below moved to Backlog: the new principles to [#145](https://github.com/malcolmhoward/project-foundation-template/issues/145), the README, CONTRIBUTING and ADR README patterns to [#146](https://github.com/malcolmhoward/project-foundation-template/issues/146), and the PR template's WHY section to [#12](https://github.com/malcolmhoward/project-foundation-template/issues/12).
+
 **Target**: Template enhancements identified through v3.7.0 dogfooding exercise
 
 | Feature | Type | Description | Priority |
@@ -668,8 +674,8 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | Generated Files | 15+ | 15+ | 0% | ✅ Complete |
 | Language Support | 18 | 18 | 0% | ✅ v3.5.0 (configurations) |
 | i18n Locales | 10 | 10 | 0% | ✅ v3.6.0 |
-| Generation Log | N/A | New feature | N/A | 🔄 v3.7.0 |
-| Dogfooding | N/A | New principle | N/A | 📋 v3.8.0 |
+| Generation Log | N/A | New feature | N/A | ✅ v3.7.0 |
+| Dogfooding | N/A | New principle | N/A | 📋 Backlog ([#145](https://github.com/malcolmhoward/project-foundation-template/issues/145)) |
 | Multi-Platform Docs | N/A | New guides | N/A | 📋 v3.9.0 |
 | Ecosystem Coordination | N/A | New guides | N/A | 📋 v3.10.0 |
 | Coordination & Research | N/A | New guides + patterns | N/A | 📋 v3.11.0 |
@@ -693,8 +699,8 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 3.4.0 | ✅ In 3.7.0 | Advanced features |
 | 3.5.0 | ✅ In 3.7.0 | Programming language support (18 languages) |
 | 3.6.0 | ✅ In 3.7.0 | Internationalization (10 locales) |
-| 3.7.0 | 🔄 In Progress | Generation log tracking, dogfooding documentation |
-| 3.8.0 | 📋 Planned | Template improvements (dogfooding insights) |
+| 3.7.0 | ✅ Released | Generation log tracking, dogfooding documentation |
+| 3.8.0 | 📋 Planned | See the v3.8.0 milestone on GitHub |
 | 3.9.0 | 📋 Planned | Multi-platform docs, container support |
 | 3.10.0 | 📋 Planned | Ecosystem coordination patterns |
 | 3.11.0 | 📋 Planned | Coordination & research patterns |
@@ -708,7 +714,7 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 2.4.x | Medium | Medium | ✅ Done |
 | 2.5.x | Medium | High | ✅ Done |
 | 2.6.0 | Low | Medium | ✅ Done |
-| 3.0.0 | Medium-High | Medium* | 🔄 60% Complete |
+| 3.0.0 | Medium-High | Medium* | ✅ Done (in 3.7.0) |
 
 *Complexity reduced from High to Medium due to v2.6.0 modularization laying the foundation.
 
