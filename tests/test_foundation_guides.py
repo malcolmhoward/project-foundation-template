@@ -12,6 +12,8 @@ Tests cover:
     - Helper functions
 """
 
+import re
+
 import pytest
 from core.guides import (
     ALL_GUIDES,
@@ -75,6 +77,19 @@ class TestGuideDefinitions:
         for gid, content in ALL_GUIDE_CONTENT.items():
             assert isinstance(content, str), f"Content for '{gid}' is not a string"
             assert len(content) > 0, f"Content for '{gid}' is empty"
+
+    def test_no_guide_stages_everything(self):
+        """Guides should stage files by name, not with commands that stage the whole tree."""
+        # Matches "git add ." but not "git add .gitignore", and "git commit -am" or
+        # "git commit -m msg -a" but not "--amend". An inline mention followed by a
+        # backtick (`git add .`) doesn't match, so a guide can warn against the command.
+        whole_tree = re.compile(
+            r"git add (\.|\*|-A|--all|-u|--update)(?=\s|$)"
+            r"|git commit\b[^\n`]*?\s(-[a-zA-Z]*a[a-zA-Z]*|--all)(?=\s|$)"
+        )
+        for gid, content in ALL_GUIDE_CONTENT.items():
+            match = whole_tree.search(content)
+            assert match is None, f"Guide '{gid}' teaches '{match and match.group(0)}'"
 
 
 class TestGuideCategories:
