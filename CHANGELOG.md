@@ -10,6 +10,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - (Upcoming features will be listed here)
 
+### Fixed
+- The onboarding guide's "Commit your work" step stages files by name and checks `git status`
+  instead of using `git add .`, which also stages unintended files and accidental deletions.
+  A test fails if any guide teaches a command that stages the whole tree, such as `git add .`,
+  `git add -A`, `git add -u`, or `git commit -a` (#141).
+
 ## [3.7.0] - 2026-11-06
 
 Versions 2.4.0 through 3.6.0 were developed as a chain of pull requests and ship together

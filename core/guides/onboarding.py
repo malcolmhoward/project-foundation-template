@@ -213,9 +213,14 @@ feature/abc              ●
 
 4. **Commit your work**
    ```bash
-   git add .
+   git add path/to/changed-file.py path/to/test_changed_file.py
+   git status
    git commit -m "feat(scope): brief description"
    ```
+   - Stage the files you changed by name, then check `git status` before you commit.
+     `git add .` also stages files you didn't mean to include, such as local notes,
+     generated output, or accidental deletions, which are easy to miss.
+   - `git add -p` lets you choose individual changes within a file.
 
 5. **Push and create PR**
    ```bash
