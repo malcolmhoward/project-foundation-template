@@ -95,7 +95,8 @@ npm install
 
 # Set up environment
 cp .env.example .env
-# Edit .env with your local settings
+# Edit .env with your local settings, and check that .gitignore lists .env
+# so your local settings and secrets are never committed
 
 # Verify setup
 npm test
@@ -214,12 +215,18 @@ feature/abc              ●
 4. **Commit your work**
    ```bash
    git add path/to/changed-file.py path/to/test_changed_file.py
-   git status
+   git status          # only the files you meant to change are staged
+   git diff --staged   # the exact lines you are about to commit
    git commit -m "feat(scope): brief description"
    ```
    - Stage the files you changed by name, then check `git status` before you commit.
      `git add .` also stages files you didn't mean to include, such as local notes,
      generated output, or accidental deletions, which are easy to miss.
+   - Name files, not directories: `git add src/` stages every change under `src/`,
+     including files you deleted by accident.
+   - Read `git diff --staged` before you commit. It shows a password or API key
+     pasted into a file you meant to change, which `git status` cannot.
+   - To commit a deletion you intended, stage it by name with `git rm path/to/old-file.py`.
    - `git add -p` lets you choose individual changes within a file.
 
 5. **Push and create PR**
