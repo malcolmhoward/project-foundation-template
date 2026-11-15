@@ -240,7 +240,7 @@ When updating versions:
 
 - [SEMANTIC_VERSIONING.md](../../SEMANTIC_VERSIONING.md) - Explains expiration vs. versioning
 - [ETHICS.md](../../ETHICS.md) - Lists expiration as ethical safeguard
-- `core/utils.py:50-57` - Implementation of `check_expiration()`
+- `core/utils.py` - Implementation of `check_expiration()`
 
 ---
 

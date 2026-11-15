@@ -81,7 +81,7 @@ Templates are starting points, not finished products. Every generated file requi
 python generate_foundation.py --project-name "MyProject" --author-name "Your Name"
 ```
 
-For each principle, before writing its files, it explains why the principle matters, what it does, and the risk without it, then asks whether you will customize the template.
+For each principle, before writing its files, interactive mode explains why the principle matters, what it does, and the risk without it, then asks whether you will customize the template.
 
 ### For Experienced Users (Preset Selection)
 
@@ -395,6 +395,9 @@ print(get_supported_locales_table())        # the table below, with more columns
 print(is_rtl("ar"))                         # True
 print(generate_translation_template("es"))  # Spanish translations as JSON, with their review status
 ```
+
+On Windows, if you pipe or redirect this output, set `PYTHONIOENCODING=utf-8` first: the
+table contains characters that the default console encoding cannot write.
 
 | Code | Language | Direction | Translations |
 |------|----------|-----------|--------------|

@@ -196,7 +196,7 @@ These features don't add governance principles but make the tool more usable for
 | 19 | Architecture Decisions | ADR creation and maintenance |
 | 20 | Documentation System | Comprehensive docs structure |
 
-> **Not built:** the principles and guides that were released differ from this plan (see `--list-principles` and `--list-guides`). Branch protection, as a principle or a guide, was not built.
+> **Changed since this plan:** the principles and guides that were released differ from this list (see `--list-principles` and `--list-guides`). Branch protection, as a principle or a guide, was not built.
 
 ### New Documentation Modules (1-10)
 
@@ -252,7 +252,7 @@ The v2.6.0 modularization completed an estimated **60% of the v3.0.0 architectur
 | Documentation modules | ❌ Not started | 20 new modules |
 | Plugin architecture | ❌ Not started | Dynamic loading |
 
-> **Status at v2.6.0.** By v3.7.0 each row exists in `core/` (`generator.py`, `ethics.py`, `presets/`, `principles/`, `guides/`, `templates/`, `plugins/`), but the generator does not load plugins yet ([#135](https://github.com/malcolmhoward/project-foundation-template/issues/135)).
+> **Status at v2.6.0.** By v3.7.0 the code for each row exists, mostly in `core/` (`generator.py`, `ethics.py`, `presets/`, `principles/`, `guides/`, `templates/`, `plugins/`) and the test suite in `tests/`. Two gaps remain: the generator does not load plugins yet ([#135](https://github.com/malcolmhoward/project-foundation-template/issues/135)), and it does not write guide content into generated projects yet ([#116](https://github.com/malcolmhoward/project-foundation-template/issues/116)).
 
 ### Effort Estimate
 
@@ -692,7 +692,7 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 2.4.x | ✅ In 3.7.0 | Enhanced security, secrets detection |
 | 2.5.x | ✅ In 3.7.0 | ADR system, CI workflows, smoke tests |
 | 2.6.0 | ✅ In 3.7.0 | Modular package, 148 tests |
-| 3.0.0 | ✅ In 3.7.0 | Plugin architecture, 23 principles, 15 guides, 5 presets |
+| 3.0.0 | ✅ In 3.7.0 | Plugin architecture (loading open, [#135](https://github.com/malcolmhoward/project-foundation-template/issues/135)), 23 principles, 15 guides, 5 presets |
 | 3.1.0 | ✅ In 3.7.0 | Onboarding files (GLOSSARY, MAINTAINERS generation) |
 | 3.2.0 | ✅ In 3.7.0 | Developer documentation guides |
 | 3.3.0 | ✅ In 3.7.0 | Extended governance principles |
@@ -714,7 +714,7 @@ Based on gap analysis comparing v3.0.0 against the original ~6,500 line enterpri
 | 2.4.x | Medium | Medium | ✅ Done |
 | 2.5.x | Medium | High | ✅ Done |
 | 2.6.0 | Low | Medium | ✅ Done |
-| 3.0.0 | Medium-High | Medium* | ✅ Done (in 3.7.0) |
+| 3.0.0 | Medium-High | Medium* | Released in 3.7.0; plugin loading open ([#135](https://github.com/malcolmhoward/project-foundation-template/issues/135)) |
 
 *Complexity reduced from High to Medium due to v2.6.0 modularization laying the foundation.
 
