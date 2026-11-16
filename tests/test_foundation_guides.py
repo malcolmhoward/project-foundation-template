@@ -12,6 +12,8 @@ Tests cover:
     - Helper functions
 """
 
+import re
+
 import pytest
 from core.guides import (
     ALL_GUIDES,
@@ -31,6 +33,24 @@ from core.guides import (
     get_guides_by_complexity,
     list_all_guides,
 )
+
+# A command ends at whitespace, a shell separator, or the end of a line. A backtick
+# does not end one, so an inline mention such as `git add .` can warn against it.
+_END = r"(?=[\s;&|]|$)"
+# A quoted commit message, which may mention flags such as -a without using them.
+_MESSAGE = re.compile(r"""(-m|--message)(\s+|=)("[^"\n]*"|'[^'\n]*')""")
+_WHOLE_TREE = re.compile(
+    r"git (?:add|stage)(?:\s+-[a-zA-Z-]+)*\s+(?:\./?|:/|\*)" + _END
+    + r"|git (?:add|stage)(?:\s+-[a-zA-Z-]+)*?\s+(?:-[a-zA-Z]*[Au][a-zA-Z]*|--all|--update)" + _END
+    + r"|git commit\b[^\n`;&|]*?\s(?:-[a-zA-Z]*a[a-zA-Z]*|--all|\./?|:/)" + _END,
+    re.MULTILINE,
+)
+
+
+def find_whole_tree_staging(text):
+    """Return the first command in text that stages the whole tree, or None."""
+    match = _WHOLE_TREE.search(_MESSAGE.sub(r'\1\2""', text))
+    return match.group(0) if match else None
 
 
 class TestGuideDefinitions:
@@ -76,6 +96,55 @@ class TestGuideDefinitions:
             assert isinstance(content, str), f"Content for '{gid}' is not a string"
             assert len(content) > 0, f"Content for '{gid}' is empty"
 
+    def test_no_guide_stages_everything(self):
+        """Guides should stage files by name, not with commands that stage the whole tree."""
+        for gid, content in ALL_GUIDE_CONTENT.items():
+            match = find_whole_tree_staging(content)
+            assert match is None, f"Guide '{gid}' teaches '{match}'"
+
+    @pytest.mark.parametrize("command", [
+        "git add .",
+        "git add ./",
+        "git add  .",
+        "git add :/",
+        "git add *",
+        "git add .; git commit",
+        "git add . && git commit",
+        "git add -f .",
+        "git add -v .",
+        "git add -A",
+        "git add -Av",
+        "git add --all",
+        "git add -u",
+        "git add --update",
+        "git stage .",
+        "git commit -a",
+        'git commit -am "fix: typo"',
+        'git commit -m "fix: typo" -a',
+        'git commit --all -m "fix: typo"',
+        'git commit . -m "fix: typo"',
+    ])
+    def test_whole_tree_staging_is_found(self, command):
+        """Each form of whole-tree staging is caught."""
+        assert find_whole_tree_staging(command) is not None
+
+    @pytest.mark.parametrize("command", [
+        "git add src/app.py tests/test_app.py",
+        "git add .gitignore",
+        "git add ./src/app.py",
+        "git add *.py",
+        "git add -p",
+        "git add -p src/app.py",
+        'git commit -m "feat(cli): add -a flag"',
+        'git commit -m "fix: handle -a option"',
+        "git commit -m 'docs: explain git add .'",
+        "git commit --amend",
+        'git commit -S -m "fix: typo"',
+        "`git add .` also stages files you didn't mean to include",
+    ])
+    def test_named_staging_is_allowed(self, command):
+        """Staging named files, and warnings that mention the command, pass."""
+        assert find_whole_tree_staging(command) is None
 
 class TestGuideCategories:
     """Test guide category groupings."""

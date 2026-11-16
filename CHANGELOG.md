@@ -10,6 +10,14 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - (Upcoming features will be listed here)
 
+### Fixed
+- The onboarding guide's "Commit your work" step stages files by name and checks `git status`
+  and `git diff --staged` instead of using `git add .`, which also stages unintended files and
+  accidental deletions. It also shows how to stage an intended deletion with `git rm`, and the
+  setup step says to check that `.gitignore` lists `.env`. A test fails if any guide teaches a
+  command that stages the whole tree, such as `git add .`, `git add -A`, `git stage .`, or
+  `git commit -a`, but not when a commit message only mentions such a flag (#141).
+
 ## [3.7.0] - 2026-11-06
 
 Versions 2.4.0 through 3.6.0 were developed as a chain of pull requests and ship together
