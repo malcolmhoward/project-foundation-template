@@ -92,6 +92,9 @@ A request to merge code changes from one branch to another. PRs enable code revi
 ### SemVer (Semantic Versioning)
 A versioning scheme using MAJOR.MINOR.PATCH numbers to convey the nature of changes (breaking, feature, fix).
 
+### Ship (Release)
+To make a version available to users, with release notes saying what changed. "Feature X ships in 3.8.0" means it is first available in version 3.8.0; "shipped" means already released.
+
 ---
 
 ## Accessibility & Internationalization
