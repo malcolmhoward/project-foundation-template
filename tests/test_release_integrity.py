@@ -178,40 +178,144 @@ class TestPresetsAndListings:
         assert (out / ".github" / "workflows" / "ci.yml").exists()
         assert not (out / "CODE_OF_CONDUCT.md").exists()
 
-    @staticmethod
-    def _files(out):
-        # FOUNDATION_NOTICE.md lists the files with their paths, so compare names only
-        return sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file())
+    # Lines that differ between any two runs (timestamps), and the scaffold manifest lines
+    # that record how the run was asked for, so they name `--preset none` on purpose.
+    _RUN_SPECIFIC_LINES = re.compile(
+        r"^This project foundation was generated on "
+        r"|^\| \*\*Generated At\*\* \|"
+        r"|^\*\*Last Updated\*\*"
+        r"|^\| \*\*Preset Used\*\* \|"
+        r"|^\| `preset` \|"
+        r"|^\s*python generate_foundation\.py .*--output-dir \./temp-foundation$")
 
-    @pytest.mark.parametrize("flags", [(), ("--include-ci",)])
+    @classmethod
+    def _contents(cls, out):
+        """Every generated file's text, without the lines that are meant to differ."""
+        return {
+            p.relative_to(out).as_posix(): [
+                line for line in p.read_text(encoding="utf-8").splitlines()
+                if not cls._RUN_SPECIFIC_LINES.match(line)]
+            for p in out.rglob("*") if p.is_file()}
+
+    @pytest.mark.parametrize("flags", [(), ("--include-ci",), ("--all",)])
     def test_preset_none_generates_the_same_files_as_no_preset(self, tmp_path, home, flags):
-        """`--preset none` is the same as leaving --preset out (#137)."""
+        """Without a config file, `--preset none` writes what leaving --preset out does (#137).
+
+        File contents are compared, not only names. The lines left out are timestamps and
+        the manifest's record of the preset, which `test_with_preset_none_it_names_it_and_
+        keeps_the_flags` covers.
+        """
         omitted, none = tmp_path / "omitted", tmp_path / "none"
         assert generate(omitted, home, "--quiet", *flags).returncode == 0
         r = generate(none, home, "--preset", "none", *flags)
         assert r.returncode == 0, r.stdout + r.stderr
         assert "Unknown preset" not in r.stdout + r.stderr
-        assert "No preset applied" in r.stdout
-        assert self._files(none) == self._files(omitted)
+        assert "No preset applied: core files plus the --include-* flags or --all given." \
+            in r.stdout
+        omitted_contents, none_contents = self._contents(omitted), self._contents(none)
+        assert sorted(none_contents) == sorted(omitted_contents)
+        assert "README.md" in none_contents
+        for name, lines in omitted_contents.items():
+            assert none_contents[name] == lines, f"{name} differs with --preset none"
 
-    def test_preset_none_in_config_file(self, tmp_path, home):
-        """`"preset": "none"` in .foundationrc is accepted and applies nothing (#137)."""
-        config = tmp_path / ".foundationrc"
-        config.write_text(json.dumps({"preset": "none"}), encoding="utf-8")
+    def test_run_specific_lines_are_the_only_ones_ignored(self, tmp_path, home):
+        """The comparison above must not hide more than the lines it names."""
         out = tmp_path / "out"
-        r = generate(out, home, "--config", str(config))
+        assert generate(out, home, "--quiet", "--preset", "none", "--all").returncode == 0
+        ignored = sum(
+            1 for p in out.rglob("*") if p.is_file()
+            for line in p.read_text(encoding="utf-8").splitlines()
+            if self._RUN_SPECIFIC_LINES.match(line))
+        # FOUNDATION_NOTICE timestamp, plus four manifest lines: Generated At, Preset Used,
+        # the `preset` configuration row, and the regenerate command.
+        assert ignored == 5
+
+    @staticmethod
+    def _config(tmp_path, preset):
+        config = tmp_path / ".foundationrc"
+        config.write_text(json.dumps({"preset": preset}), encoding="utf-8")
+        return str(config)
+
+    @pytest.mark.parametrize("value", ["none", "NONE", "None"])
+    def test_preset_none_in_config_file(self, tmp_path, home, value):
+        """`"preset": "none"` in .foundationrc, in any case, applies nothing (#137)."""
+        out = tmp_path / "out"
+        r = generate(out, home, "--config", self._config(tmp_path, value))
         assert r.returncode == 0, r.stdout + r.stderr
         assert "Unknown preset" not in r.stdout + r.stderr
+        # The message proves `none` was recognized, not ignored as an unknown preset.
+        assert "No preset applied" in r.stdout
         assert (out / "README.md").exists()
         assert not (out / "CODE_OF_CONDUCT.md").exists()
 
+    def test_preset_none_on_the_command_line_overrides_the_config_file(self, tmp_path, home):
+        """Leaving --preset out applies the config file's preset; `--preset none` cancels it."""
+        config = self._config(tmp_path, "standard")
+        omitted, none = tmp_path / "omitted", tmp_path / "none"
+        r = generate(omitted, home, "--config", config)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Applied preset: standard" in r.stdout
+        assert (omitted / ".github" / "workflows" / "ci.yml").exists()
+        r = generate(none, home, "--config", config, "--preset", "none")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "No preset applied" in r.stdout and "Applied preset" not in r.stdout
+        assert (none / "README.md").exists()
+        assert not (none / ".github" / "workflows" / "ci.yml").exists()
+        assert not (none / "CODE_OF_CONDUCT.md").exists()
+
+    @pytest.mark.parametrize("value", ["NONE", "None"])
+    def test_preset_none_on_the_command_line_in_any_case(self, tmp_path, home, value):
+        """`--list-presets` prints the heading NONE, so `--preset NONE` is accepted (#137)."""
+        out = tmp_path / "out"
+        r = generate(out, home, "--preset", value, "--include-ci", "--export-json")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "No preset applied" in r.stdout
+        assert (out / ".github" / "workflows" / "ci.yml").exists()
+        assert not (out / "CODE_OF_CONDUCT.md").exists()
+        exported = json.loads(r.stdout.split("--- JSON OUTPUT ---", 1)[1])
+        assert exported["preset"] == "none"
+
+    def test_export_json_reports_null_when_no_preset_is_named(self, tmp_path, home):
+        r = generate(tmp_path / "out", home, "--quiet", "--export-json")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert json.loads(r.stdout.split("--- JSON OUTPUT ---", 1)[1])["preset"] is None
+
+    def test_preset_in_config_file_in_any_case(self, tmp_path, home):
+        out = tmp_path / "out"
+        r = generate(out, home, "--config", self._config(tmp_path, "Standard"))
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Applied preset: standard" in r.stdout
+        assert (out / ".github" / "workflows" / "ci.yml").exists()
+
+    def test_invalid_preset_in_config_file_stops_with_the_valid_choices(self, tmp_path, home):
+        """A misspelled preset used to be ignored, and only the core files were written."""
+        from core.presets import PRESET_CHOICES
+        out = tmp_path / "out"
+        r = generate(out, home, "--config", self._config(tmp_path, "standrad"))
+        assert r.returncode == 2, r.stdout + r.stderr
+        assert "Invalid preset 'standrad' in the config file" in r.stderr
+        assert ", ".join(PRESET_CHOICES) in r.stderr
+        assert "Traceback" not in r.stderr
+        assert not (out / "README.md").exists()
+
     def test_list_presets_shows_none(self, home):
         """`none` is listed after the presets, points to standard, and lists the flags (#137)."""
+        from core.config import include_option_help
         out = run("generate_foundation.py", "--list-presets", home=home).stdout
         assert re.search(r"^  NONE$", out, re.M)
         none = re.split(r"^  NONE$", out, maxsplit=1, flags=re.M)[1]
-        assert "'standard'" in none
-        assert "--include-adr" in none and "--all" in none
+        assert re.search(r"Start from 'standard'.*\brecommended\b", none, re.S)
+        assert "--include-* flags or --all" in none
+        assert "overrides a preset" in none and ".foundationrc" in none
+        assert "same as leaving" not in none
+        listed = re.findall(r"^ +(--[a-z-]+) +\S", none, re.M)
+        options = [option for option, _ in include_option_help()]
+        assert len(options) > 10 and "--all" in options
+        assert sorted(listed) == sorted(options)
+        assert listed[0] == "--all"
+        # Long help text is wrapped, as the hand-written lines above it are.
+        assert max(len(line) for line in none.splitlines() if "--include-" in line
+                   or line.startswith(" " * 40)) <= 88
 
 
 # ---------------------------------------------------------------- plugin safety

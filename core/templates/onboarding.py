@@ -337,7 +337,8 @@ def generate_scaffold_manifest_content(
 
     The manifest records the run as it was asked for: `--preset none` is named and kept in
     the regenerate command, and a run without --preset shows no --preset option. Both
-    commands generate the same files.
+    commands generate the same files unless a config file sets a preset, which only
+    `--preset none` overrides.
     """
     timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 

@@ -27,6 +27,7 @@ Repository: https://github.com/malcolmhoward/project-foundation-template
 
 import json
 import sys
+import textwrap
 from datetime import datetime
 from pathlib import Path
 
@@ -101,6 +102,11 @@ def show_banner(quiet: bool = False):
 """)
 
 
+# Width of the help text column in the --list-presets "Adds:" list. With the option
+# column before it, lines stay as wide as the hand-wrapped description lines.
+LIST_HELP_WIDTH = 40
+
+
 def show_presets():
     """Display available governance presets."""
     print("""
@@ -134,14 +140,20 @@ Use --preset <name> to apply a preset configuration.
     print(f"  {NO_PRESET.upper()}")
     print(f"  {'-' * 60}")
     print("  Description: No preset. Generates the core files (README, LICENSE, CONTRIBUTING,")
-    print("               .gitignore, FOUNDATION_NOTICE) plus the --include-* flags given.")
-    print(f"               --preset {NO_PRESET} is the same as leaving --preset out.")
+    print("               .gitignore, FOUNDATION_NOTICE) plus the --include-* flags or --all")
+    print(f"               given. On the command line, --preset {NO_PRESET} also overrides a preset")
+    print("               set in .foundationrc; leaving --preset out does not.")
     print("  Best for:    Choosing your governance file by file")
     print("  Note:        Start from 'standard' if you are unsure: it is the recommended")
     print("               starting point. Leaving a file out is a choice to make knowingly.")
     print("  Adds:        Each flag adds files, with or without a preset:")
-    for option, help_text in include_option_help():
-        print(f"                 {option:<28} {help_text}")
+    # --all first: it is the one flag that stands for most of the others.
+    options = sorted(include_option_help(), key=lambda pair: pair[0] != "--all")
+    for option, help_text in options:
+        lines = textwrap.wrap(help_text, width=LIST_HELP_WIDTH)
+        print(f"                 {option:<28} {lines[0]}")
+        for line in lines[1:]:
+            print(f"                 {'':<28} {line}")
     print()
 
     print("""
@@ -318,14 +330,21 @@ def main() -> int:
 
     # Merge config with arguments (CLI takes precedence)
     if config:
-        args = merge_config_with_args(args, config)
+        try:
+            args = merge_config_with_args(args, config)
+        except ValueError as error:
+            # An invalid "preset" in the config file. Stop here, as argparse does for
+            # an invalid --preset: continuing would write fewer files than asked for.
+            print(f"Error: {error}", file=sys.stderr)
+            return 2
 
     # Apply preset if specified
-    # NO_PRESET applies nothing, the same as leaving --preset out.
+    # NO_PRESET applies nothing. Given on the command line, it has already kept
+    # merge_config_with_args from filling in the config file's preset.
     preset_name = getattr(args, "preset", None)
     if preset_name == NO_PRESET:
         if not getattr(args, "quiet", False):
-            print("No preset applied: core files plus the --include-* flags given.")
+            print("No preset applied: core files plus the --include-* flags or --all given.")
     elif preset_name:
         preset_config = get_preset(preset_name)
         if preset_config:

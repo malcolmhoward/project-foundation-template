@@ -8,13 +8,19 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- `--preset none` applies no preset, the same as leaving `--preset` out: the generator writes
-  the core files plus the `--include-*` flags or `--all` given. It makes the build-your-own
+- `--preset none` applies no preset: the generator writes the core files plus the
+  `--include-*` flags or `--all` given. On the command line, it also overrides a `preset` set
+  in `.foundationrc`, which leaving `--preset` out does not. It makes the build-your-own
   route visible in `--help` and `--list-presets`, where its entry points to `standard` as the
-  recommended starting point and lists what each `--include-*` flag adds. `.foundationrc`
-  accepts `"preset": "none"`, and the scaffold manifest names it and keeps it in its
-  regenerate command. The `--preset` help no longer says presets override `--include-*`
+  recommended starting point and lists what `--all` and each `--include-*` flag add.
+  `.foundationrc` accepts `"preset": "none"`, and the scaffold manifest names it and keeps it
+  in its regenerate command. `--export-json` reports `"preset": "none"` for it, and `null`
+  when no preset is named. The `--preset` help no longer says presets override `--include-*`
   flags; since 3.7.0 the flags add to a preset (#137).
+- `--preset` and the `"preset"` key in `.foundationrc` accept any letter case, so
+  `--preset NONE` and `"preset": "Standard"` work. An invalid `"preset"` in `.foundationrc`
+  now stops the run with a message that lists the valid choices; before, it was ignored with
+  a warning and only the core files were written (#137).
 
 ### Fixed
 - The onboarding guide's "Commit your work" step stages files by name and checks `git status`

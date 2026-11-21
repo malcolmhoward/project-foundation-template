@@ -14,9 +14,10 @@ Provides 5 governance presets with different levels of features:
 Each preset defines which features and principles are included.
 
 The --preset option also accepts NO_PRESET ("none"). It is not a preset: it applies
-nothing, exactly like leaving --preset out, so only the core files and the
---include-* flags given are generated. It is a named choice so that the custom
-route shows up in --help and --list-presets.
+nothing, so only the core files and the --include-* flags or --all given are
+generated. On the command line it also overrides a "preset" set in .foundationrc,
+which leaving --preset out does not. It is a named choice so that the custom route
+shows up in --help and --list-presets.
 """
 
 from .minimal import MINIMAL_PRESET
@@ -38,12 +39,15 @@ PRESETS = {
 # --preset, only the core files and the --include-* flags given are generated.
 DEFAULT_PRESET = "standard"
 
-# The --preset choice that applies no preset (the same as leaving --preset out).
+# The --preset choice that applies no preset. Given on the command line, it also
+# overrides a "preset" set in .foundationrc; leaving --preset out does not.
 # It is deliberately not a key of PRESETS: get_preset() returns {} for it, and
 # list_presets() names only the five real presets.
 NO_PRESET = "none"
 
-# Every value --preset and the "preset" config key accept.
+# Every value --preset and the "preset" config key accept, in lowercase. Both
+# accept any letter case (`--preset NONE`, `"preset": "Standard"`) and lowercase
+# the value before checking it against this list.
 PRESET_CHOICES = list(PRESETS) + [NO_PRESET]
 
 

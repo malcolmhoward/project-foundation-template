@@ -12,7 +12,7 @@ from unittest.mock import patch
 from argparse import Namespace
 from pathlib import Path
 
-from core.presets import NO_PRESET, get_preset
+from core.presets import NO_PRESET, PRESET_CHOICES
 from core.config import (
     CONFIG_KEY_MAPPING,
     DEFAULT_VALUES,
@@ -21,6 +21,7 @@ from core.config import (
     include_option_help,
     load_config_file,
     merge_config_with_args,
+    normalize_config_preset,
     validate_arguments,
 )
 
@@ -166,15 +167,73 @@ class TestNoPresetChoice(unittest.TestCase):
         args = build_parser().parse_args(["--preset", "none"])
         self.assertEqual(args.preset, NO_PRESET)
 
-    def test_preset_none_applies_nothing(self):
-        args = build_parser().parse_args(["--preset", "none", "--include-adr"])
-        before = dict(vars(args))
-        self.assertEqual(vars(apply_preset_to_args(args, get_preset(args.preset))), before)
+    def test_command_line_preset_accepts_any_case(self):
+        """--list-presets prints the heading NONE, so `--preset NONE` has to work."""
+        for given, expected in [("NONE", NO_PRESET), ("None", NO_PRESET),
+                                ("Standard", "standard"), ("ENTERPRISE", "enterprise")]:
+            with self.subTest(given=given):
+                args = build_parser().parse_args(["--preset", given])
+                self.assertEqual(args.preset, expected)
+
+    def test_command_line_preset_still_rejects_unknown_values(self):
+        with patch("sys.stderr", new_callable=io.StringIO), self.assertRaises(SystemExit):
+            build_parser().parse_args(["--preset", "everything"])
+
+    def test_preset_none_on_command_line_overrides_config_preset(self):
+        """Leaving --preset out takes the config file's preset; `--preset none` cancels it."""
+        config = {"preset": "standard"}
+        omitted = merge_config_with_args(build_parser().parse_args([]), dict(config))
+        self.assertEqual(omitted.preset, "standard")
+        none = merge_config_with_args(
+            build_parser().parse_args(["--preset", "none"]), dict(config))
+        self.assertEqual(none.preset, NO_PRESET)
+
+    def test_config_preset_accepts_any_case(self):
+        for given, expected in [("NONE", NO_PRESET), ("None", NO_PRESET),
+                                ("Standard", "standard"), ("none", NO_PRESET)]:
+            with self.subTest(given=given):
+                args = merge_config_with_args(
+                    build_parser().parse_args([]), {"preset": given})
+                self.assertEqual(args.preset, expected)
+
+    def test_config_preset_null_means_unset(self):
+        args = merge_config_with_args(build_parser().parse_args([]), {"preset": None})
+        self.assertIsNone(args.preset)
+
+    def test_invalid_config_preset_is_an_error_that_lists_the_choices(self):
+        for given in ["standrad", "", 3, True, ["standard"]]:
+            with self.subTest(given=given):
+                with self.assertRaises(ValueError) as raised:
+                    merge_config_with_args(build_parser().parse_args([]), {"preset": given})
+                message = str(raised.exception)
+                self.assertIn(repr(given), message)
+                self.assertIn("config file", message)
+                self.assertIn(", ".join(PRESET_CHOICES), message)
+
+    def test_invalid_config_preset_is_not_checked_when_the_command_line_overrides_it(self):
+        args = merge_config_with_args(
+            build_parser().parse_args(["--preset", "light"]), {"preset": "standrad"})
+        self.assertEqual(args.preset, "light")
+
+    def test_normalize_config_preset(self):
+        self.assertEqual(normalize_config_preset(" Strict "), "strict")
+        self.assertIsNone(normalize_config_preset(None))
 
     def test_help_says_flags_add_to_a_preset_and_describes_none(self):
         help_text = build_parser().format_help()
         self.assertNotIn("Overrides individual", help_text)
-        self.assertIn("'none' applies", help_text)
+        self.assertNotIn("same as leaving", help_text)
+        preset_help = next(a.help for a in build_parser()._actions if a.dest == "preset")
+        self.assertIn("'none' applies no preset", preset_help)
+        self.assertIn("--include-* flags or --all given", preset_help)
+        self.assertIn("overrides a preset set in .foundationrc", preset_help)
+        self.assertIn("any letter case", preset_help)
+
+    def test_help_choices_stay_lowercase_and_examples_show_none(self):
+        help_text = build_parser().format_help()
+        self.assertIn("{" + ",".join(PRESET_CHOICES) + "}", help_text)
+        self.assertIn("generate_foundation.py --preset none --include-ci", help_text)
+        self.assertIn("enterprise, or none (no preset)", help_text)
 
     def test_config_file_accepts_none(self):
         with tempfile.TemporaryDirectory() as tmpdir:

@@ -180,13 +180,39 @@ def load_config_file(config_path: str = None) -> Dict[str, Any]:
     return config
 
 
+def normalize_config_preset(value):
+    """
+    Return a config file's "preset" value in lowercase, checked against PRESET_CHOICES.
+
+    WHAT: `"Standard"` and `"NONE"` mean `standard` and `none`; anything else is an error.
+    WHY: A misspelled preset used to be ignored with a warning, so the run quietly wrote
+         fewer governance files than the config file asked for.
+    HOW: None (JSON null) means the key is unset. Any other value must be one of
+         PRESET_CHOICES in any letter case; otherwise ValueError names the valid choices.
+    """
+    if value is None:
+        return None
+    if isinstance(value, str) and value.strip().lower() in PRESET_CHOICES:
+        return value.strip().lower()
+    raise ValueError(
+        f"Invalid preset {value!r} in the config file. "
+        f"Valid choices (in any letter case): {', '.join(PRESET_CHOICES)}.")
+
+
 def merge_config_with_args(args, config: Dict[str, Any]):
     """
     Merge config file settings with command-line arguments.
     Command-line arguments take precedence over config file.
 
+    A config value is used only when the argument still has its default value. So
+    `--preset none` on the command line overrides a "preset" in the config file, and
+    leaving --preset out applies the config file's preset.
+
     Settings in COMMAND_LINE_ONLY_KEYS are ignored with a warning: they must be
     given on the command line.
+
+    Raises:
+        ValueError: the config file's "preset" is used and is not one of PRESET_CHOICES.
     """
     for config_key, flag in COMMAND_LINE_ONLY_KEYS.items():
         if config_key in config:
@@ -198,7 +224,10 @@ def merge_config_with_args(args, config: Dict[str, Any]):
             # Only apply config value if arg wasn't explicitly set
             current_value = getattr(args, arg_name, None)
             if current_value == DEFAULT_VALUES.get(arg_name):
-                setattr(args, arg_name, config[config_key])
+                value = config[config_key]
+                if arg_name == "preset":
+                    value = normalize_config_preset(value)
+                setattr(args, arg_name, value)
 
     return args
 
@@ -218,6 +247,9 @@ Examples:
   Using a preset:
     python generate_foundation.py --preset enterprise --project-name MyProject --author-name "Jane Doe"
 
+  Without a preset (core files plus the options you name):
+    python generate_foundation.py --preset none --include-ci --project-name MyProject --author-name "Jane Doe"
+
   Non-interactive mode (for CI/scripts):
     python generate_foundation.py --non-interactive --accept-terms --project-name MyProject --author-name "Jane Doe"
 
@@ -236,6 +268,9 @@ Config file format (.foundationrc):
     "license": "mit",
     "preset": "standard"
   }
+
+  "preset" takes minimal, light, standard, strict, enterprise, or none (no preset).
+  --preset on the command line overrides it; --preset none cancels it.
 """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -438,11 +473,15 @@ Config file format (.foundationrc):
     # v3.0.0: Preset support
     parser.add_argument(
         "--preset",
+        # Lowercase the value before argparse checks it, so that `--preset NONE` (the
+        # heading --list-presets prints) and `--preset Standard` are accepted.
+        type=str.lower,
         choices=PRESET_CHOICES,
         help=("Governance preset (minimal/light/standard/strict/enterprise; standard is "
-              "recommended). A preset is a starting point: --include-* flags and --all add "
-              f"to it. '{NO_PRESET}' applies no preset, the same as leaving --preset out: "
-              "only the core files plus the --include-* flags given are generated.")
+              "recommended; any letter case). A preset is a starting point: --include-* "
+              f"flags and --all add to it. '{NO_PRESET}' applies no preset: only the core "
+              "files plus the --include-* flags or --all given are generated. On the "
+              f"command line, '{NO_PRESET}' also overrides a preset set in .foundationrc.")
     )
 
     parser.add_argument(
@@ -487,6 +526,7 @@ def include_option_help() -> list:
 
     Read from the parser so that --list-presets describes the same options --help does.
     """
+    # Deliberate use of the private `_actions` list: argparse has no public iterator.
     return [(action.option_strings[0], action.help)
             for action in build_parser()._actions
             if action.option_strings
