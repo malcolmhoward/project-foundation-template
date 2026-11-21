@@ -15,7 +15,7 @@ Each preset defines which features and principles are included.
 
 The --preset option also accepts NO_PRESET ("none"). It is not a preset: it applies
 nothing, so only the core files and the --include-* flags or --all given are
-generated. On the command line it also overrides a "preset" set in .foundationrc,
+generated. On the command line it also overrides a "preset" set in the config file,
 which leaving --preset out does not. It is a named choice so that the custom route
 shows up in --help and --list-presets.
 """
@@ -40,14 +40,15 @@ PRESETS = {
 DEFAULT_PRESET = "standard"
 
 # The --preset choice that applies no preset. Given on the command line, it also
-# overrides a "preset" set in .foundationrc; leaving --preset out does not.
+# overrides a "preset" set in the config file; leaving --preset out does not.
 # It is deliberately not a key of PRESETS: get_preset() returns {} for it, and
 # list_presets() names only the five real presets.
 NO_PRESET = "none"
 
 # Every value --preset and the "preset" config key accept, in lowercase. Both
 # accept any letter case (`--preset NONE`, `"preset": "Standard"`) and lowercase
-# the value before checking it against this list.
+# the value before checking it against this list. The config key also has
+# surrounding spaces stripped; --preset does not.
 PRESET_CHOICES = list(PRESETS) + [NO_PRESET]
 
 

@@ -12,16 +12,19 @@ the recommended preset. A preset also never turns off a feature requested with a
 `--include-*` flag, `--all`, or the config file; flags add to the preset's files.
 
 **Implementation note (2026-11-21, #137):** `--preset` also accepts `none`
-(`NO_PRESET` in `core/presets/__init__.py`), and so does `"preset"` in `.foundationrc`.
-It applies no preset: the generator writes the core files plus the `--include-*` flags or
-`--all` given. On the command line, it also overrides a `preset` set in `.foundationrc`,
-which leaving `--preset` out does not. Both places accept any letter case, and an invalid
-`"preset"` in `.foundationrc` stops the run with a message that lists the valid choices.
-`none` is a named choice, not a sixth preset: it is not in `PRESETS` or `list_presets()`, and
-it exists so that the build-your-own route shows in `--help` and `--list-presets`. This does not reverse Alternative 4 below:
-presets stay the curated path, and the `none` entry in `--list-presets` points to `standard`
-as the recommended starting point and lists what each `--include-*` flag adds. The scaffold
-manifest names `none` and keeps `--preset none` in its regenerate command.
+(`NO_PRESET` in `core/presets/__init__.py`), and so does `"preset"` in the config file
+(`.foundationrc` or the `--config` file). It applies no preset: the generator writes the
+core files plus the `--include-*` flags or `--all` given. On the command line, it also
+overrides a `preset` set in the config file, which leaving `--preset` out does not. Both
+places accept any letter case. Spaces around the config file's value are stripped; spaces
+around the `--preset` value on the command line are not. An invalid `"preset"` in the
+config file stops the run with exit code 2 and a message that lists the valid choices.
+`none` is a named choice, not a sixth preset: it is not in `PRESETS` or `list_presets()`,
+and it exists so that the build-your-own route shows in `--help` and `--list-presets`.
+This does not reverse Alternative 4 below: presets stay the curated path, and the `none`
+entry in `--list-presets` points to `standard` as the recommended starting point and lists
+what each `--include-*` flag adds. The scaffold manifest names `none` and keeps
+`--preset none` in its regenerate command.
 
 ## Date
 

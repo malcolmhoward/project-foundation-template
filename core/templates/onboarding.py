@@ -335,7 +335,7 @@ def generate_scaffold_manifest_content(
     regenerate_args are the options that reproduce this run (for example
     `--preset standard`, or the --include-* flags used); they default to the preset.
 
-    The manifest records the run as it was asked for: `--preset none` is named and kept in
+    The manifest records the run as the user requested it: `--preset none` is named and kept in
     the regenerate command, and a run without --preset shows no --preset option. Both
     commands generate the same files unless a config file sets a preset, which only
     `--preset none` overrides.

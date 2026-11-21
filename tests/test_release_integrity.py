@@ -24,12 +24,12 @@ ROOT = Path(__file__).resolve().parent.parent
 sys.path.insert(0, str(ROOT))
 
 
-def run(script, *args, home):
-    """Run a PFT script with an isolated home directory."""
+def run(script, *args, home, cwd=None):
+    """Run a PFT script with an isolated home directory, in `cwd` when one is given."""
     env = dict(os.environ, PYTHONIOENCODING="utf-8", HOME=str(home), USERPROFILE=str(home))
     return subprocess.run(
         [sys.executable, str(ROOT / script), *args],
-        capture_output=True, text=True, encoding="utf-8", errors="replace", env=env,
+        capture_output=True, text=True, encoding="utf-8", errors="replace", env=env, cwd=cwd,
     )
 
 
@@ -40,9 +40,10 @@ def home(tmp_path):
     return h
 
 
-def generate(out, home, *extra, script="generate_foundation.py"):
+def generate(out, home, *extra, script="generate_foundation.py", cwd=None):
     return run(script, "--project-name", "Demo", "--author-name", "Example Author",
-               "--non-interactive", "--accept-terms", "--output-dir", str(out), *extra, home=home)
+               "--non-interactive", "--accept-terms", "--output-dir", str(out), *extra, home=home,
+               cwd=cwd)
 
 
 # ---------------------------------------------------------------- advisory expiration (ADR 0003)
@@ -179,7 +180,7 @@ class TestPresetsAndListings:
         assert not (out / "CODE_OF_CONDUCT.md").exists()
 
     # Lines that differ between any two runs (timestamps), and the scaffold manifest lines
-    # that record how the run was asked for, so they name `--preset none` on purpose.
+    # that record the run as requested, so they name `--preset none` on purpose.
     _RUN_SPECIFIC_LINES = re.compile(
         r"^This project foundation was generated on "
         r"|^\| \*\*Generated At\*\* \|"
@@ -209,9 +210,9 @@ class TestPresetsAndListings:
         assert generate(omitted, home, "--quiet", *flags).returncode == 0
         r = generate(none, home, "--preset", "none", *flags)
         assert r.returncode == 0, r.stdout + r.stderr
-        assert "Unknown preset" not in r.stdout + r.stderr
         assert "No preset applied: core files plus the --include-* flags or --all given." \
             in r.stdout
+        assert "Applied preset" not in r.stdout
         omitted_contents, none_contents = self._contents(omitted), self._contents(none)
         assert sorted(none_contents) == sorted(omitted_contents)
         assert "README.md" in none_contents
@@ -242,9 +243,9 @@ class TestPresetsAndListings:
         out = tmp_path / "out"
         r = generate(out, home, "--config", self._config(tmp_path, value))
         assert r.returncode == 0, r.stdout + r.stderr
-        assert "Unknown preset" not in r.stdout + r.stderr
-        # The message proves `none` was recognized, not ignored as an unknown preset.
+        # The message proves `none` was recognized as the no-preset choice.
         assert "No preset applied" in r.stdout
+        assert "Applied preset" not in r.stdout
         assert (out / "README.md").exists()
         assert not (out / "CODE_OF_CONDUCT.md").exists()
 
@@ -296,7 +297,18 @@ class TestPresetsAndListings:
         assert "Invalid preset 'standrad' in the config file" in r.stderr
         assert ", ".join(PRESET_CHOICES) in r.stderr
         assert "Traceback" not in r.stderr
-        assert not (out / "README.md").exists()
+        assert not out.exists()
+
+    @pytest.mark.parametrize("value", ["", "  "])
+    def test_empty_preset_in_config_file_means_no_preset(self, tmp_path, home, value):
+        """`"preset": ""` is unset, as JSON null is, and as it was before #137."""
+        out = tmp_path / "out"
+        r = generate(out, home, "--config", self._config(tmp_path, value), "--export-json")
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Applied preset" not in r.stdout and "No preset applied" not in r.stdout
+        assert json.loads(r.stdout.split("--- JSON OUTPUT ---", 1)[1])["preset"] is None
+        assert (out / "README.md").exists()
+        assert not (out / "CODE_OF_CONDUCT.md").exists()
 
     def test_list_presets_shows_none(self, home):
         """`none` is listed after the presets, points to standard, and lists the flags (#137)."""
@@ -306,7 +318,7 @@ class TestPresetsAndListings:
         none = re.split(r"^  NONE$", out, maxsplit=1, flags=re.M)[1]
         assert re.search(r"Start from 'standard'.*\brecommended\b", none, re.S)
         assert "--include-* flags or --all" in none
-        assert "overrides a preset" in none and ".foundationrc" in none
+        assert "overrides a preset" in none and "set in the config file" in none
         assert "same as leaving" not in none
         listed = re.findall(r"^ +(--[a-z-]+) +\S", none, re.M)
         options = [option for option, _ in include_option_help()]
@@ -370,6 +382,109 @@ class TestPluginSafety:
         # Each file must get its own module entry; a shared name means the second replaced the first.
         added = {k for k in sys.modules if k.startswith("foundation_plugin_team")} - before
         assert len(added) == 2, f"plugin modules collided: {sorted(added)}"
+
+
+# ---------------------------------------------------------------- config file failures (#150)
+
+class TestConfigFileFailures:
+    """A config file that can't be used stops the run with exit code 2 and writes nothing.
+
+    WHY: These runs used to continue without the file's settings; a broken file found in
+         the current directory was skipped without any message.
+    """
+
+    @staticmethod
+    def _assert_stopped(r, out, home, *expected):
+        assert r.returncode == 2, r.stdout + r.stderr
+        assert r.stderr.startswith("Error: "), r.stderr
+        for text in expected:
+            assert text in r.stderr, r.stderr
+        assert "Traceback" not in r.stdout + r.stderr
+        assert "Loaded config" not in r.stdout
+        assert not out.exists(), "files were written before the config error"
+        assert not any(home.iterdir()), "the usage log was written before the config error"
+
+    def test_missing_explicit_config_file(self, tmp_path, home):
+        out, missing = tmp_path / "out", tmp_path / "missing.json"
+        r = generate(out, home, "--preset", "standard", "--config", str(missing))
+        self._assert_stopped(r, out, home, "Config file not found", str(missing))
+
+    def test_explicit_config_file_with_invalid_json(self, tmp_path, home):
+        out, config = tmp_path / "out", tmp_path / "broken.json"
+        config.write_text('{"preset": "standard",', encoding="utf-8")
+        r = generate(out, home, "--config", str(config))
+        self._assert_stopped(r, out, home, f"The config file {config} is not valid JSON")
+
+    @pytest.mark.parametrize("text,kind", [('["standard"]', "array"), ('"standard"', "string"),
+                                           ("7", "number"), ("null", "null")])
+    def test_explicit_config_file_that_is_not_a_json_object(self, tmp_path, home, text, kind):
+        out, config = tmp_path / "out", tmp_path / "config.json"
+        config.write_text(text, encoding="utf-8")
+        r = generate(out, home, "--config", str(config))
+        self._assert_stopped(r, out, home, f"The config file {config} must hold a JSON object",
+                             f"it holds a JSON {kind}")
+
+    def test_explicit_config_file_that_cannot_be_read(self, tmp_path, home):
+        """A directory exists but can't be opened as a file, on every platform."""
+        out, config = tmp_path / "out", tmp_path / "config-dir"
+        config.mkdir()
+        r = generate(out, home, "--config", str(config))
+        self._assert_stopped(r, out, home, f"Cannot read the config file {config}")
+
+    @pytest.mark.parametrize("name", [".foundationrc", ".foundationrc.json", "foundationrc.json"])
+    def test_auto_found_config_file_with_invalid_json(self, tmp_path, home, name):
+        """This case used to be skipped without a message."""
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / name).write_text("{ not json", encoding="utf-8")
+        r = generate(out, home, cwd=cwd)
+        self._assert_stopped(r, out, home, f"The config file {name} is not valid JSON")
+
+    def test_auto_found_config_file_that_is_not_a_json_object(self, tmp_path, home):
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_text("[]", encoding="utf-8")
+        r = generate(out, home, cwd=cwd)
+        self._assert_stopped(r, out, home, "The config file .foundationrc must hold a JSON object",
+                             "it holds a JSON array")
+
+    def test_auto_found_config_file_that_cannot_be_read(self, tmp_path, home):
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        (cwd / ".foundationrc").mkdir(parents=True)
+        r = generate(out, home, cwd=cwd)
+        self._assert_stopped(r, out, home, "Cannot read the config file .foundationrc")
+
+    def test_broken_auto_found_config_file_is_not_replaced_by_the_next_name(self, tmp_path, home):
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_text("{ not json", encoding="utf-8")
+        (cwd / "foundationrc.json").write_text('{"preset": "standard"}', encoding="utf-8")
+        r = generate(out, home, cwd=cwd)
+        self._assert_stopped(r, out, home, "The config file .foundationrc is not valid JSON")
+
+    def test_no_config_file_still_runs(self, tmp_path, home):
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        r = generate(out, home, "--quiet", cwd=cwd)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Loaded config" not in r.stdout
+        assert (out / "README.md").exists()
+
+    def test_valid_auto_found_config_file_still_applies(self, tmp_path, home):
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_text('{"preset": "standard"}', encoding="utf-8")
+        r = generate(out, home, cwd=cwd)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Applied preset: standard" in r.stdout
+        assert (out / ".github" / "workflows" / "ci.yml").exists()
+
+    def test_list_commands_do_not_read_the_config_file(self, tmp_path, home):
+        """Discovery commands return before the config file is loaded, so they still work."""
+        cwd = tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_text("{ not json", encoding="utf-8")
+        assert run("generate_foundation.py", "--list-presets", home=home, cwd=cwd).returncode == 0
 
 
 # ---------------------------------------------------------------- command-line-only safeguards (#93, #113)

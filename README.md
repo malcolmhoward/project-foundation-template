@@ -103,6 +103,8 @@ python generate_foundation.py --non-interactive --accept-terms --preset standard
 
 **Existing project**: target its directory; existing files that the run would write are not overwritten without confirmation, and files it does not generate are left alone. Non-interactive runs (`--non-interactive`) stop instead of asking: add `--force-overwrite` to replace the files listed. `--accept-terms` and `--force-overwrite` must be given on the command line; a config file cannot set them.
 
+**Config file**: settings can come from a JSON object in the file named with `--config`. Without `--config`, the generator uses the first of `.foundationrc`, `.foundationrc.json`, and `foundationrc.json` that it finds in the current directory; with none of them, it uses the command line alone. Options on the command line override the file. A `--config` file that doesn't exist, a config file that can't be read or isn't a JSON object, or an invalid `"preset"` in it stops the run with exit code 2 and an error that names the problem, before any file is written. `--help` shows the file format.
+
 ```bash
 python /path/to/project-foundation-template/generate_foundation.py   --project-name "ExistingProject" --author-name "Your Name"   --output-dir /path/to/existing-project --preset standard
 ```
@@ -165,17 +167,17 @@ enterprise (30) → Lists all 30 principles; generates the same files as strict
 
 ### Without a Preset, or With Extra Files
 
-No preset is applied unless you pass `--preset`. Without one, you get the core files (README, LICENSE, CONTRIBUTING, `.gitignore`, and FOUNDATION_NOTICE) plus whatever you ask for with `--include-*` flags or `--all`, so you can build your own selection. `--preset none` (or `"preset": "none"` in `.foundationrc`) says that by name: it applies no preset. On the command line, it also overrides a `preset` set in `.foundationrc`, which leaving out `--preset` does not:
+No preset is applied unless you pass `--preset`. Without one, you get the core files (README, LICENSE, CONTRIBUTING, `.gitignore`, and FOUNDATION_NOTICE) plus whatever you ask for with `--include-*` flags or `--all`, so you can build your own selection. `--preset none` (or `"preset": "none"` in the config file) says that by name: it applies no preset. On the command line, it also overrides a `preset` set in the config file, which leaving out `--preset` does not:
 
 ```bash
 # Core files plus a CI workflow and ADR templates, nothing else
 python generate_foundation.py --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"
-python generate_foundation.py --preset none --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"  # Same files; also cancels a preset set in .foundationrc
+python generate_foundation.py --preset none --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"  # Same files; also cancels a preset set in the config file
 ```
 
 If you're not sure which files your project needs, start from `standard`. `--list-presets` lists every `--include-*` flag with the files it adds.
 
-A preset is a starting point, and `--include-*` flags add to it. A preset never turns off a file you asked for:
+A preset is a starting point, and `--include-*` flags add to it. A preset never turns off a file you requested:
 
 ```bash
 # The standard files plus ADR templates, which standard leaves out

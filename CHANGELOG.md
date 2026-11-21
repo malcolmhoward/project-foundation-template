@@ -10,17 +10,30 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - `--preset none` applies no preset: the generator writes the core files plus the
   `--include-*` flags or `--all` given. On the command line, it also overrides a `preset` set
-  in `.foundationrc`, which leaving `--preset` out does not. It makes the build-your-own
-  route visible in `--help` and `--list-presets`, where its entry points to `standard` as the
-  recommended starting point and lists what `--all` and each `--include-*` flag add.
-  `.foundationrc` accepts `"preset": "none"`, and the scaffold manifest names it and keeps it
-  in its regenerate command. `--export-json` reports `"preset": "none"` for it, and `null`
-  when no preset is named. The `--preset` help no longer says presets override `--include-*`
-  flags; since 3.7.0 the flags add to a preset (#137).
-- `--preset` and the `"preset"` key in `.foundationrc` accept any letter case, so
-  `--preset NONE` and `"preset": "Standard"` work. An invalid `"preset"` in `.foundationrc`
-  now stops the run with a message that lists the valid choices; before, it was ignored with
-  a warning and only the core files were written (#137).
+  in the config file (`.foundationrc` or the `--config` file), which leaving `--preset` out
+  does not. It makes the build-your-own route visible in `--help` and `--list-presets`, where
+  its entry points to `standard` as the recommended starting point and lists what `--all` and
+  each `--include-*` flag add. The config file accepts `"preset": "none"`, and the scaffold
+  manifest names it and keeps it in its regenerate command. `--export-json` reports
+  `"preset": "none"` for it, and `null` when no preset is named. The `--preset` help no longer
+  says presets override `--include-*` flags; since 3.7.0 the flags add to a preset (#137).
+- `--preset` and the `"preset"` key in the config file accept any letter case, so
+  `--preset NONE` and `"preset": "Standard"` work. Spaces around the config file's value are
+  stripped; spaces around the `--preset` value on the command line are not (#137).
+
+### Changed
+- An invalid `"preset"` in the config file now stops the run with exit code 2 and a message
+  that lists the valid choices, and no files are written. Before, it was ignored with a
+  warning and only the core files were written. `"preset": ""` and `"preset": null` still
+  mean that no preset is set (#137).
+- A config file that can't be used now stops the run with exit code 2 and an error on stderr
+  that names the file and the problem, and no files are written. This applies to a `--config`
+  file that doesn't exist, and to a config file that can't be read, isn't valid JSON, or isn't
+  a JSON object, whether it was named with `--config` or found in the current directory as
+  `.foundationrc`, `.foundationrc.json`, or `foundationrc.json`. Before, the run continued
+  without the file's settings: a missing `--config` file gave a warning, a `--config` file
+  with invalid JSON gave an error message, and a file found in the current directory with
+  invalid JSON gave no message. A run with no config file works as before (#150).
 
 ### Fixed
 - The onboarding guide's "Commit your work" step stages files by name and checks `git status`

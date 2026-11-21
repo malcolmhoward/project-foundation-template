@@ -5,7 +5,7 @@
 Configuration module for Project Foundation Template.
 
 Contains:
-    - Config file loading (.foundationrc)
+    - Config file loading (.foundationrc or the --config file)
     - Argument parsing
     - Argument validation
     - Preset application
@@ -134,50 +134,86 @@ DEFAULT_VALUES = {
 }
 
 
+class ConfigFileError(ValueError):
+    """A config file is missing, unreadable, or does not hold a JSON object."""
+
+
+def _json_type_name(value) -> str:
+    """Return the JSON name of a parsed value's type, for error messages."""
+    if value is None:
+        return "null"
+    if isinstance(value, bool):
+        return "boolean"
+    if isinstance(value, (int, float)):
+        return "number"
+    if isinstance(value, str):
+        return "string"
+    return "array"
+
+
+def _read_config_file(path: Path) -> Dict[str, Any]:
+    """Return the JSON object in a config file, or raise ConfigFileError naming the file."""
+    try:
+        with open(path, 'r', encoding='utf-8') as f:
+            config = json.load(f)
+    except json.JSONDecodeError as error:
+        raise ConfigFileError(
+            f"The config file {path} is not valid JSON: {error}.") from error
+    except (OSError, UnicodeDecodeError) as error:
+        raise ConfigFileError(
+            f"Cannot read the config file {path}: {error}.") from error
+    if not isinstance(config, dict):
+        raise ConfigFileError(
+            f"The config file {path} must hold a JSON object, such as "
+            f'{{"preset": "standard"}}; it holds a JSON {_json_type_name(config)}.')
+    return config
+
+
 def load_config_file(config_path: str = None) -> Dict[str, Any]:
     """
-    Load configuration from a .foundationrc file.
+    Load configuration from the --config file, or from a config file in the current directory.
 
-    Searches for config files in order:
-    1. Explicit path if provided via --config
-    2. .foundationrc in current directory
-    3. .foundationrc.json in current directory
-    4. foundationrc.json in current directory
+    WHAT: Returns the config file's settings, or an empty dict when there is no config file.
+    WHY: A config file that was missing or broken used to be skipped, sometimes without a
+         message, so the run quietly ignored the settings the file was meant to supply
+         (#150).
+    HOW: Uses the first of these that applies:
+         1. The explicit path given with --config
+         2. .foundationrc in the current directory
+         3. .foundationrc.json in the current directory
+         4. foundationrc.json in the current directory
+         Only the first file found is read; a later name is not tried when an earlier one
+         is broken.
 
-    Returns empty dict if no config found (not an error).
+    Returns:
+        The settings as a dict. An empty dict when --config was not given and none of
+        the default files exist (not an error).
+
+    Raises:
+        ConfigFileError: the --config file does not exist, or the file used cannot be
+            read, is not valid JSON, or holds JSON that is not an object. The message
+            names the file. The caller reports it and exits with code 2 before any
+            file is written.
     """
-    config = {}
-
     if config_path:
         # Explicit config path provided
         path = Path(config_path)
         if not path.exists():
-            print(f"⚠️  Config file not found: {config_path}")
-            print("   Continuing with command-line arguments only.\n")
-            return {}
-        try:
-            with open(path, 'r', encoding='utf-8') as f:
-                config = json.load(f)
-            print(f"📋 Loaded config from: {path}\n")
-            return config
-        except json.JSONDecodeError as e:
-            print(f"❌ Error parsing config file: {e}")
-            print("   Config file must be valid JSON.\n")
-            return {}
+            raise ConfigFileError(
+                f"Config file not found: {config_path}. Check the path given to --config.")
+        config = _read_config_file(path)
+        print(f"📋 Loaded config from: {path}\n")
+        return config
 
     # Search for default config files
     for filename in CONFIG_FILES:
         path = Path(filename)
         if path.exists():
-            try:
-                with open(path, 'r', encoding='utf-8') as f:
-                    config = json.load(f)
-                print(f"📋 Loaded config from: {path}\n")
-                return config
-            except json.JSONDecodeError:
-                continue  # Try next file
+            config = _read_config_file(path)
+            print(f"📋 Loaded config from: {path}\n")
+            return config
 
-    return config
+    return {}
 
 
 def normalize_config_preset(value):
@@ -186,11 +222,14 @@ def normalize_config_preset(value):
 
     WHAT: `"Standard"` and `"NONE"` mean `standard` and `none`; anything else is an error.
     WHY: A misspelled preset used to be ignored with a warning, so the run quietly wrote
-         fewer governance files than the config file asked for.
-    HOW: None (JSON null) means the key is unset. Any other value must be one of
-         PRESET_CHOICES in any letter case; otherwise ValueError names the valid choices.
+         fewer governance files than the config file requested.
+    HOW: None (JSON null) and an empty or whitespace-only string mean the key is unset.
+         Any other value must be one of PRESET_CHOICES in any letter case; otherwise
+         ValueError names the valid choices. Spaces around the value are stripped, so
+         `" Strict "` means `strict`. `--preset` on the command line does not strip them:
+         `--preset " strict "` is rejected.
     """
-    if value is None:
+    if value is None or (isinstance(value, str) and not value.strip()):
         return None
     if isinstance(value, str) and value.strip().lower() in PRESET_CHOICES:
         return value.strip().lower()
@@ -271,6 +310,11 @@ Config file format (.foundationrc):
 
   "preset" takes minimal, light, standard, strict, enterprise, or none (no preset).
   --preset on the command line overrides it; --preset none cancels it.
+
+  Without --config, the first of .foundationrc, .foundationrc.json, and
+  foundationrc.json found in the current directory is used. A --config file that
+  does not exist, or a config file that cannot be read or is not a JSON object,
+  stops the run with exit code 2 before any file is written.
 """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )
@@ -481,7 +525,7 @@ Config file format (.foundationrc):
               "recommended; any letter case). A preset is a starting point: --include-* "
               f"flags and --all add to it. '{NO_PRESET}' applies no preset: only the core "
               "files plus the --include-* flags or --all given are generated. On the "
-              f"command line, '{NO_PRESET}' also overrides a preset set in .foundationrc.")
+              f"command line, '{NO_PRESET}' also overrides a preset set in the config file.")
     )
 
     parser.add_argument(
