@@ -12,6 +12,11 @@ Provides 5 governance presets with different levels of features:
     - enterprise: Full governance suite (all 30 principles)
 
 Each preset defines which features and principles are included.
+
+The --preset option also accepts NO_PRESET ("none"). It is not a preset: it applies
+nothing, exactly like leaving --preset out, so only the core files and the
+--include-* flags given are generated. It is a named choice so that the custom
+route shows up in --help and --list-presets.
 """
 
 from .minimal import MINIMAL_PRESET
@@ -33,6 +38,14 @@ PRESETS = {
 # --preset, only the core files and the --include-* flags given are generated.
 DEFAULT_PRESET = "standard"
 
+# The --preset choice that applies no preset (the same as leaving --preset out).
+# It is deliberately not a key of PRESETS: get_preset() returns {} for it, and
+# list_presets() names only the five real presets.
+NO_PRESET = "none"
+
+# Every value --preset and the "preset" config key accept.
+PRESET_CHOICES = list(PRESETS) + [NO_PRESET]
+
 
 def get_preset(name: str) -> dict:
     """Get a preset configuration by name.
@@ -50,7 +63,7 @@ def list_presets() -> list:
     """List all available preset names.
 
     Returns:
-        List of preset names
+        List of preset names (not NO_PRESET, which applies no preset)
     """
     return list(PRESETS.keys())
 
@@ -73,6 +86,8 @@ def get_preset_description(name: str) -> str:
 __all__ = [
     "PRESETS",
     "DEFAULT_PRESET",
+    "NO_PRESET",
+    "PRESET_CHOICES",
     "MINIMAL_PRESET",
     "LIGHT_PRESET",
     "STANDARD_PRESET",

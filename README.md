@@ -165,12 +165,15 @@ enterprise (30) → Lists all 30 principles; generates the same files as strict
 
 ### Without a Preset, or With Extra Files
 
-No preset is applied unless you pass `--preset`. Without one, you get the core files (README, LICENSE, CONTRIBUTING, `.gitignore`, and FOUNDATION_NOTICE) plus whatever you ask for with `--include-*` flags or `--all`, so you can build your own selection:
+No preset is applied unless you pass `--preset`. Without one, you get the core files (README, LICENSE, CONTRIBUTING, `.gitignore`, and FOUNDATION_NOTICE) plus whatever you ask for with `--include-*` flags or `--all`, so you can build your own selection. `--preset none` (or `"preset": "none"` in `.foundationrc`) says the same thing by name; it generates exactly what leaving out `--preset` does:
 
 ```bash
 # Core files plus a CI workflow and ADR templates, nothing else
 python generate_foundation.py --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --preset none --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"  # Same files
 ```
+
+If you're not sure which files your project needs, start from `standard`. `--list-presets` lists every `--include-*` flag with the files it adds.
 
 A preset is a starting point, and `--include-*` flags add to it. A preset never turns off a file you asked for:
 

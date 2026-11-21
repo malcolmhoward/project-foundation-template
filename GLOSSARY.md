@@ -16,7 +16,7 @@ The appearance of having proper governance without the substance—adopting temp
 Documentation in PFT explaining HOW to apply a principle. Guides provide practical, actionable instructions for implementing governance concepts.
 
 ### Preset
-A predefined collection of governance principles bundled for common use cases. PFT includes presets: minimal, light, standard, strict, and enterprise.
+A predefined collection of governance principles bundled for common use cases. PFT includes presets: minimal, light, standard, strict, and enterprise. `--preset none` applies no preset, the same as leaving `--preset` out: only the core files plus the `--include-*` flags given are generated.
 
 ### Principle (Governance Principle)
 A governance concept in PFT that defines WHAT must be done, WHY it matters, and the RISK of not having it. Principles are the building blocks of governance.

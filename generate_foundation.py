@@ -42,12 +42,14 @@ from core.config import (
     parse_arguments,
     validate_arguments,
     apply_preset_to_args,
+    include_option_help,
 )
 
 from core.generator import EthicalFoundationGenerator
 
 from core.presets import (
     PRESETS,
+    NO_PRESET,
     get_preset,
     list_presets as get_preset_names,
     get_preset_description,
@@ -126,6 +128,21 @@ Use --preset <name> to apply a preset configuration.
         if preset.get("note"):
             print(f"  Note:        {preset['note']}")
         print()
+
+    # NO_PRESET is a choice, not a preset: list it after the five so the
+    # recommended starting point is read first.
+    print(f"  {NO_PRESET.upper()}")
+    print(f"  {'-' * 60}")
+    print("  Description: No preset. Generates the core files (README, LICENSE, CONTRIBUTING,")
+    print("               .gitignore, FOUNDATION_NOTICE) plus the --include-* flags given.")
+    print(f"               --preset {NO_PRESET} is the same as leaving --preset out.")
+    print("  Best for:    Choosing your governance file by file")
+    print("  Note:        Start from 'standard' if you are unsure: it is the recommended")
+    print("               starting point. Leaving a file out is a choice to make knowingly.")
+    print("  Adds:        Each flag adds files, with or without a preset:")
+    for option, help_text in include_option_help():
+        print(f"                 {option:<28} {help_text}")
+    print()
 
     print("""
 Usage: python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
@@ -304,8 +321,12 @@ def main() -> int:
         args = merge_config_with_args(args, config)
 
     # Apply preset if specified
+    # NO_PRESET applies nothing, the same as leaving --preset out.
     preset_name = getattr(args, "preset", None)
-    if preset_name:
+    if preset_name == NO_PRESET:
+        if not getattr(args, "quiet", False):
+            print("No preset applied: core files plus the --include-* flags given.")
+    elif preset_name:
         preset_config = get_preset(preset_name)
         if preset_config:
             args = apply_preset_to_args(args, preset_config)

@@ -61,6 +61,7 @@ from core.generator import EthicalFoundationGenerator
 from core.presets import (
     PRESETS,
     DEFAULT_PRESET,
+    NO_PRESET,
     get_preset,
     list_presets,
     get_preset_description,
@@ -131,6 +132,7 @@ __all__ = [
     # Presets
     "PRESETS",
     "DEFAULT_PRESET",
+    "NO_PRESET",
     "get_preset",
     "list_presets",
     "get_preset_description",

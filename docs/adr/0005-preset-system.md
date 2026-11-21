@@ -2,7 +2,7 @@
 
 ## Status
 
-Accepted (implemented with two differences; see the note below)
+Accepted (implemented with two differences; see the notes below)
 
 **Implementation note (v3.7.0):** the generator does not apply `standard` when
 `--preset` is left out. With no preset, it writes the core files plus the `--include-*`
@@ -10,6 +10,15 @@ flags given, so the "Use default preset" example and the `DEFAULT_PRESET` fallba
 Implementation below describe the original design, not the code. `DEFAULT_PRESET` names
 the recommended preset. A preset also never turns off a feature requested with an
 `--include-*` flag, `--all`, or the config file; flags add to the preset's files.
+
+**Implementation note (2026-11-21, #137):** `--preset` also accepts `none`
+(`NO_PRESET` in `core/presets/__init__.py`), and so does `"preset"` in `.foundationrc`.
+It applies no preset, exactly like leaving `--preset` out. It is a named choice, not a sixth
+preset: it is not in `PRESETS` or `list_presets()`, and it exists so that the build-your-own
+route shows in `--help` and `--list-presets`. This does not reverse Alternative 4 below:
+presets stay the curated path, and the `none` entry in `--list-presets` points to `standard`
+as the recommended starting point and lists what each `--include-*` flag adds. The scaffold
+manifest names `none` and keeps `--preset none` in its regenerate command.
 
 ## Date
 

@@ -178,6 +178,41 @@ class TestPresetsAndListings:
         assert (out / ".github" / "workflows" / "ci.yml").exists()
         assert not (out / "CODE_OF_CONDUCT.md").exists()
 
+    @staticmethod
+    def _files(out):
+        # FOUNDATION_NOTICE.md lists the files with their paths, so compare names only
+        return sorted(p.relative_to(out).as_posix() for p in out.rglob("*") if p.is_file())
+
+    @pytest.mark.parametrize("flags", [(), ("--include-ci",)])
+    def test_preset_none_generates_the_same_files_as_no_preset(self, tmp_path, home, flags):
+        """`--preset none` is the same as leaving --preset out (#137)."""
+        omitted, none = tmp_path / "omitted", tmp_path / "none"
+        assert generate(omitted, home, "--quiet", *flags).returncode == 0
+        r = generate(none, home, "--preset", "none", *flags)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Unknown preset" not in r.stdout + r.stderr
+        assert "No preset applied" in r.stdout
+        assert self._files(none) == self._files(omitted)
+
+    def test_preset_none_in_config_file(self, tmp_path, home):
+        """`"preset": "none"` in .foundationrc is accepted and applies nothing (#137)."""
+        config = tmp_path / ".foundationrc"
+        config.write_text(json.dumps({"preset": "none"}), encoding="utf-8")
+        out = tmp_path / "out"
+        r = generate(out, home, "--config", str(config))
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Unknown preset" not in r.stdout + r.stderr
+        assert (out / "README.md").exists()
+        assert not (out / "CODE_OF_CONDUCT.md").exists()
+
+    def test_list_presets_shows_none(self, home):
+        """`none` is listed after the presets, points to standard, and lists the flags (#137)."""
+        out = run("generate_foundation.py", "--list-presets", home=home).stdout
+        assert re.search(r"^  NONE$", out, re.M)
+        none = re.split(r"^  NONE$", out, maxsplit=1, flags=re.M)[1]
+        assert "'standard'" in none
+        assert "--include-adr" in none and "--all" in none
+
 
 # ---------------------------------------------------------------- plugin safety
 
@@ -566,6 +601,21 @@ class TestScaffoldManifest:
         manifest = self._manifest(tmp_path / "out", home, "--preset", "standard", "--include-adr")
         assert ("python generate_foundation.py --preset standard --include-adr "
                 "--include-manifest --output-dir") in manifest
+
+    def test_with_preset_none_it_names_it_and_keeps_the_flags(self, tmp_path, home):
+        """`--preset none` is named, and its regenerate command keeps it (#137)."""
+        manifest = self._manifest(tmp_path / "out", home, "--preset", "none", "--include-ci")
+        assert "| **Preset Used** | none (no preset" in manifest
+        line = next(l.strip() for l in manifest.splitlines()
+                    if l.strip().startswith("python generate_foundation.py --preset none"))
+        assert line.startswith("python generate_foundation.py --preset none --include-ci "
+                               "--include-manifest --output-dir")
+        args = line.split()[2:]
+        args[args.index("--output-dir") + 1] = str(tmp_path / "again")
+        r = generate(tmp_path / "unused", home, "--quiet", *args)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert (tmp_path / "again" / ".github" / "workflows" / "ci.yml").exists()
+        assert not (tmp_path / "again" / "CODE_OF_CONDUCT.md").exists()
 
     def test_with_all_it_suggests_all(self, tmp_path, home):
         manifest = self._manifest(tmp_path / "out", home, "--all")

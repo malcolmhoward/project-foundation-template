@@ -8,6 +8,8 @@ import unittest
 from core.presets import (
     PRESETS,
     DEFAULT_PRESET,
+    NO_PRESET,
+    PRESET_CHOICES,
     MINIMAL_PRESET,
     LIGHT_PRESET,
     STANDARD_PRESET,
@@ -35,6 +37,25 @@ class TestPresetsDefinition(unittest.TestCase):
     def test_presets_count(self):
         """Should have exactly 5 presets."""
         self.assertEqual(len(PRESETS), 5)
+
+
+class TestNoPreset(unittest.TestCase):
+    """`--preset none` is a choice that applies no preset, not a sixth preset (#137)."""
+
+    def test_is_named_none(self):
+        self.assertEqual(NO_PRESET, "none")
+
+    def test_is_a_choice_but_not_a_preset(self):
+        self.assertIn(NO_PRESET, PRESET_CHOICES)
+        self.assertNotIn(NO_PRESET, PRESETS)
+        self.assertNotIn(NO_PRESET, list_presets())
+
+    def test_choices_are_the_five_presets_plus_none(self):
+        self.assertEqual(PRESET_CHOICES, list(PRESETS) + [NO_PRESET])
+
+    def test_applies_nothing(self):
+        self.assertEqual(get_preset(NO_PRESET), {})
+        self.assertEqual(get_preset_description(NO_PRESET), "")
 
 
 class TestPresetStructure(unittest.TestCase):

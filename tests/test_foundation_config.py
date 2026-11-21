@@ -12,10 +12,13 @@ from unittest.mock import patch
 from argparse import Namespace
 from pathlib import Path
 
+from core.presets import NO_PRESET, get_preset
 from core.config import (
     CONFIG_KEY_MAPPING,
     DEFAULT_VALUES,
     apply_preset_to_args,
+    build_parser,
+    include_option_help,
     load_config_file,
     merge_config_with_args,
     validate_arguments,
@@ -154,6 +157,40 @@ class TestApplyPresetToArgs(unittest.TestCase):
     def test_empty_preset_changes_nothing(self):
         args = Namespace(include_adr=True)
         self.assertTrue(apply_preset_to_args(args, {}).include_adr)
+
+
+class TestNoPresetChoice(unittest.TestCase):
+    """`--preset none` parses, applies nothing, and is accepted in a config file (#137)."""
+
+    def test_preset_none_parses(self):
+        args = build_parser().parse_args(["--preset", "none"])
+        self.assertEqual(args.preset, NO_PRESET)
+
+    def test_preset_none_applies_nothing(self):
+        args = build_parser().parse_args(["--preset", "none", "--include-adr"])
+        before = dict(vars(args))
+        self.assertEqual(vars(apply_preset_to_args(args, get_preset(args.preset))), before)
+
+    def test_help_says_flags_add_to_a_preset_and_describes_none(self):
+        help_text = build_parser().format_help()
+        self.assertNotIn("Overrides individual", help_text)
+        self.assertIn("'none' applies", help_text)
+
+    def test_config_file_accepts_none(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / ".foundationrc"
+            config_path.write_text(json.dumps({"preset": "none"}))
+            with patch("sys.stdout", new_callable=io.StringIO):
+                config = load_config_file(str(config_path))
+        args = build_parser().parse_args([])
+        self.assertEqual(merge_config_with_args(args, config).preset, NO_PRESET)
+
+    def test_include_option_help_lists_all_and_include_flags(self):
+        options = dict(include_option_help())
+        self.assertIn("--all", options)
+        self.assertIn("--include-adr", options)
+        self.assertTrue(all(o == "--all" or o.startswith("--include-") for o in options))
+        self.assertTrue(all(options.values()))
 
 
 class TestCommandLineOnlySettings(unittest.TestCase):

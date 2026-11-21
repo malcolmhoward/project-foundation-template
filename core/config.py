@@ -18,6 +18,7 @@ from pathlib import Path
 from typing import Dict, Any, Tuple
 
 from core.utils import SCRIPT_VERSION, CONFIG_FILES
+from core.presets import NO_PRESET, PRESET_CHOICES
 
 
 # Map config keys to argument names (supports multiple naming conventions)
@@ -202,8 +203,8 @@ def merge_config_with_args(args, config: Dict[str, Any]):
     return args
 
 
-def parse_arguments():
-    """Parse command-line arguments with educational descriptions."""
+def build_parser() -> argparse.ArgumentParser:
+    """Build the command-line parser with educational descriptions."""
     parser = argparse.ArgumentParser(
         description="Generate ethical project foundations with education",
         epilog="""
@@ -437,8 +438,11 @@ Config file format (.foundationrc):
     # v3.0.0: Preset support
     parser.add_argument(
         "--preset",
-        choices=["minimal", "light", "standard", "strict", "enterprise"],
-        help="Governance preset (minimal/light/standard/strict/enterprise). Overrides individual --include-* flags."
+        choices=PRESET_CHOICES,
+        help=("Governance preset (minimal/light/standard/strict/enterprise; standard is "
+              "recommended). A preset is a starting point: --include-* flags and --all add "
+              f"to it. '{NO_PRESET}' applies no preset, the same as leaving --preset out: "
+              "only the core files plus the --include-* flags given are generated.")
     )
 
     parser.add_argument(
@@ -469,7 +473,25 @@ Config file format (.foundationrc):
         help="Show available governance presets and exit"
     )
 
-    return parser.parse_args()
+    return parser
+
+
+def parse_arguments():
+    """Parse command-line arguments with educational descriptions."""
+    return build_parser().parse_args()
+
+
+def include_option_help() -> list:
+    """
+    Return (option, help) pairs for --all and the --include-* options.
+
+    Read from the parser so that --list-presets describes the same options --help does.
+    """
+    return [(action.option_strings[0], action.help)
+            for action in build_parser()._actions
+            if action.option_strings
+            and (action.option_strings[0] == "--all"
+                 or action.option_strings[0].startswith("--include-"))]
 
 
 # Preset feature names and the arguments they set. Other --include-* flags (glossary,

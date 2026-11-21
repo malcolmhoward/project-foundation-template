@@ -8,7 +8,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 
 ### Added
-- (Upcoming features will be listed here)
+- `--preset none` applies no preset, the same as leaving `--preset` out: the generator writes
+  the core files plus the `--include-*` flags or `--all` given. It makes the build-your-own
+  route visible in `--help` and `--list-presets`, where its entry points to `standard` as the
+  recommended starting point and lists what each `--include-*` flag adds. `.foundationrc`
+  accepts `"preset": "none"`, and the scaffold manifest names it and keeps it in its
+  regenerate command. The `--preset` help no longer says presets override `--include-*`
+  flags; since 3.7.0 the flags add to a preset (#137).
 
 ### Fixed
 - The onboarding guide's "Commit your work" step stages files by name and checks `git status`
