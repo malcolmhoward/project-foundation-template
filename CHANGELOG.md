@@ -26,10 +26,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   that lists the valid choices, and no files are written. Before, it was ignored with a
   warning and only the core files were written. `"preset": ""` and `"preset": null` still
   mean that no preset is set (#137).
-- A config file that can't be used now stops the run with exit code 2 and an error on stderr
+- A config file that cannot be used now stops the run with exit code 2 and an error on stderr
   that names the file and the problem, and no files are written. This applies to a `--config`
-  file that doesn't exist, and to a config file that can't be read, isn't valid JSON, or isn't
-  a JSON object, whether it was named with `--config` or found in the current directory as
+  file that does not exist, and to a config file that cannot be read, is not valid JSON, or is
+  not a JSON object, whether it was named with `--config` or found in the current directory as
   `.foundationrc`, `.foundationrc.json`, or `foundationrc.json`. Before, the run continued
   without the file's settings: a missing `--config` file gave a warning, a `--config` file
   with invalid JSON gave an error message, and a file found in the current directory with

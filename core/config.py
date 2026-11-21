@@ -153,6 +153,28 @@ def _json_type_name(value) -> str:
     return "array"
 
 
+def _escape_unprintable(text: str) -> str:
+    """
+    Return text with non-printable characters and backslashes as Python-style escapes.
+
+    WHAT: ESC becomes `\\x1b`, a line feed becomes `\\n`, U+2028 becomes `\\u2028`, and a
+          backslash becomes `\\\\`. Other printable text, including non-ASCII letters
+          such as `é`, is returned unchanged.
+    WHY: A value from a config file is shown in error messages, and a config file can
+         come from a cloned repository. Printed raw, an ANSI escape sequence or a line
+         break in the value could recolor, move, or forge lines in the terminal.
+    HOW: `str.isprintable()` decides. It rejects the C0 and C1 control characters, line
+         and paragraph separators, and lone surrogates, among others. Each rejected
+         character is replaced by its `unicode_escape` form. A backslash is printable,
+         but it is doubled as well: otherwise a backslash followed by `n` in the value
+         would look the same as an escaped line feed.
+    """
+    return "".join(
+        char if char.isprintable() and char != "\\"
+        else char.encode("unicode_escape").decode("ascii")
+        for char in text)
+
+
 def _read_config_file(path: Path) -> Dict[str, Any]:
     """
     Return the JSON object in a config file, or raise ConfigFileError naming the file.
@@ -163,15 +185,26 @@ def _read_config_file(path: Path) -> Dict[str, Any]:
          name the file.
     HOW: The file is read as UTF-8 with or without a byte-order mark (`utf-8-sig`),
          because some Windows editors write one. A directory and an empty file are
-         reported in plain words before Python's less clear errors can appear.
+         reported in plain words before Python's less clear errors can appear. The
+         checks on the path are inside a `try` as well: they raise OSError when, for
+         example, a parent directory denies access. A ValueError from the parser is
+         reported as a number too long to read only when it is Python's integer
+         digit-limit error; any other ValueError is reported with its own text.
     """
-    if path.is_symlink() and not path.exists():
+    try:
+        is_dangling_link = path.is_symlink() and not path.exists()
+        is_directory = path.is_dir()
+        is_other_non_file = path.exists() and not path.is_file()
+    except OSError as error:
+        raise ConfigFileError(
+            f"Cannot read the config file '{path}': {error}.") from error
+    if is_dangling_link:
         raise ConfigFileError(
             f"Cannot read the config file '{path}': it is a symbolic link, and its "
             "target does not exist.")
-    if path.is_dir():
+    if is_directory:
         raise ConfigFileError(f"The config file '{path}' is not a file; it is a directory.")
-    if path.exists() and not path.is_file():
+    if is_other_non_file:
         raise ConfigFileError(f"The config file '{path}' is not a file.")
     try:
         with open(path, 'r', encoding='utf-8-sig') as f:
@@ -193,11 +226,15 @@ def _read_config_file(path: Path) -> Dict[str, Any]:
             f"Cannot read the config file '{path}': its arrays or objects are nested "
             "too deeply.") from error
     except ValueError as error:
-        # JSONDecodeError and UnicodeDecodeError are handled above. What is left is a
-        # value the parser refuses, such as an integer with more digits than Python
-        # converts by default.
+        # JSONDecodeError and UnicodeDecodeError are handled above. The case known to
+        # reach this point is an integer with more digits than Python converts by
+        # default: "Exceeds the limit (4300 digits) for integer string conversion: ...".
+        # Only that error is described as a number too long to read.
+        if "integer string conversion" in str(error):
+            raise ConfigFileError(
+                f"The config file '{path}' holds a number too long to read.") from error
         raise ConfigFileError(
-            f"The config file '{path}' holds a number too long to read.") from error
+            f"Cannot read the config file '{path}': {error}.") from error
     if not isinstance(config, dict):
         raise ConfigFileError(
             f"The config file '{path}' must hold a JSON object, such as "
@@ -214,22 +251,38 @@ def find_config_file(config_path: str = None) -> Optional[Path]:
     WHY: A name that is present but broken must be reported, not passed over, so a
          symbolic link whose target is missing counts as present. `Path.exists()` alone
          reports such a link as absent, and the file would be skipped without a message.
-    HOW: Only a --config file that is absent is an error here. Reading the file, and
-         every other check, happens in _read_config_file().
+    HOW: Two things are errors here: a --config file that is absent, and a path that
+         cannot be checked at all (OSError, for example when a parent directory denies
+         access). Reading the file, and every other check, happens in
+         _read_config_file().
     """
     if config_path:
         path = Path(config_path)
-        if not path.exists() and not path.is_symlink():
+        if not _is_present(path):
             raise ConfigFileError(
                 f"Config file not found: '{config_path}'. Check the path given to --config.")
         return path
 
     for filename in CONFIG_FILES:
         path = Path(filename)
-        if path.exists() or path.is_symlink():
+        if _is_present(path):
             return path
 
     return None
+
+
+def _is_present(path: Path) -> bool:
+    """
+    Return True when the path exists or is a symbolic link, even one with no target.
+
+    Raises ConfigFileError naming the file when the path cannot be checked, so that the
+    OSError does not reach the user as a traceback.
+    """
+    try:
+        return path.exists() or path.is_symlink()
+    except OSError as error:
+        raise ConfigFileError(
+            f"Cannot read the config file '{path}': {error}.") from error
 
 
 def load_config(config_path: str = None) -> Tuple[Dict[str, Any], Optional[Path]]:
@@ -281,8 +334,11 @@ def normalize_config_preset(value, config_file=None):
     HOW: None (JSON null) and an empty or whitespace-only string mean the key is unset.
          Any other value must be one of PRESET_CHOICES in any letter case; otherwise
          ValueError names the value, the config file (when `config_file` is given), and
-         the valid choices. A value that is not a string is shown as JSON, with its JSON
-         type. Spaces around the value are stripped, so `" Strict "` means `strict`.
+         the valid choices. A string is shown in single quotes with its non-printable
+         characters escaped (see _escape_unprintable()), so a value cannot send control
+         sequences to the terminal. A value that is not a string is shown as JSON, with
+         its JSON type. Spaces around the value are stripped, so `" Strict "` means
+         `strict`.
          `--preset` on the command line does not strip them: `--preset " strict "` is
          rejected.
     """
@@ -291,7 +347,7 @@ def normalize_config_preset(value, config_file=None):
     if isinstance(value, str) and value.strip().lower() in PRESET_CHOICES:
         return value.strip().lower()
     if isinstance(value, str):
-        shown = f"'{value}'"
+        shown = f"'{_escape_unprintable(value)}'"
     else:
         shown = f"'{json.dumps(value)}' (a JSON {_json_type_name(value)})"
     where = f"the config file '{config_file}'" if config_file else "the config file"
@@ -378,8 +434,9 @@ Config file format (.foundationrc):
 
   Without --config, the first of .foundationrc, .foundationrc.json, and
   foundationrc.json found in the current directory is used. A --config file that
-  does not exist, or a config file that cannot be read, isn't valid JSON, or is
-  not a JSON object, stops the run with exit code 2 before any file is written.
+  does not exist, or a config file that cannot be read, is not valid JSON, or
+  is not a JSON object, stops the run with exit code 2 before any file is
+  written.
 """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )

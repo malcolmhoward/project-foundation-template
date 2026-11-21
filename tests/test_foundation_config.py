@@ -18,8 +18,10 @@ from core.config import (
     CONFIG_KEY_MAPPING,
     DEFAULT_VALUES,
     ConfigFileError,
+    _read_config_file,
     apply_preset_to_args,
     build_parser,
+    find_config_file,
     include_option_help,
     load_config,
     load_config_file,
@@ -188,6 +190,49 @@ class TestLoadConfigFile(unittest.TestCase):
                 load_config_file(str(config_path))
         message = str(raised.exception)
         self.assertEqual(f"The config file '{config_path}' holds a number too long to read.", message)
+
+    def test_other_parser_value_error_is_reported_with_its_own_text(self):
+        """Only the digit-limit error is described as a number too long to read."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "config.json"
+            config_path.write_text("{}")
+            with patch("core.config.json.loads", side_effect=ValueError("unexpected value")):
+                with self.assertRaises(ConfigFileError) as raised:
+                    load_config_file(str(config_path))
+        self.assertEqual(str(raised.exception),
+                         f"Cannot read the config file '{config_path}': unexpected value.")
+
+    def test_path_check_that_fails_while_reading_is_an_error_that_names_the_file(self):
+        """A parent directory that denies access makes `Path.is_dir()` raise on POSIX."""
+        denied = PermissionError(13, "Permission denied")
+        for method in ("is_symlink", "exists", "is_dir", "is_file"):
+            with self.subTest(method=method), tempfile.TemporaryDirectory() as tmpdir:
+                config_path = Path(tmpdir) / "config.json"
+                config_path.write_text("{}")
+                if method == "is_file":
+                    # is_file() is asked only about a path that exists and is no directory.
+                    config_path = Path(os.devnull)
+                with patch.object(Path, method, side_effect=denied):
+                    with self.assertRaises(ConfigFileError) as raised:
+                        _read_config_file(config_path)
+                self.assertEqual(
+                    str(raised.exception),
+                    f"Cannot read the config file '{config_path}': {denied}.")
+
+    def test_path_check_that_fails_while_finding_is_an_error_that_names_the_file(self):
+        """The same failure in find_config_file(), for --config and for the default names."""
+        denied = PermissionError(13, "Permission denied")
+        explicit = str(Path("no-access") / "config.json")
+        for method in ("exists", "is_symlink"):
+            with self.subTest(method=method), patch.object(Path, method, side_effect=denied):
+                with self.assertRaises(ConfigFileError) as raised:
+                    find_config_file(explicit)
+                self.assertEqual(str(raised.exception),
+                                 f"Cannot read the config file '{explicit}': {denied}.")
+                with self.assertRaises(ConfigFileError) as raised:
+                    self._load_from({})
+                self.assertEqual(str(raised.exception),
+                                 f"Cannot read the config file '.foundationrc': {denied}.")
 
     def test_utf8_byte_order_mark_is_accepted(self):
         """Some Windows editors start a UTF-8 file with a byte-order mark."""
@@ -464,6 +509,43 @@ class TestNoPresetChoice(unittest.TestCase):
         self.assertIsNone(normalize_config_preset(""))
         self.assertIsNone(normalize_config_preset("   "))
 
+    def test_invalid_config_preset_error_escapes_control_characters(self):
+        """A config file from a cloned repository must not send escapes to the terminal."""
+        for given, shown in [("\x1b[31mred\x1b[0m", "'\\x1b[31mred\\x1b[0m'"),
+                             ("standard\nError: forged", "'standard\\nError: forged'"),
+                             ("a\rb\tc\x00d\x7fe", "'a\\rb\\tc\\x00d\\x7fe'"),
+                             ("c1\x9b2J", "'c1\\x9b2J'"),
+                             ("line\u2028break", "'line\\u2028break'"),
+                             ("lone\ud800", "'lone\\ud800'")]:
+            with self.subTest(given=given):
+                with self.assertRaises(ValueError) as raised:
+                    normalize_config_preset(given, Path(".foundationrc"))
+                message = str(raised.exception)
+                self.assertTrue(
+                    message.startswith(f"Invalid preset {shown} in the config file "), message)
+                self.assertTrue(message.isprintable(), message)
+                for raw in ("\x1b", "\n", "\r", "\t", "\x00", "\x7f", "\x9b",
+                            "\u2028", "\ud800"):
+                    self.assertNotIn(raw, message)
+
+    def test_invalid_config_preset_error_tells_a_backslash_from_an_escape(self):
+        """A typed backslash and `n` must not look like an escaped line feed."""
+        for given, shown in [("a\\nb", "'a\\\\nb'"),
+                             ("a\nb", "'a\\nb'"),
+                             ("a\\\nb", "'a\\\\\\nb'"),
+                             ("C:\\x1b", "'C:\\\\x1b'")]:
+            with self.subTest(given=given):
+                with self.assertRaises(ValueError) as raised:
+                    normalize_config_preset(given)
+                self.assertIn(f"Invalid preset {shown} in the config file.",
+                              str(raised.exception))
+
+    def test_invalid_config_preset_error_keeps_printable_non_ascii_text(self):
+        with self.assertRaises(ValueError) as raised:
+            normalize_config_preset("st\u00e1ndard \u00e9 \u65e5\u672c")
+        self.assertIn("Invalid preset 'st\u00e1ndard \u00e9 \u65e5\u672c' in the config file.",
+                      str(raised.exception))
+
     def test_help_says_flags_add_to_a_preset_and_describes_none(self):
         help_text = build_parser().format_help()
         self.assertNotIn("Overrides individual", help_text)
@@ -483,7 +565,7 @@ class TestNoPresetChoice(unittest.TestCase):
     def test_help_says_a_broken_config_file_stops_the_run(self):
         help_text = build_parser().format_help()
         self.assertIn("foundationrc.json found in the current directory", help_text)
-        self.assertIn("cannot be read, isn't valid JSON, or is\n  not a JSON object", help_text)
+        self.assertIn("cannot be read, is not valid JSON, or\n  is not a JSON object", help_text)
         self.assertIn("stops the run with exit code 2", help_text)
 
     def test_config_file_accepts_none(self):
