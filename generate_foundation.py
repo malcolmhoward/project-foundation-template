@@ -38,7 +38,7 @@ configure_windows_utf8()
 
 # Core module imports
 from core.config import (
-    load_config_file,
+    load_config,
     merge_config_with_args,
     parse_arguments,
     validate_arguments,
@@ -307,8 +307,9 @@ def main() -> int:
 
     Returns:
         Exit code (0 for success, 1 for failure, 2 for invalid configuration: a config
-        file that is missing, unreadable, or not a JSON object, or an invalid "preset"
-        in it; argparse also exits with 2 for invalid command-line arguments)
+        file that is missing, unreadable, not valid JSON, or not a JSON object, or an
+        invalid "preset" in it; argparse also exits with 2 for invalid command-line
+        arguments)
     """
     # Parse arguments
     args = parse_arguments()
@@ -329,16 +330,20 @@ def main() -> int:
     # Load the config file, then merge it with the arguments (CLI takes precedence)
     config_path = getattr(args, "config_path", None)
     try:
-        config = load_config_file(config_path)
+        config, config_file = load_config(config_path)
         if config:
-            args = merge_config_with_args(args, config)
+            args = merge_config_with_args(args, config, config_file)
     except ValueError as error:
-        # A config file that is missing, unreadable, or not a JSON object
-        # (ConfigFileError), or an invalid "preset" in it. Stop here, as argparse does
+        # A config file that is missing, unreadable, not valid JSON, or not a JSON
+        # object (ConfigFileError), or an invalid "preset" in it. Stop here, as argparse does
         # for an invalid --preset: continuing would ignore settings the file was meant
         # to supply. Nothing has been written yet.
         print(f"Error: {error}", file=sys.stderr)
         return 2
+    if config_file is not None:
+        # Printed only now, after the file was read and its preset checked, so this line
+        # never comes before a config error.
+        print(f"📋 Loaded config from: {config_file}\n")
 
     # Apply preset if specified
     # NO_PRESET applies nothing. Given on the command line, it has already kept

@@ -6,6 +6,7 @@
 import io
 import json
 import os
+import sys
 import tempfile
 import unittest
 from unittest.mock import patch
@@ -20,6 +21,7 @@ from core.config import (
     apply_preset_to_args,
     build_parser,
     include_option_help,
+    load_config,
     load_config_file,
     merge_config_with_args,
     normalize_config_preset,
@@ -112,8 +114,7 @@ class TestLoadConfigFile(unittest.TestCase):
             with self.assertRaises(ConfigFileError) as raised:
                 load_config_file(missing)
         message = str(raised.exception)
-        self.assertIn("Config file not found", message)
-        self.assertIn(missing, message)
+        self.assertIn(f"Config file not found: '{missing}'.", message)
 
     def test_invalid_json_in_explicit_config_is_an_error(self):
         """Invalid JSON used to print an error and continue (#150)."""
@@ -122,9 +123,8 @@ class TestLoadConfigFile(unittest.TestCase):
             config_path.write_text("not valid json {{{")
             with self.assertRaises(ConfigFileError) as raised:
                 load_config_file(str(config_path))
-        message = str(raised.exception)
-        self.assertIn("is not valid JSON", message)
-        self.assertIn(str(config_path), message)
+        self.assertIn(f"The config file '{config_path}' is not valid JSON: ",
+                      str(raised.exception))
 
     def test_explicit_config_that_is_not_a_json_object_is_an_error(self):
         for text, kind in [('["preset"]', "array"), ('"standard"', "string"), ("3", "number"),
@@ -135,18 +135,28 @@ class TestLoadConfigFile(unittest.TestCase):
                 with self.assertRaises(ConfigFileError) as raised:
                     load_config_file(str(config_path))
                 message = str(raised.exception)
-                self.assertIn("must hold a JSON object", message)
+                self.assertIn(f"The config file '{config_path}' must hold a JSON object",
+                              message)
                 self.assertIn(f"it holds a JSON {kind}", message)
-                self.assertIn(str(config_path), message)
 
-    def test_explicit_config_that_cannot_be_read_is_an_error(self):
-        """A directory exists but can't be opened as a file, on every platform."""
+    def test_explicit_config_that_is_a_directory_is_an_error(self):
+        """Opening a directory gives "[Errno 13] Permission denied" on Windows."""
         with tempfile.TemporaryDirectory() as tmpdir:
             with self.assertRaises(ConfigFileError) as raised:
                 load_config_file(tmpdir)
         message = str(raised.exception)
-        self.assertIn("Cannot read the config file", message)
-        self.assertIn(tmpdir, message)
+        self.assertEqual(message,
+                         f"The config file '{tmpdir}' is not a file; it is a directory.")
+        self.assertNotIn("Errno", message)
+
+    def test_config_that_cannot_be_opened_is_an_error(self):
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "config.json"
+            config_path.write_text("{}")
+            with patch("builtins.open", side_effect=PermissionError(13, "Permission denied")):
+                with self.assertRaises(ConfigFileError) as raised:
+                    load_config_file(str(config_path))
+        self.assertIn(f"Cannot read the config file '{config_path}': ", str(raised.exception))
 
     def test_explicit_config_that_is_not_utf8_is_an_error(self):
         with tempfile.TemporaryDirectory() as tmpdir:
@@ -154,9 +164,65 @@ class TestLoadConfigFile(unittest.TestCase):
             config_path.write_bytes(b'{"project_name": "caf\xe9"}')
             with self.assertRaises(ConfigFileError) as raised:
                 load_config_file(str(config_path))
-        self.assertIn("Cannot read the config file", str(raised.exception))
+        self.assertIn(f"Cannot read the config file '{config_path}': ", str(raised.exception))
 
-    def _load_from(self, files):
+    def test_deeply_nested_json_is_an_error(self):
+        """The parser raises RecursionError, which used to end the run with a traceback."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "deep.json"
+            config_path.write_text("[" * 100000 + "]" * 100000)
+            with self.assertRaises(ConfigFileError) as raised:
+                load_config_file(str(config_path))
+        self.assertEqual(str(raised.exception),
+                         f"Cannot read the config file '{config_path}': its arrays or "
+                         "objects are nested too deeply.")
+
+    @unittest.skipUnless(getattr(sys, "get_int_max_str_digits", lambda: 0)(),
+                         "this Python has no limit on the digits in an integer")
+    def test_integer_with_too_many_digits_is_an_error_that_names_the_file(self):
+        """The parser raises a plain ValueError whose message does not name the file."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "big.json"
+            config_path.write_text('{"preset": ' + "9" * (sys.get_int_max_str_digits() + 1) + "}")
+            with self.assertRaises(ConfigFileError) as raised:
+                load_config_file(str(config_path))
+        message = str(raised.exception)
+        self.assertEqual(f"The config file '{config_path}' holds a number too long to read.", message)
+
+    def test_utf8_byte_order_mark_is_accepted(self):
+        """Some Windows editors start a UTF-8 file with a byte-order mark."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "bom.json"
+            config_path.write_bytes(b'\xef\xbb\xbf{"project_name": "caf\xc3\xa9"}')
+            self.assertEqual(load_config_file(str(config_path)), {"project_name": "caf\u00e9"})
+
+    def test_empty_config_is_an_error_that_says_so(self):
+        """An empty file used to report "Expecting value: line 1 column 1 (char 0)"."""
+        for content in [b"", b" \n\t\r\n", b"\xef\xbb\xbf", b"\xef\xbb\xbf\n"]:
+            with self.subTest(content=content), tempfile.TemporaryDirectory() as tmpdir:
+                config_path = Path(tmpdir) / "empty.json"
+                config_path.write_bytes(content)
+                with self.assertRaises(ConfigFileError) as raised:
+                    load_config_file(str(config_path))
+                self.assertEqual(str(raised.exception),
+                                 f"The config file '{config_path}' is empty. "
+                                 "Write {} in it, or delete it.")
+
+    def test_loading_prints_nothing(self):
+        """The caller prints "Loaded config" after it has checked the settings."""
+        with tempfile.TemporaryDirectory() as tmpdir:
+            config_path = Path(tmpdir) / "config.json"
+            config_path.write_text('{"preset": "standrad"}')
+            with patch("sys.stdout", new_callable=io.StringIO) as stdout:
+                config, config_file = load_config(str(config_path))
+        self.assertEqual(stdout.getvalue(), "")
+        self.assertEqual(config, {"preset": "standrad"})
+        self.assertEqual(config_file, config_path)
+
+    def test_load_config_names_no_file_when_there_is_none(self):
+        self.assertEqual(self._load_from({}, loader=load_config), ({}, None))
+
+    def _load_from(self, files, loader=load_config_file):
         """Call load_config_file() in a directory that holds the given files."""
         with tempfile.TemporaryDirectory() as tmpdir:
             for name, text in files.items():
@@ -168,7 +234,7 @@ class TestLoadConfigFile(unittest.TestCase):
             try:
                 os.chdir(tmpdir)
                 with patch("sys.stdout", new_callable=io.StringIO):
-                    return load_config_file()
+                    return loader()
             finally:
                 os.chdir(original_cwd)
 
@@ -186,28 +252,77 @@ class TestLoadConfigFile(unittest.TestCase):
             with self.subTest(name=name):
                 with self.assertRaises(ConfigFileError) as raised:
                     self._load_from({name: "{ not json"})
-                message = str(raised.exception)
-                self.assertIn("is not valid JSON", message)
-                self.assertIn(name, message)
+                self.assertIn(f"The config file '{name}' is not valid JSON: ",
+                              str(raised.exception))
 
     def test_auto_found_config_that_is_not_a_json_object_is_an_error(self):
         with self.assertRaises(ConfigFileError) as raised:
             self._load_from({".foundationrc": "[1, 2]"})
         message = str(raised.exception)
-        self.assertIn(".foundationrc must hold a JSON object", message)
+        self.assertIn("The config file '.foundationrc' must hold a JSON object", message)
         self.assertIn("it holds a JSON array", message)
 
-    def test_auto_found_config_that_cannot_be_read_is_an_error(self):
+    def test_auto_found_config_that_is_a_directory_is_an_error(self):
         with self.assertRaises(ConfigFileError) as raised:
             self._load_from({".foundationrc": None})
-        self.assertIn("Cannot read the config file .foundationrc", str(raised.exception))
+        self.assertEqual(str(raised.exception),
+                         "The config file '.foundationrc' is not a file; it is a directory.")
+
+    def test_auto_found_empty_config_is_an_error(self):
+        with self.assertRaises(ConfigFileError) as raised:
+            self._load_from({".foundationrc": "", "foundationrc.json": '{"preset": "light"}'})
+        self.assertIn("The config file '.foundationrc' is empty.", str(raised.exception))
+
+    def test_symlink_with_a_missing_target_is_an_error(self):
+        """`Path.exists()` is False for such a link, so it used to be skipped silently."""
+        from core.utils import CONFIG_FILES
+        for name in CONFIG_FILES:
+            with self.subTest(name=name), tempfile.TemporaryDirectory() as tmpdir:
+                try:
+                    os.symlink(Path(tmpdir) / "missing-target", Path(tmpdir) / name)
+                except (OSError, NotImplementedError) as error:
+                    self.skipTest(f"cannot create symbolic links here: {error}")
+                original_cwd = os.getcwd()
+                try:
+                    os.chdir(tmpdir)
+                    with self.assertRaises(ConfigFileError) as raised:
+                        load_config_file()
+                    explicit = str(Path(tmpdir) / name)
+                    with self.assertRaises(ConfigFileError) as raised_explicit:
+                        load_config_file(explicit)
+                finally:
+                    os.chdir(original_cwd)
+                self.assertEqual(str(raised.exception),
+                                 f"Cannot read the config file '{name}': it is a symbolic "
+                                 "link, and its target does not exist.")
+                self.assertIn(f"Cannot read the config file '{explicit}': it is a symbolic link",
+                              str(raised_explicit.exception))
+
+    def test_symlink_with_a_missing_target_is_an_error_without_real_symlinks(self):
+        """The same rule, checked where the OS or permissions can't create symlinks."""
+        def is_dangling_link(path):
+            return path.name == ".foundationrc"
+
+        with patch.object(Path, "is_symlink", is_dangling_link):
+            with self.assertRaises(ConfigFileError) as raised:
+                self._load_from({"foundationrc.json": '{"preset": "light"}'})
+            self.assertEqual(str(raised.exception),
+                             "Cannot read the config file '.foundationrc': it is a symbolic "
+                             "link, and its target does not exist.")
+            with tempfile.TemporaryDirectory() as tmpdir:
+                explicit = str(Path(tmpdir) / ".foundationrc")
+                with self.assertRaises(ConfigFileError) as raised:
+                    load_config_file(explicit)
+            self.assertIn(f"Cannot read the config file '{explicit}': it is a symbolic link",
+                          str(raised.exception))
 
     def test_broken_auto_found_config_does_not_fall_back_to_the_next_name(self):
         """The valid foundationrc.json must not hide the broken .foundationrc."""
         with self.assertRaises(ConfigFileError) as raised:
             self._load_from({".foundationrc": "{ not json",
                              "foundationrc.json": '{"preset": "light"}'})
-        self.assertIn(".foundationrc is not valid JSON", str(raised.exception))
+        self.assertIn("The config file '.foundationrc' is not valid JSON",
+                      str(raised.exception))
 
 
 class TestMergeConfigWithArgs(unittest.TestCase):
@@ -314,14 +429,29 @@ class TestNoPresetChoice(unittest.TestCase):
             build_parser().parse_args(["--preset", " strict "])
 
     def test_invalid_config_preset_is_an_error_that_lists_the_choices(self):
-        for given in ["standrad", "no ne", 3, True, False, 0, ["standard"]]:
+        choices = ", ".join(f"'{choice}'" for choice in PRESET_CHOICES)
+        for given, shown in [("standrad", "'standrad'"), ("no ne", "'no ne'"),
+                             (3, "'3' (a JSON number)"), (True, "'true' (a JSON boolean)"),
+                             (False, "'false' (a JSON boolean)"), (0, "'0' (a JSON number)"),
+                             (["standard"], """'["standard"]' (a JSON array)"""),
+                             ({"name": "light"}, """'{"name": "light"}' (a JSON object)""")]:
             with self.subTest(given=given):
                 with self.assertRaises(ValueError) as raised:
                     merge_config_with_args(build_parser().parse_args([]), {"preset": given})
-                message = str(raised.exception)
-                self.assertIn(repr(given), message)
-                self.assertIn("config file", message)
-                self.assertIn(", ".join(PRESET_CHOICES), message)
+                self.assertEqual(
+                    str(raised.exception),
+                    f"Invalid preset {shown} in the config file. "
+                    f"Valid choices (in any letter case): {choices}.")
+
+    def test_invalid_config_preset_error_names_the_config_file(self):
+        with self.assertRaises(ValueError) as raised:
+            merge_config_with_args(build_parser().parse_args([]), {"preset": "standrad"},
+                                   Path(".foundationrc"))
+        self.assertEqual(
+            str(raised.exception),
+            "Invalid preset 'standrad' in the config file '.foundationrc'. Valid choices "
+            "(in any letter case): 'minimal', 'light', 'standard', 'strict', 'enterprise', "
+            "'none'.")
 
     def test_invalid_config_preset_is_not_checked_when_the_command_line_overrides_it(self):
         args = merge_config_with_args(
@@ -353,6 +483,7 @@ class TestNoPresetChoice(unittest.TestCase):
     def test_help_says_a_broken_config_file_stops_the_run(self):
         help_text = build_parser().format_help()
         self.assertIn("foundationrc.json found in the current directory", help_text)
+        self.assertIn("cannot be read, isn't valid JSON, or is\n  not a JSON object", help_text)
         self.assertIn("stops the run with exit code 2", help_text)
 
     def test_config_file_accepts_none(self):

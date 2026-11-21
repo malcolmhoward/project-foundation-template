@@ -15,7 +15,7 @@ import argparse
 import json
 import sys
 from pathlib import Path
-from typing import Dict, Any, Tuple
+from typing import Dict, Any, Optional, Tuple
 
 from core.utils import SCRIPT_VERSION, CONFIG_FILES
 from core.presets import NO_PRESET, PRESET_CHOICES
@@ -148,32 +148,96 @@ def _json_type_name(value) -> str:
         return "number"
     if isinstance(value, str):
         return "string"
+    if isinstance(value, dict):
+        return "object"
     return "array"
 
 
 def _read_config_file(path: Path) -> Dict[str, Any]:
-    """Return the JSON object in a config file, or raise ConfigFileError naming the file."""
+    """
+    Return the JSON object in a config file, or raise ConfigFileError naming the file.
+
+    WHAT: Every way the file can fail to give a JSON object becomes a ConfigFileError.
+    WHY: The caller reports ConfigFileError in one line and exits with code 2. Any other
+         exception would reach the user as a traceback, or as a message that does not
+         name the file.
+    HOW: The file is read as UTF-8 with or without a byte-order mark (`utf-8-sig`),
+         because some Windows editors write one. A directory and an empty file are
+         reported in plain words before Python's less clear errors can appear.
+    """
+    if path.is_symlink() and not path.exists():
+        raise ConfigFileError(
+            f"Cannot read the config file '{path}': it is a symbolic link, and its "
+            "target does not exist.")
+    if path.is_dir():
+        raise ConfigFileError(f"The config file '{path}' is not a file; it is a directory.")
+    if path.exists() and not path.is_file():
+        raise ConfigFileError(f"The config file '{path}' is not a file.")
     try:
-        with open(path, 'r', encoding='utf-8') as f:
-            config = json.load(f)
+        with open(path, 'r', encoding='utf-8-sig') as f:
+            text = f.read()
+        if not text.strip():
+            raise ConfigFileError(
+                f"The config file '{path}' is empty. Write {{}} in it, or delete it.")
+        config = json.loads(text)
+    except ConfigFileError:
+        raise
     except json.JSONDecodeError as error:
         raise ConfigFileError(
-            f"The config file {path} is not valid JSON: {error}.") from error
+            f"The config file '{path}' is not valid JSON: {error}.") from error
     except (OSError, UnicodeDecodeError) as error:
         raise ConfigFileError(
-            f"Cannot read the config file {path}: {error}.") from error
+            f"Cannot read the config file '{path}': {error}.") from error
+    except RecursionError as error:
+        raise ConfigFileError(
+            f"Cannot read the config file '{path}': its arrays or objects are nested "
+            "too deeply.") from error
+    except ValueError as error:
+        # JSONDecodeError and UnicodeDecodeError are handled above. What is left is a
+        # value the parser refuses, such as an integer with more digits than Python
+        # converts by default.
+        raise ConfigFileError(
+            f"The config file '{path}' holds a number too long to read.") from error
     if not isinstance(config, dict):
         raise ConfigFileError(
-            f"The config file {path} must hold a JSON object, such as "
+            f"The config file '{path}' must hold a JSON object, such as "
             f'{{"preset": "standard"}}; it holds a JSON {_json_type_name(config)}.')
     return config
 
 
-def load_config_file(config_path: str = None) -> Dict[str, Any]:
+def find_config_file(config_path: str = None) -> Optional[Path]:
+    """
+    Return the config file this run uses, or None when there is none.
+
+    WHAT: The --config file when one is given; otherwise the first name in CONFIG_FILES
+          present in the current directory.
+    WHY: A name that is present but broken must be reported, not passed over, so a
+         symbolic link whose target is missing counts as present. `Path.exists()` alone
+         reports such a link as absent, and the file would be skipped without a message.
+    HOW: Only a --config file that is absent is an error here. Reading the file, and
+         every other check, happens in _read_config_file().
+    """
+    if config_path:
+        path = Path(config_path)
+        if not path.exists() and not path.is_symlink():
+            raise ConfigFileError(
+                f"Config file not found: '{config_path}'. Check the path given to --config.")
+        return path
+
+    for filename in CONFIG_FILES:
+        path = Path(filename)
+        if path.exists() or path.is_symlink():
+            return path
+
+    return None
+
+
+def load_config(config_path: str = None) -> Tuple[Dict[str, Any], Optional[Path]]:
     """
     Load configuration from the --config file, or from a config file in the current directory.
 
-    WHAT: Returns the config file's settings, or an empty dict when there is no config file.
+    WHAT: Returns the config file's settings and the file they came from, or an empty
+          dict and None when there is no config file.
     WHY: A config file that was missing or broken used to be skipped, sometimes without a
          message, so the run quietly ignored the settings the file was meant to supply
          (#150).
@@ -183,40 +247,31 @@ def load_config_file(config_path: str = None) -> Dict[str, Any]:
          3. .foundationrc.json in the current directory
          4. foundationrc.json in the current directory
          Only the first file found is read; a later name is not tried when an earlier one
-         is broken.
+         is broken. Nothing is printed: the caller announces the file once the settings
+         in it have been checked, so "Loaded config" never comes before an error.
 
     Returns:
-        The settings as a dict. An empty dict when --config was not given and none of
-        the default files exist (not an error).
+        (settings, file). ({}, None) when --config was not given and none of the default
+        files exist (not an error).
 
     Raises:
         ConfigFileError: the --config file does not exist, or the file used cannot be
-            read, is not valid JSON, or holds JSON that is not an object. The message
-            names the file. The caller reports it and exits with code 2 before any
-            file is written.
+            read, is not a file, is empty, is not valid JSON, or holds JSON that is not
+            an object. The message names the file. The caller reports it and exits with
+            code 2 before any file is written.
     """
-    if config_path:
-        # Explicit config path provided
-        path = Path(config_path)
-        if not path.exists():
-            raise ConfigFileError(
-                f"Config file not found: {config_path}. Check the path given to --config.")
-        config = _read_config_file(path)
-        print(f"📋 Loaded config from: {path}\n")
-        return config
-
-    # Search for default config files
-    for filename in CONFIG_FILES:
-        path = Path(filename)
-        if path.exists():
-            config = _read_config_file(path)
-            print(f"📋 Loaded config from: {path}\n")
-            return config
-
-    return {}
+    path = find_config_file(config_path)
+    if path is None:
+        return {}, None
+    return _read_config_file(path), path
 
 
-def normalize_config_preset(value):
+def load_config_file(config_path: str = None) -> Dict[str, Any]:
+    """Return only the settings from load_config(); see it for the rules and errors."""
+    return load_config(config_path)[0]
+
+
+def normalize_config_preset(value, config_file=None):
     """
     Return a config file's "preset" value in lowercase, checked against PRESET_CHOICES.
 
@@ -225,20 +280,27 @@ def normalize_config_preset(value):
          fewer governance files than the config file requested.
     HOW: None (JSON null) and an empty or whitespace-only string mean the key is unset.
          Any other value must be one of PRESET_CHOICES in any letter case; otherwise
-         ValueError names the valid choices. Spaces around the value are stripped, so
-         `" Strict "` means `strict`. `--preset` on the command line does not strip them:
-         `--preset " strict "` is rejected.
+         ValueError names the value, the config file (when `config_file` is given), and
+         the valid choices. A value that is not a string is shown as JSON, with its JSON
+         type. Spaces around the value are stripped, so `" Strict "` means `strict`.
+         `--preset` on the command line does not strip them: `--preset " strict "` is
+         rejected.
     """
     if value is None or (isinstance(value, str) and not value.strip()):
         return None
     if isinstance(value, str) and value.strip().lower() in PRESET_CHOICES:
         return value.strip().lower()
+    if isinstance(value, str):
+        shown = f"'{value}'"
+    else:
+        shown = f"'{json.dumps(value)}' (a JSON {_json_type_name(value)})"
+    where = f"the config file '{config_file}'" if config_file else "the config file"
+    choices = ", ".join(f"'{choice}'" for choice in PRESET_CHOICES)
     raise ValueError(
-        f"Invalid preset {value!r} in the config file. "
-        f"Valid choices (in any letter case): {', '.join(PRESET_CHOICES)}.")
+        f"Invalid preset {shown} in {where}. Valid choices (in any letter case): {choices}.")
 
 
-def merge_config_with_args(args, config: Dict[str, Any]):
+def merge_config_with_args(args, config: Dict[str, Any], config_file=None):
     """
     Merge config file settings with command-line arguments.
     Command-line arguments take precedence over config file.
@@ -249,6 +311,9 @@ def merge_config_with_args(args, config: Dict[str, Any]):
 
     Settings in COMMAND_LINE_ONLY_KEYS are ignored with a warning: they must be
     given on the command line.
+
+    Args:
+        config_file: The file the settings came from; the invalid-preset error names it.
 
     Raises:
         ValueError: the config file's "preset" is used and is not one of PRESET_CHOICES.
@@ -265,7 +330,7 @@ def merge_config_with_args(args, config: Dict[str, Any]):
             if current_value == DEFAULT_VALUES.get(arg_name):
                 value = config[config_key]
                 if arg_name == "preset":
-                    value = normalize_config_preset(value)
+                    value = normalize_config_preset(value, config_file)
                 setattr(args, arg_name, value)
 
     return args
@@ -313,8 +378,8 @@ Config file format (.foundationrc):
 
   Without --config, the first of .foundationrc, .foundationrc.json, and
   foundationrc.json found in the current directory is used. A --config file that
-  does not exist, or a config file that cannot be read or is not a JSON object,
-  stops the run with exit code 2 before any file is written.
+  does not exist, or a config file that cannot be read, isn't valid JSON, or is
+  not a JSON object, stops the run with exit code 2 before any file is written.
 """,
         formatter_class=argparse.RawDescriptionHelpFormatter
     )

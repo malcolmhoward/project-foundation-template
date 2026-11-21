@@ -33,6 +33,7 @@ from core.utils import (
 
 from core.config import (
     ConfigFileError,
+    load_config,
     load_config_file,
     merge_config_with_args,
     parse_arguments,
@@ -111,6 +112,7 @@ __all__ = [
     "get_expiration_warning",
     # Config
     "ConfigFileError",
+    "load_config",
     "load_config_file",
     "merge_config_with_args",
     "parse_arguments",

@@ -292,11 +292,27 @@ class TestPresetsAndListings:
         """A misspelled preset used to be ignored, and only the core files were written."""
         from core.presets import PRESET_CHOICES
         out = tmp_path / "out"
-        r = generate(out, home, "--config", self._config(tmp_path, "standrad"))
+        config = self._config(tmp_path, "standrad")
+        r = generate(out, home, "--config", config)
         assert r.returncode == 2, r.stdout + r.stderr
-        assert "Invalid preset 'standrad' in the config file" in r.stderr
-        assert ", ".join(PRESET_CHOICES) in r.stderr
+        choices = ", ".join(f"'{choice}'" for choice in PRESET_CHOICES)
+        assert r.stderr.strip() == (
+            f"Error: Invalid preset 'standrad' in the config file '{config}'. "
+            f"Valid choices (in any letter case): {choices}.")
         assert "Traceback" not in r.stderr
+        # "Loaded config" would say the file was accepted, just before the error.
+        assert "Loaded config" not in r.stdout
+        assert not out.exists()
+
+    def test_invalid_preset_in_auto_found_config_file_names_the_file(self, tmp_path, home):
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_text('{"preset": 3}', encoding="utf-8")
+        r = generate(out, home, cwd=cwd)
+        assert r.returncode == 2, r.stdout + r.stderr
+        assert ("Error: Invalid preset '3' (a JSON number) in the config file "
+                "'.foundationrc'. Valid choices") in r.stderr
+        assert "Loaded config" not in r.stdout
         assert not out.exists()
 
     @pytest.mark.parametrize("value", ["", "  "])
@@ -407,13 +423,52 @@ class TestConfigFileFailures:
     def test_missing_explicit_config_file(self, tmp_path, home):
         out, missing = tmp_path / "out", tmp_path / "missing.json"
         r = generate(out, home, "--preset", "standard", "--config", str(missing))
-        self._assert_stopped(r, out, home, "Config file not found", str(missing))
+        self._assert_stopped(r, out, home, f"Config file not found: '{missing}'.")
 
     def test_explicit_config_file_with_invalid_json(self, tmp_path, home):
         out, config = tmp_path / "out", tmp_path / "broken.json"
         config.write_text('{"preset": "standard",', encoding="utf-8")
         r = generate(out, home, "--config", str(config))
-        self._assert_stopped(r, out, home, f"The config file {config} is not valid JSON")
+        self._assert_stopped(r, out, home, f"The config file '{config}' is not valid JSON: ")
+
+    def test_explicit_config_file_nested_too_deeply(self, tmp_path, home):
+        """The parser's RecursionError used to end the run with a traceback and exit code 1."""
+        out, config = tmp_path / "out", tmp_path / "deep.json"
+        config.write_text("[" * 100000 + "]" * 100000, encoding="utf-8")
+        r = generate(out, home, "--config", str(config))
+        self._assert_stopped(r, out, home, f"Cannot read the config file '{config}': its arrays "
+                                           "or objects are nested too deeply.")
+
+    @pytest.mark.skipif(not getattr(sys, "get_int_max_str_digits", lambda: 0)(),
+                        reason="this Python has no limit on the digits in an integer")
+    def test_explicit_config_file_with_an_integer_of_too_many_digits(self, tmp_path, home):
+        """The parser's ValueError does not name the file, so the error must."""
+        out, config = tmp_path / "out", tmp_path / "big.json"
+        config.write_text('{"preset": ' + "9" * (sys.get_int_max_str_digits() + 1) + "}",
+                          encoding="utf-8")
+        r = generate(out, home, "--config", str(config))
+        self._assert_stopped(r, out, home, f"The config file '{config}' holds a number too long to read.")
+
+    @pytest.mark.parametrize("content", [b"", b"  \r\n\t", b"\xef\xbb\xbf"])
+    def test_empty_config_file(self, tmp_path, home, content):
+        """An empty file used to report "Expecting value: line 1 column 1 (char 0)"."""
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_bytes(content)
+        r = generate(out, home, cwd=cwd)
+        self._assert_stopped(r, out, home, "The config file '.foundationrc' is empty. "
+                                           "Write {} in it, or delete it.")
+        assert "Expecting value" not in r.stderr
+
+    def test_config_file_with_a_utf8_byte_order_mark_applies(self, tmp_path, home):
+        """Some Windows editors start a UTF-8 file with a byte-order mark."""
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        (cwd / ".foundationrc").write_bytes(b'\xef\xbb\xbf{"preset": "standard"}')
+        r = generate(out, home, cwd=cwd)
+        assert r.returncode == 0, r.stdout + r.stderr
+        assert "Applied preset: standard" in r.stdout
+        assert (out / ".github" / "workflows" / "ci.yml").exists()
 
     @pytest.mark.parametrize("text,kind", [('["standard"]', "array"), ('"standard"', "string"),
                                            ("7", "number"), ("null", "null")])
@@ -421,15 +476,24 @@ class TestConfigFileFailures:
         out, config = tmp_path / "out", tmp_path / "config.json"
         config.write_text(text, encoding="utf-8")
         r = generate(out, home, "--config", str(config))
-        self._assert_stopped(r, out, home, f"The config file {config} must hold a JSON object",
+        self._assert_stopped(r, out, home, f"The config file '{config}' must hold a JSON object",
                              f"it holds a JSON {kind}")
 
-    def test_explicit_config_file_that_cannot_be_read(self, tmp_path, home):
-        """A directory exists but can't be opened as a file, on every platform."""
+    def test_explicit_config_file_that_is_a_directory(self, tmp_path, home):
+        """Opening a directory gives "[Errno 13] Permission denied" on Windows."""
         out, config = tmp_path / "out", tmp_path / "config-dir"
         config.mkdir()
         r = generate(out, home, "--config", str(config))
-        self._assert_stopped(r, out, home, f"Cannot read the config file {config}")
+        self._assert_stopped(r, out, home,
+                             f"The config file '{config}' is not a file; it is a directory.")
+        assert "Errno" not in r.stderr
+
+    def test_explicit_config_file_that_cannot_be_read(self, tmp_path, home):
+        """Bytes that are not UTF-8 can't be read as text, on every platform."""
+        out, config = tmp_path / "out", tmp_path / "latin1.json"
+        config.write_bytes(b'{"project_name": "caf\xe9"}')
+        r = generate(out, home, "--config", str(config))
+        self._assert_stopped(r, out, home, f"Cannot read the config file '{config}': ")
 
     @pytest.mark.parametrize("name", [".foundationrc", ".foundationrc.json", "foundationrc.json"])
     def test_auto_found_config_file_with_invalid_json(self, tmp_path, home, name):
@@ -438,21 +502,37 @@ class TestConfigFileFailures:
         cwd.mkdir()
         (cwd / name).write_text("{ not json", encoding="utf-8")
         r = generate(out, home, cwd=cwd)
-        self._assert_stopped(r, out, home, f"The config file {name} is not valid JSON")
+        self._assert_stopped(r, out, home, f"The config file '{name}' is not valid JSON: ")
 
     def test_auto_found_config_file_that_is_not_a_json_object(self, tmp_path, home):
         out, cwd = tmp_path / "out", tmp_path / "cwd"
         cwd.mkdir()
         (cwd / ".foundationrc").write_text("[]", encoding="utf-8")
         r = generate(out, home, cwd=cwd)
-        self._assert_stopped(r, out, home, "The config file .foundationrc must hold a JSON object",
+        self._assert_stopped(r, out, home,
+                             "The config file '.foundationrc' must hold a JSON object",
                              "it holds a JSON array")
 
-    def test_auto_found_config_file_that_cannot_be_read(self, tmp_path, home):
+    def test_auto_found_config_file_that_is_a_directory(self, tmp_path, home):
         out, cwd = tmp_path / "out", tmp_path / "cwd"
         (cwd / ".foundationrc").mkdir(parents=True)
         r = generate(out, home, cwd=cwd)
-        self._assert_stopped(r, out, home, "Cannot read the config file .foundationrc")
+        self._assert_stopped(
+            r, out, home, "The config file '.foundationrc' is not a file; it is a directory.")
+        assert "Errno" not in r.stderr
+
+    @pytest.mark.parametrize("name", [".foundationrc", ".foundationrc.json", "foundationrc.json"])
+    def test_auto_found_symlink_with_a_missing_target(self, tmp_path, home, name):
+        """`Path.exists()` is False for such a link, so it used to be skipped silently."""
+        out, cwd = tmp_path / "out", tmp_path / "cwd"
+        cwd.mkdir()
+        try:
+            os.symlink(cwd / "missing-target", cwd / name)
+        except (OSError, NotImplementedError) as error:
+            pytest.skip(f"cannot create symbolic links here: {error}")
+        r = generate(out, home, cwd=cwd)
+        self._assert_stopped(r, out, home, f"Cannot read the config file '{name}': it is a "
+                                           "symbolic link, and its target does not exist.")
 
     def test_broken_auto_found_config_file_is_not_replaced_by_the_next_name(self, tmp_path, home):
         out, cwd = tmp_path / "out", tmp_path / "cwd"
@@ -460,7 +540,7 @@ class TestConfigFileFailures:
         (cwd / ".foundationrc").write_text("{ not json", encoding="utf-8")
         (cwd / "foundationrc.json").write_text('{"preset": "standard"}', encoding="utf-8")
         r = generate(out, home, cwd=cwd)
-        self._assert_stopped(r, out, home, "The config file .foundationrc is not valid JSON")
+        self._assert_stopped(r, out, home, "The config file '.foundationrc' is not valid JSON: ")
 
     def test_no_config_file_still_runs(self, tmp_path, home):
         out, cwd = tmp_path / "out", tmp_path / "cwd"
@@ -476,6 +556,7 @@ class TestConfigFileFailures:
         (cwd / ".foundationrc").write_text('{"preset": "standard"}', encoding="utf-8")
         r = generate(out, home, cwd=cwd)
         assert r.returncode == 0, r.stdout + r.stderr
+        assert "Loaded config from: .foundationrc" in r.stdout
         assert "Applied preset: standard" in r.stdout
         assert (out / ".github" / "workflows" / "ci.yml").exists()
 
