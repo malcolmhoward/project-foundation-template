@@ -17,7 +17,7 @@ python setup_foundation_lite.py --project-name "My Project" --author-name "Name"
 
 **After (v3.0.0):**
 ```bash
-python generate_foundation.py --project-name "My Project" --author-name "Name"
+python generate_foundation.py --project-name "My Project" --author-name "Name" --output-dir ../MyProject
 ```
 
 The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
@@ -28,13 +28,13 @@ The old `setup_foundation_lite.py` remains for reference but is **deprecated**.
 
 ```bash
 # Minimal (3 principles)
-python generate_foundation.py --preset minimal --project-name "My Project" --author-name "Name"
+python generate_foundation.py --preset minimal --project-name "My Project" --author-name "Name" --output-dir ../MyProject
 
 # Standard (9 principles) - Recommended; no preset is applied unless you pass --preset
-python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
+python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name" --output-dir ../MyProject
 
 # Enterprise (all 30 principles)
-python generate_foundation.py --preset enterprise --project-name "My Project" --author-name "Name"
+python generate_foundation.py --preset enterprise --project-name "My Project" --author-name "Name" --output-dir ../MyProject
 ```
 
 #### Discovery Commands
@@ -48,7 +48,7 @@ python generate_foundation.py --list-guides       # Show available guides
 #### Plugin Support (v2.11.0+)
 
 ```bash
-python generate_foundation.py --plugins-dir ./my-plugins --project-name "My Project" --author-name "Name"
+python generate_foundation.py --plugins-dir ./my-plugins --project-name "My Project" --author-name "Name" --output-dir ../MyProject
 ```
 
 > **Not yet implemented (v3.7.0)**: the generator accepts `--plugins-dir` but does not load plugins from it yet; it prints a notice and generates without them. Loading is tracked in [#135](https://github.com/malcolmhoward/project-foundation-template/issues/135).
@@ -219,10 +219,10 @@ git clone https://github.com/malcolmhoward/project-foundation-template.git
 cd project-foundation-template
 
 # All your existing flags still work via the shim:
-python setup_foundation_lite.py --project-name "MyProject" --author-name "Author"
+python setup_foundation_lite.py --project-name "MyProject" --author-name "Author" --output-dir ../MyProject
 
 # Or use the new entrypoint (recommended from v3.0.0 onward):
-python generate_foundation.py --project-name "MyProject" --author-name "Author"
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ../MyProject
 ```
 
 **Your generated output changes slightly.** The refactor kept the same templates, but six generated files differ in content from v2.5.0 (CODE_OF_CONDUCT.md, CONTRIBUTING.md, FOUNDATION_NOTICE.md, LICENSE, README.md and SECURITY.md): emoji were removed from headings, lists and a table, `≠` became `!=`, a Markdown line break was dropped, and README code blocks are no longer written with escaped backticks. Generated files also carry the new version number. Generate into a separate directory and compare before replacing files you have customized.
