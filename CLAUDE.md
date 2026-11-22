@@ -223,7 +223,7 @@ When working on multi-file tasks, **always consider parallelization**:
 - Validating output after a build step
 
 ### When Modifying the Generator
-1. Preserve all ethical safeguards (agreement, education, logging, warnings, expiration)
+1. Preserve the five safeguards in code (ethical use agreement, education first, usage logging, template warnings, and advisory expiration). Every change also needs the sixth safeguard, a documented ethical review (see `ETHICS.md`)
 2. Maintain the WHAT/WHY/HOW educational pattern
 3. Test generated output against ethical guidelines
 4. Update version and expiration date appropriately
@@ -271,6 +271,8 @@ Before committing one-off scripts, ask: "Could this help other projects?"
 | strict | 12 | Security-sensitive projects |
 | enterprise | 30 | Large organizations, regulated industries |
 
+A preset's count is the number of principles it lists, not the number of files it generates. Strict and enterprise generate the same files.
+
 ## Commands
 
 ```bash
@@ -310,7 +312,7 @@ ls -la ./output/
 
 - **Current**: v3.7.0
 - **Advisory Expiration**: `EXPIRATION_DATE` in `core/utils.py`; about 6 months after each release (ADR 0003)
-- **Architecture**: Modular core with plugin support
+- **Architecture**: Modular core; the plugin API in `core/plugins/` exists, but the generator does not load plugins yet (#135)
 - **Principles**: 30 governance principles
 - **Guides**: 25 implementation guides
 - **Languages**: 18 programming language configurations

@@ -32,7 +32,7 @@ As contributors to a governance template project:
 
 ## Enforcement
 
-**Enforcement Contact**: Create a GitHub issue with the label `conduct` or contact the maintainer directly via the repository's GitHub Discussions.
+**Enforcement Contact**: A private contact address is coming ([#154](https://github.com/malcolmhoward/project-foundation-template/issues/154)). Until then, raise concerns openly in a GitHub issue with "Conduct" in the title; a maintainer will add the `conduct` label. Once the address exists, a report about a specific person is best sent privately.
 
 **Response Process**:
 1. Report is received and acknowledged within 72 hours
@@ -49,7 +49,7 @@ As contributors to a governance template project:
 
 ## Scope
 
-This Code of Conduct applies within all project spaces (repository, discussions, issues, pull requests) and in public spaces when representing the project.
+This Code of Conduct applies within all project spaces (repository, issues, pull requests) and in public spaces when representing the project.
 
 ## Acknowledgment
 

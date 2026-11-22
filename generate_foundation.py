@@ -210,10 +210,10 @@ Each principle includes educational content explaining its importance.
     print(f"""
 Total principles: {len(list_all_principles())}
 
-Enable principles via:
+Generate files via:
   - --preset <name>           Apply a preset configuration ('none' applies no preset)
-  - --include-coc             Include specific principles
-  - --all                     Include all optional principles
+  - --include-*               Add an optional template set (e.g. --include-changelog); see --help for the flags
+  - --all                     Include all optional templates
 
 For detailed principle information, see the documentation.
 """)
