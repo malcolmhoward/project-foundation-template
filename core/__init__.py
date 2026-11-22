@@ -32,6 +32,8 @@ from core.utils import (
 )
 
 from core.config import (
+    ConfigFileError,
+    load_config,
     load_config_file,
     merge_config_with_args,
     parse_arguments,
@@ -61,6 +63,7 @@ from core.generator import EthicalFoundationGenerator
 from core.presets import (
     PRESETS,
     DEFAULT_PRESET,
+    NO_PRESET,
     get_preset,
     list_presets,
     get_preset_description,
@@ -108,6 +111,8 @@ __all__ = [
     "check_expiration",
     "get_expiration_warning",
     # Config
+    "ConfigFileError",
+    "load_config",
     "load_config_file",
     "merge_config_with_args",
     "parse_arguments",
@@ -131,6 +136,7 @@ __all__ = [
     # Presets
     "PRESETS",
     "DEFAULT_PRESET",
+    "NO_PRESET",
     "get_preset",
     "list_presets",
     "get_preset_description",

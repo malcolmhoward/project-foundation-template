@@ -6,7 +6,7 @@
 |-----------|-------|
 | **Project Type** | [Open Source / Enterprise / Educational / Non-Software] |
 | **Team Size** | [Number of contributors] |
-| **Preset Used** | [minimal / light / standard / strict / enterprise] |
+| **Preset Used** | [minimal / light / standard / strict / enterprise / none] |
 | **Adoption Date** | [Month Year] |
 | **Status** | [Active / Completed / Archived] |
 

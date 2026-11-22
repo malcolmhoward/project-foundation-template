@@ -27,6 +27,7 @@ Repository: https://github.com/malcolmhoward/project-foundation-template
 
 import json
 import sys
+import textwrap
 from datetime import datetime
 from pathlib import Path
 
@@ -37,17 +38,19 @@ configure_windows_utf8()
 
 # Core module imports
 from core.config import (
-    load_config_file,
+    load_config,
     merge_config_with_args,
     parse_arguments,
     validate_arguments,
     apply_preset_to_args,
+    include_option_help,
 )
 
 from core.generator import EthicalFoundationGenerator
 
 from core.presets import (
     PRESETS,
+    NO_PRESET,
     get_preset,
     list_presets as get_preset_names,
     get_preset_description,
@@ -99,6 +102,11 @@ def show_banner(quiet: bool = False):
 """)
 
 
+# Width of the help text column in the --list-presets "Adds:" list. With the option
+# column before it, lines stay as wide as the hand-wrapped description lines.
+LIST_HELP_WIDTH = 40
+
+
 def show_presets():
     """Display available governance presets."""
     print("""
@@ -126,6 +134,27 @@ Use --preset <name> to apply a preset configuration.
         if preset.get("note"):
             print(f"  Note:        {preset['note']}")
         print()
+
+    # NO_PRESET is a choice, not a preset: list it after the five so the
+    # recommended starting point is read first.
+    print(f"  {NO_PRESET.upper()}")
+    print(f"  {'-' * 60}")
+    print("  Description: No preset. Generates the core files (README, LICENSE, CONTRIBUTING,")
+    print("               .gitignore, FOUNDATION_NOTICE) plus the --include-* flags or --all")
+    print(f"               given. On the command line, --preset {NO_PRESET} also overrides a preset")
+    print("               set in the config file; leaving --preset out does not.")
+    print("  Best for:    Choosing your governance file by file")
+    print("  Note:        Start from 'standard' if you are unsure: it is the recommended")
+    print("               starting point. Leaving a file out is a choice to make knowingly.")
+    print("  Adds:        Each flag adds files, with or without a preset:")
+    # --all first: it is the one flag that stands for most of the others.
+    options = sorted(include_option_help(), key=lambda pair: pair[0] != "--all")
+    for option, help_text in options:
+        lines = textwrap.wrap(help_text, width=LIST_HELP_WIDTH)
+        print(f"                 {option:<28} {lines[0]}")
+        for line in lines[1:]:
+            print(f"                 {'':<28} {line}")
+    print()
 
     print("""
 Usage: python generate_foundation.py --preset standard --project-name "My Project" --author-name "Name"
@@ -182,7 +211,7 @@ Each principle includes educational content explaining its importance.
 Total principles: {len(list_all_principles())}
 
 Enable principles via:
-  - --preset <name>           Apply a preset configuration
+  - --preset <name>           Apply a preset configuration ('none' applies no preset)
   - --include-coc             Include specific principles
   - --all                     Include all optional principles
 
@@ -277,7 +306,10 @@ def main() -> int:
     6. Run the generator
 
     Returns:
-        Exit code (0 for success, 1 for failure)
+        Exit code (0 for success, 1 for failure, 2 for invalid configuration: a config
+        file that is missing, unreadable, not valid JSON, or not a JSON object, or an
+        invalid "preset" in it; argparse also exits with 2 for invalid command-line
+        arguments)
     """
     # Parse arguments
     args = parse_arguments()
@@ -295,24 +327,36 @@ def main() -> int:
         show_guides()
         return 0
 
-    # Load config file if specified
+    # Load the config file, then merge it with the arguments (CLI takes precedence)
     config_path = getattr(args, "config_path", None)
-    config = load_config_file(config_path)
-
-    # Merge config with arguments (CLI takes precedence)
-    if config:
-        args = merge_config_with_args(args, config)
+    try:
+        config, config_file = load_config(config_path)
+        if config:
+            args = merge_config_with_args(args, config, config_file)
+    except ValueError as error:
+        # A config file that is missing, unreadable, not valid JSON, or not a JSON
+        # object (ConfigFileError), or an invalid "preset" in it. Stop here, as argparse does
+        # for an invalid --preset: continuing would ignore settings the file was meant
+        # to supply. Nothing has been written yet.
+        print(f"Error: {error}", file=sys.stderr)
+        return 2
+    if config_file is not None:
+        # Printed only now, after the file was read and its preset checked, so this line
+        # never comes before a config error.
+        print(f"📋 Loaded config from: {config_file}\n")
 
     # Apply preset if specified
+    # NO_PRESET applies nothing. Given on the command line, it has already kept
+    # merge_config_with_args from filling in the config file's preset.
     preset_name = getattr(args, "preset", None)
-    if preset_name:
-        preset_config = get_preset(preset_name)
-        if preset_config:
-            args = apply_preset_to_args(args, preset_config)
-            if not getattr(args, "quiet", False):
-                print(f"Applied preset: {preset_name}")
-        else:
-            print(f"Warning: Unknown preset '{preset_name}', ignoring.")
+    if preset_name == NO_PRESET:
+        if not getattr(args, "quiet", False):
+            print("No preset applied: core files plus the --include-* flags or --all given.")
+    elif preset_name:
+        # argparse and normalize_config_preset() have already checked the name.
+        args = apply_preset_to_args(args, get_preset(preset_name))
+        if not getattr(args, "quiet", False):
+            print(f"Applied preset: {preset_name}")
 
     # Load plugins if specified
     plugins_dir = getattr(args, "plugins_dir", None)
