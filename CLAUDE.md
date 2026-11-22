@@ -277,15 +277,15 @@ A preset's count is the number of principles it lists, not the number of files i
 
 ```bash
 # Run the generator (v3.7.0)
-python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ./output
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ../MyProject
 
 # With preset selection
-python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Author"
+python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Author" --output-dir ../MyProject
 
 # With generation log tracking (v3.7.0)
-python generate_foundation.py --project-name "MyProject" --author-name "Author" --include-generation-log
-python generate_foundation.py --project-name "MyProject" --author-name "Author" --include-generation-log --log-format both
-python generate_foundation.py --project-name "MyProject" --author-name "Author" --include-generation-log --log-to ./GENERATION_LOG.md
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ../MyProject --include-generation-log
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ../MyProject --include-generation-log --log-format both
+python generate_foundation.py --project-name "MyProject" --author-name "Author" --output-dir ../MyProject --include-generation-log --log-to ../MyProject/GENERATION_LOG.md
 
 # Discovery commands
 python generate_foundation.py --list-presets

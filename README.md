@@ -105,7 +105,7 @@ python generate_foundation.py --preset enterprise --project-name "MyProject" --a
 
 ```bash
 python generate_foundation.py --non-interactive --accept-terms --preset standard \
-  --project-name "MyProject" --author-name "Your Name" --output-dir ./output
+  --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
 ```
 
 ### Usage Scenarios
