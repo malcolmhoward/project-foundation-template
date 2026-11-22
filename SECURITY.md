@@ -15,7 +15,7 @@ We take security vulnerabilities seriously. As a governance template generator, 
 
 **Preferred**: Open a GitHub Security Advisory via the repository's "Security" tab.
 
-**Alternative**: Create a private issue by emailing the maintainer (see GitHub profile).
+**Alternative**: A private contact address is planned ([#154](https://github.com/malcolmhoward/project-foundation-template/issues/154)). Until then, use the Security Advisory route above.
 
 **Do NOT**:
 - Open a public GitHub issue for security vulnerabilities

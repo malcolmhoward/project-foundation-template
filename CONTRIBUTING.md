@@ -122,8 +122,8 @@ type(scope): description
 
 | Scope | Description |
 |-------|-------------|
-| `generator` | Changes to generate_foundation.py |
-| `core` | Changes to core/ package |
+| `generator` | Changes to `generate_foundation.py` |
+| `core` | Changes to the `core/` package |
 | `principles` | Changes to governance principles |
 | `guides` | Changes to documentation guides |
 | `presets` | Changes to governance presets |
@@ -132,6 +132,10 @@ type(scope): description
 | `ethics` | Ethical framework changes |
 | `ci` | CI/CD configuration |
 | `deps` | Dependency updates |
+| `release` | Version, expiration date, and `CHANGELOG.md` entries |
+| `contributing` | Changes to `CONTRIBUTING.md` |
+| `pr-template` | Changes to the pull request template |
+| `safeguards` | Changes to the ethical safeguards in code |
 
 ### Examples
 
@@ -140,7 +144,7 @@ type(scope): description
 feat(generator): add support for custom license headers
 fix(templates): correct markdown formatting in README template
 docs(ethics): clarify Principle Zero application
-chore(deps): update Python minimum version to 3.9
+chore(ci): update the setup-python action version
 
 # With body
 feat(principles): add deprecation policy principle
@@ -236,7 +240,7 @@ Reviewers evaluate PRs against these criteria:
 - Label numbers that are your own choices (thresholds, response times, coverage targets) as examples or defaults.
 - Words that usually signal a claim needing a source: "research shows", "studies", "proven", "leading cause", "industry standard", "most", "required", "legally", and any percentage or multiplier. In the project's own advice, "always" and "never" are fine.
 - Record each external source in [docs/sources.md](docs/sources.md), with what it supports and when you checked it.
-- `tests/test_sources_and_claims.py` fails on common unsourced phrases such as "research shows". If a sentence with one of them is sourced, add it to the test's `ALLOWED` list with its source.
+- `tests/test_sources_and_claims.py` fails on common unsourced phrases such as "research shows". If a sentence with one of them is sourced, add an entry to the test's `ALLOWED` dictionary: the key is a (path relative to the repository, lower-case phrase as matched) tuple, and the value is the source. The test scans only the Python modules under `core/`.
 
 ### What We Look For
 
@@ -253,9 +257,7 @@ This provides an educational foundation that explains:
 - When to use vs. not use containers
 
 ## Changes
-- Added `docker` principle to generator
-- Created Dockerfile template with educational comments
-- Added docker-compose example for multi-service setups
+- Added Dockerfile and docker-compose templates, with educational comments, to the `container-support` principle
 - Updated CLAUDE.md with Docker guidance
 
 ## Educational Approach
@@ -576,10 +578,10 @@ Our [CODE_OF_CONDUCT.md](CODE_OF_CONDUCT.md) sets behavioral expectations, and [
 
 ## Getting Help
 
-- **Questions**: Open a discussion or issue
+- **Questions**: Open an issue
 - **Bugs**: Use the bug report template
 - **Features**: Use the feature request template
-- **Security**: See [SECURITY.md](SECURITY.md) (if generated) or email directly
+- **Security**: Report privately as [SECURITY.md](SECURITY.md) describes, not in a public issue
 
 ## Recognition
 

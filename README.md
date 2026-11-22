@@ -12,7 +12,7 @@ PFT helps you create well-organized projects with the right governance for your 
 
 **Core Philosophy**: Education First — understand WHY before HOW.
 
-### Who is This For?
+### Audience
 
 | You Are... | This Helps You... |
 |------------|-------------------|
@@ -26,11 +26,12 @@ PFT helps you create well-organized projects with the right governance for your 
 
 #### Education First
 
-Every template teaches before it generates:
-- **WHAT**: What is this file/principle?
+In interactive mode (without `--quiet`), before a run writes a principle's files, it explains:
 - **WHY**: Why does it matter?
-- **HOW**: How do you implement it?
+- **WHAT**: What does it do?
 - **RISK**: What happens without it?
+
+HOW to apply a principle is the job of the implementation guides, which are reference content for now (see the note under Governance Presets).
 
 #### Principle Zero: "Do No Harm, Allow No Harm"
 
@@ -42,11 +43,12 @@ This project is built on an ethical foundation. We don't just generate files —
 
 Governance templates carry responsibility, so PFT:
 
-- **Teaches before it generates**: every template explains WHAT it is, WHY it matters, and the RISK of not having it
+- **Teaches before it generates**: interactive mode explains WHY each principle it writes files for matters, WHAT it does, and the RISK of not having it
 - **Requires acknowledgment**: you confirm that templates are starting points, not finished products
-- **Prevents misuse**: features that would enable governance theater or mass automation are deliberately limited
-- **Logs usage locally**: a record of what was generated stays on your machine, never sent anywhere
+- **Marks templates as templates**: the generated README, CONTRIBUTING, LICENSE, Code of Conduct, security policy, and MAINTAINERS files carry a notice to customize them before use, and `FOUNDATION_NOTICE.md` repeats it for the run and records the generation date and PFT version
+- **Logs usage locally**: each generation run appends one JSON line (time, version, project name, success, file count, duration, terms accepted, and whether the run was past the advisory date) to a dated file under `~/.project_foundation_logs/` on your machine. A run that fails while writing files is logged with `success` false; a run that crashes before writing, or is interrupted, is not logged. Runs that stop before generation (declined advisory or agreement, cancelled overwrite, missing arguments) and the `--list-*` commands write none. Nothing is sent anywhere
 - **Expires gracefully**: an advisory date prompts you to check for updates instead of running outdated governance (it warns; in interactive mode you continue by acknowledging it)
+- **Reviews its own changes**: every change to PFT requires a documented ethical review (see `ETHICS.md`)
 
 Ethical review requirements scale based on a project's relationship to PFT:
 - **Tier 1** (Core components): Full ethical review required
@@ -73,12 +75,19 @@ Templates are starting points, not finished products. Every generated file requi
 
 ## Quick Start
 
+PFT is tested only on Python 3.11 (the version CI runs, on Linux and macOS) and uses only the standard library. Clone the repository and run the commands from its root. `--output-dir` sets where files are written; it defaults to the current directory, which here is PFT itself, so always give it:
+
+```bash
+git clone https://github.com/malcolmhoward/project-foundation-template.git
+cd project-foundation-template
+```
+
 > **Note**: The Quick Start, Governance Presets and principles sections describe what the generator writes into **your project**. For this repository's own documentation (ETHICS.md, ROADMAP.md, etc.), see [Documentation](#documentation).
 
 ### For New Users (Interactive Learning Mode)
 
 ```bash
-python generate_foundation.py --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
 ```
 
 For each principle, before writing its files, interactive mode explains why the principle matters, what it does, and the risk without it, then asks whether you will customize the template.
@@ -87,9 +96,9 @@ For each principle, before writing its files, interactive mode explains why the 
 
 ```bash
 # Choose your governance level
-python generate_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name"
-python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name"  # Recommended
-python generate_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --preset minimal --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
+python generate_foundation.py --preset standard --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject  # Recommended
+python generate_foundation.py --preset enterprise --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
 ```
 
 ### For CI/CD Pipelines
@@ -171,8 +180,8 @@ No preset is applied unless you pass `--preset`. Without one, you get the core f
 
 ```bash
 # Core files plus a CI workflow and ADR templates, nothing else
-python generate_foundation.py --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"
-python generate_foundation.py --preset none --include-ci --include-adr --project-name "MyProject" --author-name "Your Name"  # Same files; also cancels a preset set in the config file
+python generate_foundation.py --include-ci --include-adr --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
+python generate_foundation.py --preset none --include-ci --include-adr --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject  # Same files; also cancels a preset set in the config file
 ```
 
 If you're not sure which files your project needs, start from `standard`. `--list-presets` lists every `--include-*` flag with the files it adds.
@@ -181,7 +190,7 @@ A preset is a starting point, and `--include-*` flags add to it. A preset never 
 
 ```bash
 # The standard files plus ADR templates, which standard leaves out
-python generate_foundation.py --preset standard --include-adr --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --preset standard --include-adr --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
 ```
 
 ---
@@ -429,7 +438,7 @@ Create custom principles and guides for your organization:
 
 ```bash
 # Use plugins from a custom directory
-python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name"
+python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProject" --author-name "Your Name" --output-dir ../MyProject
 ```
 
 `--plugins-dir` is accepted but plugin loading is **not yet wired into the generator**; the plugin API in `core/plugins/` is available for experimentation. Plugins are Python code and run with your permissions, so only load plugins you trust. See [examples/plugins/](examples/plugins/) for examples.
@@ -438,7 +447,9 @@ python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProje
 
 ## Version History
 
-| Version | Highlights |
+Versions 2.4.0 through 3.6.0 were development milestones, not separate releases; they shipped together in 3.7.0. The table shows the version that introduced each feature.
+
+| Version | Introduced |
 |---------|------------|
 | v3.7.0 | Generation log, attribution policy, tiered ethical review |
 | v3.6.0 | Internationalization support (10 locales) |
@@ -447,9 +458,10 @@ python generate_foundation.py --plugins-dir ./my-plugins --project-name "MyProje
 | v3.3.0 | Extended governance principles (28 total) |
 | v3.2.0 | Developer documentation guides |
 | v3.1.0 | Onboarding files: glossary, maintainers, scaffold manifest (25 principles) |
-| v3.0.0 | New entrypoint, 23 principles, 15 guides, plugin system |
-| v2.x | Modular architecture, presets, educational content |
-| v1.x | Initial implementation |
+| v3.0.0 | New entry point (`generate_foundation.py`) with `--preset` and the `--list-*` commands |
+| v2.4.0 to v2.11.0 | 2.4.0 enhanced security and secrets detection; 2.5.0 ADR and CI templates; 2.6.0 `core/` package; 2.7.0 presets; 2.8.0 to 2.10.0 principle modules and guides; 2.11.0 plugin API (loading not yet wired) |
+| v2.1.0-lite to v2.3.0-lite | Lite edition: core files, ethical use agreement, non-interactive mode, config file, JSON export, and issue, PR, and changelog templates |
+| v2.1.0 (enterprise) | Original edition, before the lite rewrite; not in the CHANGELOG (see `MIGRATION.md`) |
 
 See [CHANGELOG.md](CHANGELOG.md) for complete history.
 

@@ -36,6 +36,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   invalid JSON gave no message. A run with no config file works as before (#150).
 
 ### Fixed
+- The `--list-principles` footer no longer says that `--include-coc` and `--all` select principles; it now
+  describes `--include-*` flags and `--all` as including optional templates (#153).
 - The onboarding guide's "Commit your work" step stages files by name and checks `git status`
   and `git diff --staged` instead of using `git add .`, which also stages unintended files and
   accidental deletions. It also shows how to stage an intended deletion with `git rm`, and the
